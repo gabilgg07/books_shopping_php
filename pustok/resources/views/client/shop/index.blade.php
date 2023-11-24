@@ -1,13 +1,13 @@
-@extends("client.layouts.master")
+@extends('client.layouts.master')
 
-@section("content")
+@section('content')
 <section class="breadcrumb-section">
     <h2 class="sr-only">Site Breadcrumb</h2>
     <div class="container">
         <div class="breadcrumb-contents">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('client.home.index')}}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('client.home.index') }}">Home</a></li>
                     <li class="breadcrumb-item active">Shop</li>
                 </ol>
             </nav>
@@ -28,12 +28,12 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-xl-5 col-md-4 col-sm-6  mt--10 mt-sm--0">
+                <div class="col-xl-4 col-md-4 col-sm-6  mt--10 mt-sm--0">
                     <span class="toolbar-status">
                         Showing 1 to 9 of 14 (2 Pages)
                     </span>
                 </div>
-                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mt--10 mt-md--0 ">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mt--10 mt-md--0 ">
                     <div class="sorting-selection">
                         <span>Sort By:</span>
                         <select class="form-control nice-select sort-select mr-0">
@@ -68,24 +68,18 @@
                             <a href="" class="author">
                                 Epple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">Here Is A Quick Cure For Book</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">Here Is A Quick Cure For Book</a></h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-2.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-1.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -102,14 +96,14 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-3.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-3.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     Gpple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Qpple cPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Qpple cPad with Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -148,24 +142,18 @@
                             <a href="" class="author">
                                 Lpple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">Simple Things You To Save BOOK</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">Simple Things You To Save BOOK</a></h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-4.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-4.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-5.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-5.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -182,14 +170,15 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-6.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-6.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     fpple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Apple iPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Apple iPad with
+                                        Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -228,24 +217,18 @@
                             <a href="" class="author">
                                 Cpple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">3 Ways Create Better BOOK With</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">3 Ways Create Better BOOK With</a></h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-7.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-7.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-8.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-8.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -262,14 +245,15 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-7.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-7.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     Apple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Apple iPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Apple iPad with
+                                        Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -308,24 +292,18 @@
                             <a href="" class="author">
                                 Rpple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">Simple Things You To Save BOOK</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">Simple Things You To Save BOOK</a></h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-8.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-8.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-7.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-7.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -342,14 +320,15 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-8.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-8.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     Apple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Apple iPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Apple iPad with
+                                        Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -388,24 +367,18 @@
                             <a href="" class="author">
                                 Gpple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">How Deal With Very Bad BOOK</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">How Deal With Very Bad BOOK</a></h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-9.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-9.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-10.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-10.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -422,14 +395,15 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-9.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-9.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     Apple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Apple iPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Apple iPad with
+                                        Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -468,24 +442,18 @@
                             <a href="" class="author">
                                 Rtpple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">The Hidden Mystery Behind</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">The Hidden Mystery Behind</a></h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-10.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-10.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-9.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-9.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -502,14 +470,15 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-10.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-10.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     Apple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Apple iPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Apple iPad with
+                                        Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -548,24 +517,19 @@
                             <a href="" class="author">
                                 Upple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">Little Known Ways To Rid Yourself</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">Little Known Ways To Rid Yourself</a>
+                            </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-11.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-11.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-12.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-12.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -582,14 +546,15 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-11.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-11.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     Apple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Apple iPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Apple iPad with
+                                        Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -628,24 +593,18 @@
                             <a href="" class="author">
                                 Bpple
                             </a>
-                            <h3><a href="{{route('client.shop.details')}}/1">Qple GPad with Retina Sisplay</a></h3>
+                            <h3><a href="{{ route('client.shop.details') }}/1">Qple GPad with Retina Sisplay</a></h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="">
+                                <img src="{{ asset('client/assets/image/products/product-2.jpg') }}" alt="">
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="">
+                                    <a href="{{ route('client.shop.details') }}/1" class="hover-image">
+                                        <img src="{{ asset('client/assets/image/products/product-1.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -662,14 +621,15 @@
                     </div>
                     <div class="product-list-content">
                         <div class="card-image">
-                            <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="">
+                            <img src="{{ asset('client/assets/image/products/product-2.jpg') }}" alt="">
                         </div>
                         <div class="product-card--body">
                             <div class="product-header">
                                 <a href="" class="author">
                                     Apple
                                 </a>
-                                <h3><a href="{{route('client.shop.details')}}/1" tabindex="0">Apple iPad with Retina
+                                <h3><a href="{{ route('client.shop.details') }}/1" tabindex="0">Apple iPad with
+                                        Retina
                                         Display
                                         MD510LL/A</a></h3>
                             </div>
@@ -703,10 +663,9 @@
             </div>
         </div>
         <!-- Pagination Block -->
-        @include("client.layouts.partials.pagination")
+        @include('client.layouts.partials.pagination')
         <!-- Modal -->
-        @include("client.layouts.partials.details_modal")
+        @include('client.layouts.partials.details_modal')
     </div>
 </main>
-
 @endsection

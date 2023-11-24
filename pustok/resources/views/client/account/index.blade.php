@@ -34,7 +34,7 @@
                                 address</a>
                             <a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> Account
                                 Details</a>
-                            <a href="login-register.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            <a href="{{route('client.account.logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
                     </div>
                     <!-- My Account Tab Menu End -->
@@ -47,7 +47,7 @@
                                     <h3>Dashboard</h3>
                                     <div class="welcome mb-20">
                                         <p>Hello, <strong>Alex Tuntuni</strong> (If Not <strong>Tuntuni
-                                                !</strong><a href="login-register.html" class="logout">
+                                                !</strong><a href="{{route('client.account.logout')}}" class="logout">
                                                 Logout</a>)</p>
                                     </div>
                                     <p class="mb-0">From your account dashboard. you can easily check &amp; view
@@ -168,30 +168,25 @@
                                         <form action="#">
                                             <div class="row">
                                                 <div class="col-lg-6 col-12  mb--30">
-                                                    <input id="first-name" placeholder="First Name" type="text">
+                                                    <input id="first_name" placeholder="First Name" type="text" name="first_name">
                                                 </div>
                                                 <div class="col-lg-6 col-12  mb--30">
-                                                    <input id="last-name" placeholder="Last Name" type="text">
+                                                    <input id="last_name" placeholder="Last Name" type="text" name="last_name">
                                                 </div>
                                                 <div class="col-12  mb--30">
-                                                    <input id="display-name" placeholder="Display Name" type="text">
-                                                </div>
-                                                <div class="col-12  mb--30">
-                                                    <input id="email" placeholder="Email Address" type="email">
+                                                    <input id="email" placeholder="Email Address" type="email" name="email">
                                                 </div>
                                                 <div class="col-12  mb--30">
                                                     <h4>Password change</h4>
                                                 </div>
                                                 <div class="col-12  mb--30">
-                                                    <input id="current-pwd" placeholder="Current Password"
-                                                        type="password">
+                                                    <input id="password" placeholder="Current Password" type="password" name="password">
                                                 </div>
                                                 <div class="col-lg-6 col-12  mb--30">
-                                                    <input id="new-pwd" placeholder="New Password" type="password">
+                                                    <input id="new_password" placeholder="New Password" type="password" name="new_password">
                                                 </div>
                                                 <div class="col-lg-6 col-12  mb--30">
-                                                    <input id="confirm-pwd" placeholder="Confirm Password"
-                                                        type="password">
+                                                    <input id="confirm_password" placeholder="Confirm Password" type="password" name="confirm_password">
                                                 </div>
                                                 <div class="col-12">
                                                     <button class="btn btn--primary">Save Changes</button>

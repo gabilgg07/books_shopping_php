@@ -20,33 +20,76 @@
         <div class="row justify-content-center">
             <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6 mb--30 mb-lg--0">
                 <!-- Login Form s-->
-                <form action="#">
+                <form method="post" action="{{route('auth.register')}}">
+                    @csrf
                     <div class="login-form">
-                        <h4 class="login-title">New Customer</h4>
-                        <p><span class="font-weight-bold">I am a new customer</span></p>
+                        <h4 class="login-title">Sign Up</h4>
+                        <p><span class="font-weight-bold">Registration</span></p>
                         <div class="row">
-                            <div class="col-md-12 col-12 mb--15">
-                                <label for="email">Full Name</label>
-                                <input class="mb-0 form-control" type="text" id="name"
-                                    placeholder="Enter your full name">
+                            <!-- @if ($errors->any())
+                            <div class="col-lg-12 mb--20">
+                                <strong>Validation Errors:</strong>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
-                            <div class="col-12 mb--20">
+                            @endif -->
+                            <div class="col-lg-6 mb--10">
+                                <label for="first_name">First Name</label>
+                                <input class="mb-0 form-control" type="text" id="first_name" name="first_name" placeholder="Enter your first name">
+                                @error('first_name')
+                                <div style="font-size: 12px; padding: 5px;" class="alert alert-danger m-0 mt-1" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6 mb--10">
+                                <label for="last_name">Last Name</label>
+                                <input class="mb-0 form-control" type="text" id="last_name" name="last_name" placeholder="Enter your last name">
+                                @error('last_name')
+                                <div style="font-size: 12px; padding: 5px;" class="alert alert-danger m-0 mt-1" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="col-12 mb--10">
                                 <label for="email">Email</label>
-                                <input class="mb-0 form-control" type="email" id="email"
-                                    placeholder="Enter Your Email Address Here..">
+                                <input class="mb-0 form-control" type="email" id="email" name="email" placeholder="Enter Your Email Address Here..">
+
+                                @error('email')
+                                <div style="font-size: 12px; padding: 5px;" class="alert alert-danger m-0 mt-1" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
-                            <div class="col-lg-6 mb--20">
+                            <div class="col-lg-6 mb--10">
                                 <label for="password">Password</label>
-                                <input class="mb-0 form-control" type="password" id="password"
-                                    placeholder="Enter your password">
+                                <input class="mb-0 form-control" type="password" id="password" name="password" placeholder="Enter your password">
+                                @error('password')
+                                <div style="font-size: 12px; padding: 5px;" class="alert alert-danger m-0 mt-1" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
-                            <div class="col-lg-6 mb--20">
-                                <label for="password">Repeat Password</label>
-                                <input class="mb-0 form-control" type="password" id="repeat-password"
-                                    placeholder="Repeat your password">
+                            <div class="col-lg-6 mb--10">
+                                <label for="repeat_password">Repeat Password</label>
+                                <input class="mb-0 form-control" type="password" id="repeat_password" name="repeat_password" placeholder="Repeat your password">
+                                @error('repeat_password')
+                                <div style="font-size: 12px; padding: 5px;" class="alert alert-danger m-0 mt-1" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="col-12 mb--10">
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <a href="{{route('auth.signin')}}" class="form-link font-weight-light font-italic">I
+                                        have account</a>
+                                </div>
                             </div>
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-outlined">Register</a>
+                                <button class="btn btn-outlined">Register</button>
                             </div>
                         </div>
                     </div>

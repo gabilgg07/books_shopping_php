@@ -27,7 +27,7 @@
                             <a href="#" class="author">
                                 Fpple
                             </a>
-                            <h3><a href="product-details.html">Get Through To Your
+                            <h3><a href="{{route('client.shop.details')}}/1">Get Through To Your
                                     BOOK</a></h3>
                         </div>
                         <div class="price-block">
@@ -48,7 +48,7 @@
                             <a href="" class="author">
                                 Gpple
                             </a>
-                            <h3><a href="product-details.html">What Can You Do To Save
+                            <h3><a href="{{route('client.shop.details')}}/1">What Can You Do To Save
                                     Your
                                     BOOK</a></h3>
                         </div>
@@ -70,7 +70,7 @@
                             <a class="author">
                                 Hpple
                             </a>
-                            <h3><a href="product-details.html">From Destruction By
+                            <h3><a href="{{route('client.shop.details')}}/1">From Destruction By
                                     Social
                                     Media?</a></h3>
                         </div>
@@ -92,7 +92,7 @@
                             <a href="#" class="author">
                                 Gpple
                             </a>
-                            <h3><a href="product-details.html">Find Out More About BOOK
+                            <h3><a href="{{route('client.shop.details')}}/1">Find Out More About BOOK
                                     ?</a></h3>
                         </div>
                         <div class="price-block">
@@ -113,7 +113,7 @@
                             <a href="#" class="author">
                                 Dpple
                             </a>
-                            <h3><a href="product-details.html">Controversial BOOK
+                            <h3><a href="{{route('client.shop.details')}}/1">Controversial BOOK
                                     Social Media?</a></h3>
                         </div>
                         <div class="price-block">
@@ -134,7 +134,7 @@
                             <a href="" class="author">
                                 Cpple
                             </a>
-                            <h3><a href="product-details.html">Lightweight
+                            <h3><a href="{{route('client.shop.details')}}/1">Lightweight
                                     Portable Headphone</a></h3>
                         </div>
                         <div class="price-block">
@@ -155,7 +155,7 @@
                             <a href="" class="author">
                                 Apple
                             </a>
-                            <h3><a href="product-details.html">Ways To Have More
+                            <h3><a href="{{route('client.shop.details')}}/1">Ways To Have More
                                     BOOK</a></h3>
                         </div>
                         <div class="price-block">
@@ -176,7 +176,7 @@
                             <a href="" class="author">
                                 Xpple
                             </a>
-                            <h3><a href="product-details.html">Ways To Have More
+                            <h3><a href="{{route('client.shop.details')}}/1">Ways To Have More
                                     BOOK</a></h3>
                         </div>
                         <div class="price-block">
@@ -197,7 +197,7 @@
                             <a href="" class="author">
                                 Tpple
                             </a>
-                            <h3><a href="product-details.html">10 Minutes, I'll Give You
+                            <h3><a href="{{route('client.shop.details')}}/1">10 Minutes, I'll Give You
                                     The Truth</a></h3>
                         </div>
                         <div class="price-block">
@@ -218,7 +218,7 @@
                             <a href="" class="author">
                                 Fpple
                             </a>
-                            <h3><a href="product-details.html">What Can You Do To Save
+                            <h3><a href="{{route('client.shop.details')}}/1">What Can You Do To Save
                                     Your
                                     BOOK</a></h3>
                         </div>
@@ -240,7 +240,7 @@
                             <a href="" class="author">
                                 Tpple
                             </a>
-                            <h3><a href="product-details.html">10 Minutes, I'll Give You
+                            <h3><a href="{{route('client.shop.details')}}/1">10 Minutes, I'll Give You
                                     The Truth</a></h3>
                         </div>
                         <div class="price-block">
@@ -261,7 +261,7 @@
                             <a href="" class="author">
                                 Fpple
                             </a>
-                            <h3><a href="product-details.html">What Can You Do To Save
+                            <h3><a href="{{route('client.shop.details')}}/1">What Can You Do To Save
                                     Your
                                     BOOK</a></h3>
                         </div>

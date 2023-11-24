@@ -13,4 +13,7 @@ class ShopController extends Controller
     public function details($id=0){
         return view("client.shop.details");
     }
+    public function card(){
+        return view("client.shop.card");
+    }
 }

@@ -18,8 +18,8 @@
                     <div class="main-navigation flex-lg-right">
                         <div class="cart-widget">
                             <div class="login-block">
-                                <a href="{{route('client.account.login')}}" class="font-weight-bold">Login</a> <br>
-                                <span>or</span><a href="{{route('client.account.register')}}">Register</a>
+                                <a href="{{route('auth.signin')}}" class="font-weight-bold">Login</a> <br>
+                                <span>or</span><a href="{{route('auth.signup')}}">Register</a>
                             </div>
                             <div class="cart-block">
                                 <div class="cart-total">
@@ -37,12 +37,12 @@
                                 <div class="cart-dropdown-block">
                                     <div class=" single-cart-block ">
                                         <div class="cart-product">
-                                            <a href="product-details.html" class="image">
-                                                <img src="{{asset('client/assets/image/products/cart-product-1.jpg')}}"
-                                                    alt="">
+                                            <a href="{{route('client.shop.details')}}/1" class="image">
+                                                <img src="{{asset('client/assets/image/products/cart-product-1.jpg')}}" alt="">
                                             </a>
                                             <div class="content">
-                                                <h3 class="title"><a href="product-details.html">Kodak PIXPRO
+                                                <h3 class="title"><a href="{{route('client.shop.details')}}/1">Kodak
+                                                        PIXPRO
                                                         Astro Zoom AZ421 16 MP</a>
                                                 </h3>
                                                 <p class="price"><span class="qty">1 ×</span> £87.34</p>
@@ -52,8 +52,7 @@
                                     </div>
                                     <div class=" single-cart-block ">
                                         <div class="btn-block">
-                                            <a href="cart.html" class="btn">View Cart <i
-                                                    class="fas fa-chevron-right"></i></a>
+                                            <a href="{{route('client.shop.card')}}" class="btn">View Cart <i class="fas fa-chevron-right"></i></a>
 
                                         </div>
                                     </div>
@@ -69,7 +68,13 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-3">
-                    @include("client.layouts.includes.categories")
+                    <nav class="category-nav primary-nav {{ request()->routeIs('client.home.index') ? 'show' : '' }}">
+                        <div>
+                            <a href="javascript:void(0)" class="category-trigger"><i class="fa fa-bars"></i>Browse
+                                categories</a>
+                            @include("client.layouts.includes.categories")
+                        </div>
+                    </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="header-phone ">

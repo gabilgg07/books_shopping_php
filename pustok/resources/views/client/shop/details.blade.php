@@ -305,12 +305,6 @@
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
-                                        </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
                                         </a>
@@ -343,12 +337,6 @@
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
@@ -383,12 +371,6 @@
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
-                                        </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
                                         </a>
@@ -422,12 +404,6 @@
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
-                                        </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
                                         </a>
@@ -460,12 +436,6 @@
                                     <div class="hover-btns">
                                         <a href="cart.html" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="wishlist.html" class="single-btn">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                        <a href="compare.html" class="single-btn">
-                                            <i class="fas fa-random"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                             <i class="fas fa-eye"></i>
