@@ -18,8 +18,16 @@
                     <div class="main-navigation flex-lg-right">
                         <div class="cart-widget">
                             <div class="login-block">
+                                @if (auth()->user())
+                                <a href="{{route('client.account.index')}}"
+                                    class="font-weight-bold">{{auth()->user()->first_name." ".auth()->user()->last_name}}</a>
+                                <br>
+                                <span>or</span><a onclick="return confirm('Are you sure?')"
+                                    href="{{route('client.account.logout')}}">Logout</a>
+                                @else
                                 <a href="{{route('auth.signin')}}" class="font-weight-bold">Login</a> <br>
                                 <span>or</span><a href="{{route('auth.signup')}}">Register</a>
+                                @endif
                             </div>
                             <div class="cart-block">
                                 <div class="cart-total">
@@ -38,7 +46,8 @@
                                     <div class=" single-cart-block ">
                                         <div class="cart-product">
                                             <a href="{{route('client.shop.details')}}/1" class="image">
-                                                <img src="{{asset('client/assets/image/products/cart-product-1.jpg')}}" alt="">
+                                                <img src="{{asset('client/assets/image/products/cart-product-1.jpg')}}"
+                                                    alt="">
                                             </a>
                                             <div class="content">
                                                 <h3 class="title"><a href="{{route('client.shop.details')}}/1">Kodak
@@ -52,7 +61,8 @@
                                     </div>
                                     <div class=" single-cart-block ">
                                         <div class="btn-block">
-                                            <a href="{{route('client.shop.card')}}" class="btn">View Cart <i class="fas fa-chevron-right"></i></a>
+                                            <a href="{{route('client.shop.card')}}" class="btn">View Cart <i
+                                                    class="fas fa-chevron-right"></i></a>
 
                                         </div>
                                     </div>

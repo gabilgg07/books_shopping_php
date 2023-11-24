@@ -19,20 +19,13 @@ Route::group(["prefix" => "", "as" => "client."], function () {
     Route::group(["middleware" => "auth", "prefix" => "/account", "as" => "account."], function () {
         Route::get("", [AccountController::class, "index"])->name("index");
         Route::get("/logout", [AccountController::class, "logout"])->name("logout");
+        Route::get("/checkout", [AccountController::class, "checkout"])->name("checkout");
     });
 });
 
 
 
-Route::group(["prefix" => "", "as" => "auth."], function () {
-    // Route::get("/register", [AccountController::class, "register"])->name("client.account.register");
-    // Route::get("/login", [AccountController::class, "login"])->name("client.account.login");
-
-    // Route::get("/account", [AccountController::class, "index"])->name("client.account.index");
-    // Route::get("/logout", [AccountController::class, "logout"])->name("client.account.logout");
-    // Route::get("/checkout", [AccountController::class, "checkout"])->name("client.account.checkout");
-
-
+Route::group(["middleware" => "auth.check", "prefix" => "", "as" => "auth."], function () {
     Route::get("/signup", [AccountController::class, "signup"])->name("signup");
     Route::post("/register", [AccountController::class, "register"])->name("register");
 

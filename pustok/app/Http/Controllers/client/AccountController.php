@@ -44,7 +44,7 @@ class AccountController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            return redirect()->route('client.home.index');
+            return redirect()->route('client.account.index');
         } else {
             // return back()->with('error', __('form.password_invalid'));
             return back()->with('error', 'Email or password is invalide');
@@ -53,8 +53,8 @@ class AccountController extends Controller
 
     public function logout()
     {
-        //
-        return view("client.account.login");
+        Auth::logout();
+        return redirect()->route('auth.signin');
     }
 
     public function checkout()
