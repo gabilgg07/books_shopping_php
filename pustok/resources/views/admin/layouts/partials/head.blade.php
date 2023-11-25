@@ -10,3 +10,4 @@
 <link rel="stylesheet" href="{{asset('admin/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
 <!-- Theme style -->
 <link rel="stylesheet" href="{{asset('admin/assets/dist/css/adminlte.min.css')}}">
+<link rel="stylesheet" href="{{asset('admin/assets/dist/css/additionalStyles.css')}}">

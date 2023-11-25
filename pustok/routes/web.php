@@ -7,7 +7,7 @@ use App\Http\Controllers\client\ContactController;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\ShopController;
 use Illuminate\Support\Facades\Route;
-
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::group(["prefix" => "", "as" => "client."], function () {
     Route::get("/", [HomeController::class, "index"])->name("home.index");
@@ -35,7 +35,7 @@ Route::group(["middleware" => "auth.check", "prefix" => "", "as" => "auth."], fu
     Route::post("/login", [AccountController::class, "login"])->name("login");
 });
 
-Route::group(["prefix" => "/manage", "as" => "admin."], function () {
+Route::group(["prefix" => LaravelLocalization::setLocale() . "/manage", "as" => "admin."], function () {
     Route::get("/", [AdminController::class, "index"])->name("dashboard");
     Route::resource("/categories", CategoriesController::class);
 });
