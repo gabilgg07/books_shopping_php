@@ -30,5 +30,5 @@
     </div>
 </section>
 <!-- Modal -->
-@include("client.layouts.partials.details_modal")
+@include("client.layouts.includes.details_modal")
 @endsection

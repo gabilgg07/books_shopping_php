@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\CategoriesController;
 use App\Http\Controllers\client\AccountController;
 use App\Http\Controllers\client\ContactController;
 use App\Http\Controllers\client\HomeController;
@@ -31,4 +33,9 @@ Route::group(["middleware" => "auth.check", "prefix" => "", "as" => "auth."], fu
 
     Route::get("/signin", [AccountController::class, "signin"])->name("signin");
     Route::post("/login", [AccountController::class, "login"])->name("login");
+});
+
+Route::group(["prefix" => "/manage", "as" => "admin."], function () {
+    Route::get("/", [AdminController::class, "index"])->name("dashboard");
+    Route::resource("/categories", CategoriesController::class);
 });
