@@ -29,7 +29,6 @@ return new class extends Migration
             $table->string('location_desc');
             $table->string('send_us');
             $table->double('shipping_percent')->default(0);
-            $table->timestamps();
         });
     }
 
