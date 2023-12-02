@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transable', function (Blueprint $table) {
             $table->id();
-            $table->string('search_input');
+            $table->string('search_placeholder');
             $table->string('search');
             $table->string('login');
             $table->string('or');
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('information');
             $table->string('subscribe_title');
             $table->string('subscribe');
-            $table->string('subscribe_input');
+            $table->string('subscribe_placeholder');
             $table->string('stay_connected');
             $table->string('home_left_side_title');
             $table->string('showing_text');
@@ -83,6 +83,25 @@ return new class extends Migration
             $table->string('shipping_cost');
             $table->string('grand_total');
             $table->string('checkout');
+            $table->string('wishlist');
+            $table->string('remove');
+            $table->string('your_order');
+            $table->string('shipping_fee');
+            $table->string('place_order');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('company_name');
+            $table->string('country');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip_code');
+            $table->string('order_notes');
+            $table->string('order_notes_placeholder');
+            $table->string('thank_you');
+            $table->string('received_message');
+            $table->string('order_number');
+            $table->string('date');
+            $table->string('order_details');
             $table->timestamps();
         });
     }
