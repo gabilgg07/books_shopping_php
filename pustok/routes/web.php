@@ -14,6 +14,7 @@ Route::group(["prefix" => "", "as" => "client."], function () {
 
     Route::get("/shop", [ShopController::class, "index"])->name("shop.index");
     Route::get("/shop/card", [ShopController::class, "card"])->name("shop.card");
+    Route::get("/shop/wishlist", [ShopController::class, "wishlist"])->name("shop.wishlist");
     Route::get("/shop/{id?}", [ShopController::class, "details"])->name("shop.details");
 
     Route::get("/contact", ContactController::class)->name("contact");

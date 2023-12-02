@@ -7,13 +7,20 @@ use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view("client.shop.index");
     }
-    public function details($id=0){
+    public function details($id = 0)
+    {
         return view("client.shop.details");
     }
-    public function card(){
+    public function card()
+    {
         return view("client.shop.card");
+    }
+    public function wishlist()
+    {
+        return view("client.shop.wishlist");
     }
 }

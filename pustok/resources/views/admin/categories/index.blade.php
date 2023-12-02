@@ -1,5 +1,7 @@
 @extends("admin.layouts.master")
-
+@push("page_title")
+Categories Index
+@endpush
 @section("content")
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -39,7 +41,8 @@
                         <th>Title</th>
                         <th>Slug</th>
                         <!-- <th style="width: 40px">Label</th> -->
-                        <th>Status</th>
+                        <th style="width: 200px;">Status</th>
+                        <th style="width: 200px;">Controlls</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +52,16 @@
                         <td>{{$category->title}}</td>
                         <td>{{$category->slug}}</td>
                         <td>{{$category->status}}</td>
+                        <td>
+                            <a href="{{route('admin.categories.edit', $category->id)}}" class="btn btn-warning">Edit</a>
+                            <form onsubmit="return confirm('Are you sure?')" method="post"
+                                action="{{route('admin.categories.destroy', $category->id)}}" class="d-inline-block">
+                                @method('delete')
+                                @csrf
+                                <input type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"
+                                    value="Delete">
+                            </form>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

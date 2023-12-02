@@ -26,25 +26,9 @@
                         <h3>Information</h3>
                     </div>
                     <ul class="footer-list normal-list">
-                        <li><a href="">Prices drop</a></li>
-                        <li><a href="">New products</a></li>
-                        <li><a href="">Best sales</a></li>
-                        <li><a href="">Contact us</a></li>
-                        <li><a href="">Sitemap</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class=" col-xl-3 col-lg-2 col-sm-6">
-                <div class="single-footer pb--40">
-                    <div class="footer-title">
-                        <h3>Extras</h3>
-                    </div>
-                    <ul class="footer-list normal-list">
-                        <li><a href="">Delivery</a></li>
-                        <li><a href="">About Us</a></li>
-                        <li><a href="">Stores</a></li>
-                        <li><a href="">Contact us</a></li>
-                        <li><a href="">Sitemap</a></li>
+                        <li><a href="{{route('client.home.index')}}">Home</a></li>
+                        <li><a href="{{route('client.shop.index')}}">Shop</a></li>
+                        <li><a href="{{route('client.contact')}}">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -77,10 +61,10 @@
             <p class="copyright-heading">Suspendisse in auctor augue. Cras fermentum est ac fermentum tempor. Etiam
                 vel
                 magna volutpat, posuere eros</p>
-            <a href="#" class="payment-block">
+            <!-- <a href="#" class="payment-block">
                 <img src="{{asset('client/assets/image/icon/payment.png')}}" alt="">
-            </a>
-            <p class=" copyright-text">Copyright © 2019 <a href="#" class="author">Pustok</a>. All Right Reserved.
+            </a> -->
+            <p class=" copyright-text">Copyright © 2023 Pustok. All Right Reserved.
                 <br>
                 Design By Pustok
             </p>

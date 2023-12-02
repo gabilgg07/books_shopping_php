@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('contact_messages', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('slug');
-            $table->unsignedBigInteger('parent_id')->default(0);
-            $table->string('image')->nullable();
+            $table->string('full_name');
+            $table->string('email');
+            $table->string('phone');
+            $table->text('message');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('contact_messages');
     }
 };

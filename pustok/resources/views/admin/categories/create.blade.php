@@ -1,7 +1,8 @@
 @extends("admin.layouts.master")
-
+@push("page_title")
+Categories Create
+@endpush
 @section("content")
-
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -34,8 +35,7 @@
                 @foreach (LaravelLocalization::getSupportedLanguagesKeys() as $lang)
                 <div class="form-group">
                     <label for="title">Title - [{{$lang}}]</label>
-                    <input type="text" class="form-control" id="title" placeholder="Enter Title"
-                        name="title[{{$lang}}]">
+                    <input type="text" class="form-control" id="title" placeholder="Enter Title" name="title[{{$lang}}]">
                 </div>
                 @endforeach
                 <div class="form-group">
@@ -43,12 +43,12 @@
                     <select class="custom-select form-control-border" id="parent_id" name="parent_id">
                         <option value="0">Parent Category</option>
                         @foreach ($categories as $category)
-                        <option>{{$category?->title}}</option>
+                        <option value="{{$category?->id}}">{{$category?->title}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="status" name="status">
+                    <input type="checkbox" class="form-check-input" checked id="status" name="status">
                     <label class="form-check-label" for="status">Status</label>
                 </div>
             </div>

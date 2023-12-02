@@ -663,9 +663,9 @@
             </div>
         </div>
         <!-- Pagination Block -->
-        @include('client.layouts.partials.pagination')
+        @include('client.layouts.includes.pagination')
         <!-- Modal -->
-        @include('client.layouts.partials.details_modal')
+        @include('client.layouts.includes.details_modal')
     </div>
 </main>
 @endsection

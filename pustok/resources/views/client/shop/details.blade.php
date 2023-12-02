@@ -129,7 +129,6 @@
                     </div>
                     <div class="compare-wishlist-row">
                         <a href="" class="add-link"><i class="fas fa-heart"></i>Add to Wish List</a>
-                        <a href="" class="add-link"><i class="fas fa-random"></i>Add to Compare</a>
                     </div>
                 </div>
             </div>
@@ -137,12 +136,14 @@
         <div class="sb-custom-tab review-tab section-padding">
             <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
+                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
+                        aria-controls="tab-1" aria-selected="true">
                         DESCRIPTION
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">
+                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
+                        aria-selected="true">
                         REVIEWS (1)
                     </a>
                 </li>
@@ -212,25 +213,8 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="message">Comment</label>
-                                            <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="name">Name *</label>
-                                            <input type="text" id="name" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="email">Email *</label>
-                                            <input type="text" id="email" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="website">Website</label>
-                                            <input type="text" id="website" class="form-control" />
+                                            <textarea name="message" id="message" cols="30" rows="10"
+                                                class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">

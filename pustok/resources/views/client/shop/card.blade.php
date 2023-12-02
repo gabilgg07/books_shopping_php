@@ -44,9 +44,7 @@
                                     <tr>
                                         <td class="pro-remove"><a href="#"><i class="far fa-trash-alt"></i></a>
                                         </td>
-                                        <td class="pro-thumbnail"><a href="#"><img
-                                                    src="{{asset('client/assets/image/products/product-1.jpg')}}"
-                                                    alt="Product"></a></td>
+                                        <td class="pro-thumbnail"><a href="#"><img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="Product"></a></td>
                                         <td class="pro-title"><a href="#">Rinosin Glasses</a></td>
                                         <td class="pro-price"><span>$395.00</span></td>
                                         <td class="pro-quantity">
@@ -62,9 +60,7 @@
                                     <tr>
                                         <td class="pro-remove"><a href="#"><i class="far fa-trash-alt"></i></a>
                                         </td>
-                                        <td class="pro-thumbnail"><a href="#"><img
-                                                    src="{{asset('client/assets/image/products/product-2.jpg')}}"
-                                                    alt="Product"></a></td>
+                                        <td class="pro-thumbnail"><a href="#"><img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="Product"></a></td>
                                         <td class="pro-title"><a href="#">Rinosin Glasses</a></td>
                                         <td class="pro-price"><span>$395.00</span></td>
                                         <td class="pro-quantity">
@@ -75,18 +71,6 @@
                                             </div>
                                         </td>
                                         <td class="pro-subtotal"><span>$395.00</span></td>
-                                    </tr>
-                                    <!-- Discount Row  -->
-                                    <tr>
-                                        <td colspan="6" class="actions">
-                                            <div class="update-block text-right">
-                                                <input type="submit" class="btn btn-outlined" name="update_cart"
-                                                    value="Update cart">
-                                                <input type="hidden" id="_wpnonce" name="_wpnonce"
-                                                    value="05741b501f"><input type="hidden" name="_wp_http_referer"
-                                                    value="/petmark/cart/">
-                                            </div>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -129,15 +113,13 @@
                                         <img src="{{asset('client/assets/image/products/product-10.jpg')}}" alt="">
                                         <div class="hover-contents">
                                             <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                                <img src="{{asset('client/assets/image/products/product-1.jpg')}}"
-                                                    alt="">
+                                                <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal"
-                                                    class="single-btn">
+                                                <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -165,15 +147,13 @@
                                         <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="">
                                         <div class="hover-contents">
                                             <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                                <img src="{{asset('client/assets/image/products/product-1.jpg')}}"
-                                                    alt="">
+                                                <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal"
-                                                    class="single-btn">
+                                                <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -201,15 +181,13 @@
                                         <img src="{{asset('client/assets/image/products/product-3.jpg')}}" alt="">
                                         <div class="hover-contents">
                                             <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                                <img src="{{asset('client/assets/image/products/product-2.jpg')}}"
-                                                    alt="">
+                                                <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal"
-                                                    class="single-btn">
+                                                <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -238,15 +216,13 @@
                                         <img src="{{asset('client/assets/image/products/product-5.jpg')}}" alt="">
                                         <div class="hover-contents">
                                             <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                                <img src="{{asset('client/assets/image/products/product-4.jpg')}}"
-                                                    alt="">
+                                                <img src="{{asset('client/assets/image/products/product-4.jpg')}}" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal"
-                                                    class="single-btn">
+                                                <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -274,15 +250,13 @@
                                         <img src="{{asset('client/assets/image/products/product-6.jpg')}}" alt="">
                                         <div class="hover-contents">
                                             <a href="{{route('client.shop.details')}}/1" class="hover-image">
-                                                <img src="{{asset('client/assets/image/products/product-4.jpg')}}"
-                                                    alt="">
+                                                <img src="{{asset('client/assets/image/products/product-4.jpg')}}" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal"
-                                                    class="single-btn">
+                                                <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -308,8 +282,7 @@
                             <h2>Grand Total <span class="text-primary">$1250.00</span></h2>
                         </div>
                         <div class="cart-summary-button">
-                            <a href="{{route('client.account.checkout')}}"
-                                class="checkout-btn c-btn btn--primary">Checkout</a>
+                            <a href="{{route('client.account.checkout')}}" class="checkout-btn c-btn btn--primary">Checkout</a>
                             <button class="update-btn c-btn btn-outlined">Update Cart</button>
                         </div>
                     </div>
