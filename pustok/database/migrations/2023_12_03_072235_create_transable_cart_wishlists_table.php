@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cart_order_transables', function (Blueprint $table) {
+        Schema::create('transable_cart_wishlists', function (Blueprint $table) {
             $table->id();
             $table->string('image');
             $table->string('product');
@@ -26,23 +26,6 @@ return new class extends Migration
             $table->string('checkout');
             $table->string('wishlist');
             $table->string('remove');
-            $table->string('your_order');
-            $table->string('shipping_fee');
-            $table->string('place_order');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('company_name');
-            $table->string('country');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zip_code');
-            $table->string('order_notes');
-            $table->string('order_notes_placeholder');
-            $table->string('thank_you');
-            $table->string('received_message');
-            $table->string('order_number');
-            $table->string('date');
-            $table->string('order_details');
         });
     }
 
@@ -51,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cart_order_transables');
+        Schema::dropIfExists('transable_cart_wishlists');
     }
 };

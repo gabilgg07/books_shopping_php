@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('home_transables', function (Blueprint $table) {
+        Schema::create('transable_layouts', function (Blueprint $table) {
             $table->id();
             $table->string('search_placeholder');
             $table->string('search');
@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('subscribe');
             $table->string('subscribe_placeholder');
             $table->string('stay_connected');
+            // home page
             $table->string('home_left_side_title');
         });
     }
@@ -43,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('home_transables');
+        Schema::dropIfExists('transable_layouts');
     }
 };

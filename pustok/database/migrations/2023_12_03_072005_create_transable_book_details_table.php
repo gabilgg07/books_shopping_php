@@ -11,26 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shop_details_transables', function (Blueprint $table) {
+        Schema::create('transable_book_details', function (Blueprint $table) {
             $table->id();
-            $table->string('showing_text');
-            $table->string('all');
-            $table->string('pages');
-            $table->string('sort_by');
-            $table->string('default_sorting');
-            $table->string('name_a_z');
-            $table->string('name_z_a');
-            $table->string('price_low_high');
-            $table->string('price_high_low');
-            $table->string('rating_highest');
-            $table->string('rating_lowest');
-            $table->string('model_a_z');
-            $table->string('model_z_a');
-            $table->string('your_name');
-            $table->string('your_email');
-            $table->string('your_phone');
-            $table->string('your_message');
-            $table->string('send');
             $table->string('product_details');
             $table->string('tags');
             $table->string('price');
@@ -57,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shop_details_transables');
+        Schema::dropIfExists('transable_book_details');
     }
 };
