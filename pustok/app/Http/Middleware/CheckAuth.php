@@ -13,6 +13,9 @@ class CheckAuth
     {
         if (Auth::guard($guard)->check()) {
             // Kullanıcı zaten giriş yapmışsa, istediğiniz bir yere yönlendirilebilir
+            if (auth()->user()->is_admin) {
+                return redirect()->route('manage.dashboard');
+            }
             return redirect()->route('client.account.index');
         }
 

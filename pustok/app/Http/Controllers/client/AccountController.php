@@ -21,11 +21,10 @@ class AccountController extends Controller
     }
     public function register(RegisterRequest $request)
     {
-        // dd($request->all());
-        // dd($request->except("_token"));
+        $data = $request->all();
+        unset($data['repeat_password']);
+        $created = User::create($data);
 
-        $created = User::create($request->all());
-        // dump($created->all());
         if ($created) {
             return redirect()->route("auth.signin")->with("success", "");
         } else {

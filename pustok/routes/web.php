@@ -15,7 +15,7 @@ Route::group(["prefix" => "", "as" => "client."], function () {
     Route::get("/shop", [ShopController::class, "index"])->name("shop.index");
     Route::get("/shop/card", [ShopController::class, "card"])->name("shop.card");
     Route::get("/shop/wishlist", [ShopController::class, "wishlist"])->name("shop.wishlist");
-    Route::get("/shop/{id?}", [ShopController::class, "details"])->name("shop.details");
+    Route::get("/shop/{book?}", [ShopController::class, "details"])->name("shop.details");
 
     Route::get("/contact", ContactController::class)->name("contact");
 
@@ -28,7 +28,7 @@ Route::group(["prefix" => "", "as" => "client."], function () {
 
 
 
-Route::group(["middleware" => "auth.check", "prefix" => "", "as" => "auth."], function () {
+Route::group(["middleware" => ['web', 'auth.check'], "prefix" => "", "as" => "auth."], function () {
     Route::get("/signup", [AccountController::class, "signup"])->name("signup");
     Route::post("/register", [AccountController::class, "register"])->name("register");
 
@@ -36,7 +36,14 @@ Route::group(["middleware" => "auth.check", "prefix" => "", "as" => "auth."], fu
     Route::post("/login", [AccountController::class, "login"])->name("login");
 });
 
-Route::group(["prefix" => LaravelLocalization::setLocale() . "/manage", "as" => "admin."], function () {
+Route::group(["middleware" => ['web', 'auth.checkIsAdmin'], "prefix" => LaravelLocalization::setLocale() . "/manage", "as" => "manage."], function () {
     Route::get("/", [AdminController::class, "index"])->name("dashboard");
     Route::resource("/categories", CategoriesController::class);
+});
+
+Route::group(["prefix" => LaravelLocalization::setLocale() . "/manage", "as" => "manage."], function () {
+    Route::get("/register", [AdminController::class, "register"])->name("register");
+    Route::post("/signup", [AdminController::class, "signup"])->name("signup");
+    Route::get("/login", [AdminController::class, "login"])->name("login");
+    Route::post("/signin", [AdminController::class, "signin"])->name("signin");
 });
