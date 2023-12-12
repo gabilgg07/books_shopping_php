@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\CategoriesController;
+use App\Http\Controllers\admin\UsersController;
 use App\Http\Controllers\client\AccountController;
 use App\Http\Controllers\client\ContactController;
 use App\Http\Controllers\client\HomeController;
@@ -19,7 +20,7 @@ Route::group(["prefix" => "", "as" => "client."], function () {
 
     Route::get("/contact", ContactController::class)->name("contact");
 
-    Route::group(["middleware" => "auth", "prefix" => "/account", "as" => "account."], function () {
+    Route::group(["middleware" => "auth.user", "prefix" => "/account", "as" => "account."], function () {
         Route::get("", [AccountController::class, "index"])->name("index");
         Route::get("/logout", [AccountController::class, "logout"])->name("logout");
         Route::get("/checkout", [AccountController::class, "checkout"])->name("checkout");
@@ -28,7 +29,7 @@ Route::group(["prefix" => "", "as" => "client."], function () {
 
 
 
-Route::group(["middleware" => ['web', 'auth.check'], "prefix" => "", "as" => "auth."], function () {
+Route::group(["middleware" => ['web', 'auth.user.check'], "prefix" => "", "as" => "auth."], function () {
     Route::get("/signup", [AccountController::class, "signup"])->name("signup");
     Route::post("/register", [AccountController::class, "register"])->name("register");
 
@@ -36,12 +37,13 @@ Route::group(["middleware" => ['web', 'auth.check'], "prefix" => "", "as" => "au
     Route::post("/login", [AccountController::class, "login"])->name("login");
 });
 
-Route::group(["middleware" => ['web', 'auth.checkIsAdmin'], "prefix" => LaravelLocalization::setLocale() . "/manage", "as" => "manage."], function () {
-    Route::get("/", [AdminController::class, "index"])->name("dashboard");
+Route::group(["middleware" => ['web', 'auth.admin'], "prefix" => LaravelLocalization::setLocale() . "/manager", "as" => "manager."], function () {
+    Route::get("", [AdminController::class, "index"])->name("dashboard");
     Route::resource("/categories", CategoriesController::class);
+    Route::resource("/users", UsersController::class);
 });
 
-Route::group(["prefix" => LaravelLocalization::setLocale() . "/manage", "as" => "manage."], function () {
+Route::group(["middleware" => "auth.admin.check", "prefix" => LaravelLocalization::setLocale() . "/manager", "as" => "manager."], function () {
     Route::get("/register", [AdminController::class, "register"])->name("register");
     Route::post("/signup", [AdminController::class, "signup"])->name("signup");
     Route::get("/login", [AdminController::class, "login"])->name("login");

@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAuth
+class AuthUserCheck
 {
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
             // Kullanıcı zaten giriş yapmışsa, istediğiniz bir yere yönlendirilebilir
-            if (auth()->user()->is_admin) {
-                return redirect()->route('manage.dashboard');
+            if (Auth::guard($guard)->user()->is_admin) {
+                return redirect()->route('manager.dashboard');
             }
             return redirect()->route('client.account.index');
         }

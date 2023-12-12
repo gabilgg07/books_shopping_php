@@ -7,6 +7,7 @@ use App\Http\Requests\admin\account\RegisterRequest;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -23,16 +24,14 @@ class AdminController extends Controller
 
     public function signin(Request $request)
     {
-        $this->validate($request, [
-            "email" => ["required", "email"],
-            "password" => "required",
-        ]);
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
 
-        $user = $request->user();
-        if ($user->password != $request->password) {
-            return back()->withErrors(["email" => "Email or Password incorrect!"]);
+        if (Auth::attempt($credentials, $remember)) {
+            return redirect()->route('manager.dashboard');
+        } else {
+            return back()->with('type', 'error')->with('message', 'Email or password is invalide');
         }
-        return view("admin.auth.login");
     }
 
     public function register()
@@ -45,6 +44,7 @@ class AdminController extends Controller
         $data = $request->all();
         unset($data['repeat_password']);
         $data['is_admin'] = 1;
+
         $created = User::create($data);
 
         if ($created) {

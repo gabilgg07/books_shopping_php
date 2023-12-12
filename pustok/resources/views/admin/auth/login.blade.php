@@ -44,7 +44,7 @@
             <div class="content d-flex justify-content-center align-items-center">
 
                 <!-- Login form -->
-                <form class="login-form" action="{{route('manage.signin')}}" method="post">
+                <form class="login-form" action="{{route('manager.signin')}}" method="post">
                     @csrf
                     <div class="card mb-0">
                         <div class="card-body">
@@ -70,7 +70,7 @@
                             </div>
 
                             <div class="text-center mb-2">
-                                <a href="{{route('manage.register')}}">I have not account</a>
+                                <a href="{{route('manager.register')}}">I have not account</a>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block">Sign in <i

@@ -27,6 +27,7 @@
 <script src="{{asset('admin/global_assets\js\plugins\forms\selects\bootstrap_multiselect.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\plugins\ui\moment\moment.min.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\plugins\pickers\daterangepicker.js')}}"></script>
+@stack("theme")
 
 <script src="{{asset('admin/assets/js\app.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\demo_pages\dashboard.js')}}"></script>

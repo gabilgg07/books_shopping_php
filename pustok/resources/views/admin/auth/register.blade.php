@@ -46,7 +46,7 @@
             <div class="content d-flex justify-content-center align-items-center">
 
                 <!-- Registration form -->
-                <form class="login-form" method="post" action="{{route('manage.signup')}}">
+                <form class="login-form" method="post" action="{{route('manager.signup')}}">
                     @csrf
                     <div class="card mb-0">
                         <div class="card-body">
@@ -62,12 +62,34 @@
                             </div>
 
                             <div class="form-group form-group-feedback form-group-feedback-left">
-                                <input type="text" class="form-control" placeholder="E-mail" name="email">
+                                <input type="email" class="form-control" placeholder="E-mail" name="email">
                                 <div class="form-control-feedback">
                                     <i class="icon-user-check text-muted"></i>
                                 </div>
-                                <!-- <span class="form-text text-danger"><i class="icon-cancel-circle2 mr-2"></i> This
-                                    username is already taken</span> -->
+                                @error('email')
+                                <span class="form-text text-danger"><i class="icon-cancel-circle2 mr-2"></i>
+                                    {{$message}}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="text" class="form-control" placeholder="First name" name="first_name">
+                                <div class="form-control-feedback">
+                                    <i class="icon-user-check text-muted"></i>
+                                </div>
+                                @error('first_name')
+                                <span class="form-text text-danger"><i class="icon-cancel-circle2 mr-2"></i>
+                                    {{$message}}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="text" class="form-control" placeholder="Last name" name="last_name">
+                                <div class="form-control-feedback">
+                                    <i class="icon-user-check text-muted"></i>
+                                </div>
+                                @error('last_name')
+                                <span class="form-text text-danger"><i class="icon-cancel-circle2 mr-2"></i>
+                                    {{$message}}</span>
+                                @enderror
                             </div>
 
                             <div class="form-group form-group-feedback form-group-feedback-left">
@@ -75,6 +97,10 @@
                                 <div class="form-control-feedback">
                                     <i class="icon-user-lock text-muted"></i>
                                 </div>
+                                @error('password')
+                                <span class="form-text text-danger"><i class="icon-cancel-circle2 mr-2"></i>
+                                    {{$message}}</span>
+                                @enderror
                             </div>
                             <div class="form-group form-group-feedback form-group-feedback-left">
                                 <input type="password" class="form-control" placeholder="Repeat Password"
@@ -82,8 +108,16 @@
                                 <div class="form-control-feedback">
                                     <i class="icon-user-lock text-muted"></i>
                                 </div>
+                                @error('repeat_password')
+                                <span class="form-text text-danger"><i class="icon-cancel-circle2 mr-2"></i>
+                                    {{$message}}</span>
+                                @enderror
                             </div>
 
+
+                            <div class="text-center mb-2">
+                                <a href="{{route('manager.login')}}">I have account</a>
+                            </div>
                             <button type="submit" class="btn bg-teal-400 btn-block">Register <i
                                     class="icon-circle-right2 ml-2"></i></button>
                         </div>

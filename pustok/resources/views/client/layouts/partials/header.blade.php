@@ -18,7 +18,7 @@
                     <div class="main-navigation flex-lg-right">
                         <div class="cart-widget">
                             <div class="login-block">
-                                @auth
+                                @if (auth()->user() && !auth()->user()->is_admin)
                                 <a href="{{route('client.account.index')}}"
                                     class="font-weight-bold">{{auth()->user()->first_name." ".auth()->user()->last_name}}</a>
                                 <br>
@@ -27,7 +27,7 @@
                                 @else
                                 <a href="{{route('auth.signin')}}" class="font-weight-bold">Login</a> <br>
                                 <span>or</span><a href="{{route('auth.signup')}}">Register</a>
-                                @endauth
+                                @endif
                             </div>
                             <div class="cart-block">
                                 <div class="cart-total">
