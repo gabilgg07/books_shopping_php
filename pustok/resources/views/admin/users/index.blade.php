@@ -16,7 +16,7 @@
             <h5 class="card-title">Users
             </h5>
             <div class="header-elements">
-                <a href="{{route('manage.users.create')}}" class="btn btn-success">Add User</a>
+                <a href="{{route('manager.users.create')}}" class="btn btn-success">Add User</a>
             </div>
         </div>
 
@@ -54,8 +54,8 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('manage.users.edit',$user->id)}}" class="btn btn-warning">Edit</a>
-                        <a href="{{route('manage.users.destroy',$user->id)}}" class="btn btn-danger">Delete</a>
+                        <a href="{{route('manager.users.edit',$user->id)}}" class="btn btn-warning">Edit</a>
+                        <a href="{{route('manager.users.destroy',$user->id)}}" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
                 @endforeach

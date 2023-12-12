@@ -1,8 +1,11 @@
 @extends("admin.layouts.master")
-@push("theme")
-
-<script src="..\..\..\..\global_assets\js\plugins\forms\styling\switchery.min.js"></script>
-<script src="..\..\..\..\global_assets\js\plugins\forms\styling\switch.min.js"></script>
+@push("theme_js")
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\uniform.min.js')}}"></script>
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\switch.min.js')}}"></script>
+@endpush
+@push('page_js')
+<script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
 @endpush
 @section("content")
 <div class="content">
@@ -14,7 +17,7 @@
         </div>
 
         <div class="card-body">
-            <form method="post" action="{{route('manage.users.store')}}">
+            <form method="post" action="{{route('manager.users.store')}}">
                 @csrf
                 <fieldset class="mb-3">
                     <div class="form-group row">
@@ -54,26 +57,19 @@
                         <span class="text-danger ml-2">{{$message}}</span>
                         @enderror
                     </div>
-
-                    <div class="form-group row">
-                        <label class="font-weight-semibold">Is Admin</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" value="" name="is_admin">
-                                Checked default
-                            </label>
-                        </div>
+                    <div class="form-check form-check-switchery form-check-inline form-check-right">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input-switchery-info" name="is_admin" data-fouc="">
+                            Is Admin?
+                        </label>
                     </div>
-                    <div class="form-group row">
-                        <label class="font-weight-semibold">Is Deleted</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="is_deleted">
-                                Checked default
-                            </label>
-                        </div>
+                    <div class="form-check form-check-switchery form-check-inline form-check-right">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input-switchery-danger" name="is_deleted"
+                                data-fouc="">
+                            Is Deleted?
+                        </label>
                     </div>
-
                 </fieldset>
 
                 <div class="text-right">

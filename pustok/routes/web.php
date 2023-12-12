@@ -39,6 +39,7 @@ Route::group(["middleware" => ['web', 'auth.user.check'], "prefix" => "", "as" =
 
 Route::group(["middleware" => ['web', 'auth.admin'], "prefix" => LaravelLocalization::setLocale() . "/manager", "as" => "manager."], function () {
     Route::get("", [AdminController::class, "index"])->name("dashboard");
+    Route::get("/account", [AdminController::class, "account"])->name("account");
     Route::resource("/categories", CategoriesController::class);
     Route::resource("/users", UsersController::class);
 });

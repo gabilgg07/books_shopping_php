@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
-        <a href="index.html" class="d-inline-block">
-            <img src="{{asset('admin/global_assets\images\logo_light.png')}}" alt="">
+        <a href="{{route('manager.dashboard')}}" class="d-inline-block">
+            <img src="{{asset('admin/global_assets\images\logo_light.png')}}" alt="light logo">
         </a>
     </div>
 
@@ -14,7 +14,7 @@
         </button>
     </div>
 
-    <div class="collapse navbar-collapse" id="navbar-mobile">
+    <div class="collapse navbar-collapse justify-content-between" id="navbar-mobile">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
@@ -22,7 +22,7 @@
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                     <i class="icon-git-compare"></i>
                     <span class="d-md-none ml-2">Git updates</span>
@@ -117,13 +117,13 @@
                         </div>
                     </div>
                 </div>
-            </li>
+            </li> -->
         </ul>
 
-        <span class="badge bg-success ml-md-3 mr-md-auto">Online</span>
+        <!-- <span class="badge bg-success ml-md-3 mr-md-auto">Online</span> -->
 
         <ul class="navbar-nav">
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                     <i class="icon-people"></i>
                     <span class="d-md-none ml-2">Users</span>
@@ -209,9 +209,9 @@
                         <a href="#" class="text-grey"><i class="icon-gear"></i></a>
                     </div>
                 </div>
-            </li>
+            </li> -->
 
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                     <i class="icon-bubbles4"></i>
                     <span class="d-md-none ml-2">Messages</span>
@@ -325,13 +325,13 @@
                                 class="icon-menu7 d-block top-0"></i></a>
                     </div>
                 </div>
-            </li>
+            </li> -->
 
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{asset('admin/global_assets\images\demo\users\face11.jpg')}}" class="rounded-circle mr-2"
+                    <img src="{{asset('admin/global_assets\images\demo\users\face0.jpg')}}" class="rounded-circle mr-2"
                         height="34" alt="">
-                    <span>Victoria</span>
+                    <span>{{auth()->user()->first_name.' '.auth()->user()->last_name}}</span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">

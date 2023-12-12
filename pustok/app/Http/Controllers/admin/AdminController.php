@@ -53,4 +53,9 @@ class AdminController extends Controller
             dd("error");
         }
     }
+
+    public function account()
+    {
+        return view('admin.account');
+    }
 }

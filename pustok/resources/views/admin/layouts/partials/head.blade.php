@@ -2,7 +2,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="shortcut icon" type="assets/image/x-icon" href="{{asset('admin/global_assets/admin_favicon.png')}}">
-<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+<title>{{config('app.name','Pustok')}} @stack('title', 'Admin Panel')</title>
+
 
 <!-- Global stylesheets -->
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -21,14 +22,8 @@
 <!-- /core JS files -->
 
 <!-- Theme JS files -->
-<script src="{{asset('admin/global_assets\js\plugins\visualization\d3\d3.min.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\plugins\visualization\d3\d3_tooltip.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\plugins\forms\selects\bootstrap_multiselect.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\plugins\ui\moment\moment.min.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\plugins\pickers\daterangepicker.js')}}"></script>
-@stack("theme")
+@stack('theme_js')
 
 <script src="{{asset('admin/assets/js\app.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\demo_pages\dashboard.js')}}"></script>
+@stack('page_js')
 <!-- /theme JS files -->
