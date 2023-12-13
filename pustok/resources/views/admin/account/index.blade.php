@@ -2,7 +2,12 @@
 @php
 $user = auth()->user();
 @endphp
-
+@push('theme_js')
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\uniform.min.js')}}"></script>
+@endpush
+@push('page_js')
+<script src="{{asset('admin/global_assets\js\demo_pages\user_pages_profile.js')}}"></script>
+@endpush
 @section('content')
 
 <div class="content">
@@ -28,18 +33,26 @@ $user = auth()->user();
                     </div>
 
                     <div class="card-body">
-                        <form action="#">
+                        <form method="post" action="{{route('manager.account.update')}}" enctype="multipart/form-data">
+                            @csrf
+                            @method('PATCH')
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>First name</label>
-                                        <input type="text" value="{{$user->first_name}}" class="form-control"
-                                            name="first_name">
+                                        <input type="text" value="{{old('first_name', $user->first_name)}}"
+                                            class="form-control" name="first_name">
+                                        @error('first_name')
+                                        <label class="validation-invalid-label">{{$message}}</label>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label>Last name</label>
-                                        <input type="text" value="{{$user->last_name}}" class="form-control"
-                                            name="last_name">
+                                        <input type="text" value="{{old('last_name', $user->last_name)}}"
+                                            class="form-control" name="last_name">
+                                        @error('last_name')
+                                        <label class="validation-invalid-label">{{$message}}</label>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -48,14 +61,20 @@ $user = auth()->user();
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Email</label>
-                                        <input type="text" readonly="readonly" value="{{$user->email}}"
+                                        <input type="text" readonly="readonly" value="{{old('email', $user->email)}}"
                                             class="form-control" name="email">
+                                        @error('email')
+                                        <label class="validation-invalid-label">{{$message}}</label>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label>Phone</label>
-                                        <input type="text" value="{{$user->phone?$user->phone:''}}"
-                                            class="form-control">
-                                        <span class="form-text text-muted">Ex. +994-99-999-99-99</span>
+                                        <input type="text" value="{{old('phone',$user->phone?$user->phone:'')}}"
+                                            class="form-control" name="phone">
+                                        @error('phone')
+                                        <label class="validation-invalid-label">{{$message}}</label>
+                                        @enderror
+                                        <span class="form-text text-muted">Ex. +994123456789</span>
                                     </div>
                                 </div>
                             </div>
@@ -64,10 +83,13 @@ $user = auth()->user();
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label>Upload profile image</label>
-                                        <div class="uniform-uploader hover"><input type="file" class="form-input-styled"
-                                                data-fouc=""><span class="filename" style="user-select: none;">No file
-                                                selected</span><span class="action btn bg-warning"
-                                                style="user-select: none;">Choose File</span></div>
+                                        <input type="file" class="form-input-styled" data-fouc="" name="image"
+                                            id="profile_image_input">
+                                        @error('image')
+                                        <label class="validation-invalid-label">{{$message}}</label>
+                                        @enderror
+                                        <span class="form-text text-muted">Accepted formats: gif, png, jpg. Max file
+                                            size 2Mb</span>
                                     </div>
                                 </div>
                             </div>
@@ -152,9 +174,9 @@ $user = auth()->user();
                 <div class="card">
                     <div class="card-body text-center">
                         <div class="card-img-actions d-inline-block mb-3">
-                            <img class="img-fluid rounded-circle"
-                                src="{{asset('admin/global_assets\images\demo\users\face0.jpg')}}" width="170"
-                                height="170" alt="">
+                            <img class="rounded-circle"
+                                src="{{asset('admin/global_assets\images\demo\users\face0.jpg')}}"
+                                style="object-fit: cover; width:180px; height:180px" alt="" id="profile_image">
                             <div class="card-img-actions-overlay card-img rounded-circle">
                                 <a href="#"
                                     class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
