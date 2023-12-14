@@ -23902,6 +23902,73 @@ input[type="number"] {
     align-items: center;
     position: relative;
 }
+.cart-widget .langs-block {
+    margin-right: 20px;
+    padding: 6px 0;
+    text-align: left;
+    position: relative;
+    width: 35px;
+}
+
+.cart-widget .langs-block .lang {
+    padding: 5px 0;
+    width: 120%;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+.cart-widget .langs-block .lang:hover {
+    border-color: #62ab00;
+    color: #fff;
+    background-color: #62ab00;
+}
+.cart-widget .langs-block .langs {
+    position: absolute;
+    top: 94%;
+    width: 100%;
+    display: none;
+    z-index: 999;
+}
+.cart-widget .langs-block .langs.show {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.cart-widget .langs-block .langs .lang-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    border: 1px solid #333;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: #fff;
+}
+
+.cart-widget .langs-block .langs .lang-item a {
+    display: block;
+    color: #333;
+    transition: all 0.3s;
+}
+
+.cart-widget .langs-block .langs .lang-item:hover {
+    border-color: #62ab00;
+    color: #fff;
+    background-color: #62ab00;
+}
+.cart-widget .langs-block .langs .lang-item:hover a {
+    color: #fff;
+}
+
 .cart-widget .login-block {
     margin-right: 27px;
     padding: 6px 0;

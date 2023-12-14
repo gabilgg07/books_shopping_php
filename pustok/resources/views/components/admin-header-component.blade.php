@@ -1,3 +1,10 @@
+@php
+$crumbs = Str::of(Str::after(Route::currentRouteName(),'manager.'))->explode('.');
+$breadcrumbs = [];
+foreach($crumbs as $key=>$crumb){
+$breadcrumbs[] = $key===0? $crumb.'.index':$crumbs[$key-1].'.'.$crumb;
+}
+@endphp
 <div class="page-header page-header-light">
     <!-- <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
@@ -24,8 +31,17 @@
             <div class="breadcrumb">
                 <a href="{{route('manager.dashboard')}}" class="breadcrumb-item"><i class="icon-home2 mr-2"></i>
                     Home</a>
-                <span
-                    class="breadcrumb-item active">{{Str::headline(Str::after(Route::currentRouteName(),'manager.'))}}</span>
+                @foreach ($breadcrumbs as $key=>$breadcrumb)
+                @if ($key!==count($breadcrumbs)-1)
+                <a href="{{route("manager.$breadcrumb")}}" class="breadcrumb-item">
+                    {{Str::headline($crumbs[$key])}}
+                </a>
+                @else
+                <span class="breadcrumb-item active">
+                    {{Str::headline($crumbs[$key])}}
+                </span>
+                @endif
+                @endforeach
             </div>
 
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>

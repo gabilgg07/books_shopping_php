@@ -21,6 +21,13 @@ $user = auth()->user();
 
                 <!-- Profile info -->
                 <div class="card">
+
+                    @if (session('message'))
+                    <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+                        {{session('message')}}
+                    </div>
+                    @endif
                     <div class="card-header header-elements-inline">
                         <h5 class="card-title">Profile information</h5>
                         <div class="header-elements">
@@ -33,7 +40,8 @@ $user = auth()->user();
                     </div>
 
                     <div class="card-body">
-                        <form method="post" action="{{route('manager.account.update')}}" enctype="multipart/form-data">
+                        <form method="post" action="{{route('manager.account.update',['id' =>$user->id])}}"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <div class="form-group">
@@ -62,7 +70,7 @@ $user = auth()->user();
                                     <div class="col-md-6">
                                         <label>Email</label>
                                         <input type="text" readonly="readonly" value="{{old('email', $user->email)}}"
-                                            class="form-control" name="email">
+                                            class="form-control">
                                         @error('email')
                                         <label class="validation-invalid-label">{{$message}}</label>
                                         @enderror
@@ -88,7 +96,8 @@ $user = auth()->user();
                                         @error('image')
                                         <label class="validation-invalid-label">{{$message}}</label>
                                         @enderror
-                                        <span class="form-text text-muted">Accepted formats: gif, png, jpg. Max file
+                                        <span class="form-text text-muted">Accepted formats: gif, png, jpg, jpeg. Max
+                                            file
                                             size 2Mb</span>
                                     </div>
                                 </div>
@@ -106,7 +115,7 @@ $user = auth()->user();
                 <!-- Account settings -->
                 <div class="card">
                     <div class="card-header header-elements-inline">
-                        <h5 class="card-title">Account settings</h5>
+                        <h5 class="card-title">Change Password</h5>
                         <div class="header-elements">
                             <div class="list-icons">
                                 <a class="list-icons-item" data-action="collapse"></a>
@@ -117,41 +126,34 @@ $user = auth()->user();
                     </div>
 
                     <div class="card-body">
-                        <form action="#">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Email</label>
-                                        <input type="email" value="{{$user->email}}" readonly="readonly"
-                                            class="form-control" name="email">
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label>Current password</label>
-                                        <input type="password" value="password" readonly="readonly"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                            </div>
+                        <form method="post" action="{{route('manager.account.changePassword')}}">
+                            @csrf
+                            @method('PATCH')
 
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>New password</label>
                                         <input type="password" placeholder="Enter new password" class="form-control"
-                                            name="new_password">
+                                            name="new_password" value="{{old('new_password')}}">
+                                        @error('new_password')
+                                        <label class="validation-invalid-label">{{$message}}</label>
+                                        @enderror
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Repeat password</label>
                                         <input type="password" placeholder="Repeat new password" class="form-control"
-                                            name="repeat_new_password">
+                                            name="repeat_new_password" value="{{old('repeat_new_password')}}">
+                                        @error('repeat_new_password')
+                                        <label class="validation-invalid-label">{{$message}}</label>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
 
                             <div class="text-right">
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="submit" class="btn btn-primary">Change</button>
                             </div>
                         </form>
                     </div>
@@ -175,9 +177,9 @@ $user = auth()->user();
                     <div class="card-body text-center">
                         <div class="card-img-actions d-inline-block mb-3">
                             <img class="rounded-circle"
-                                src="{{asset('admin/global_assets\images\demo\users\face0.jpg')}}"
+                                src="{{asset($user->image?$user->image:'admin/global_assets\images\demo\users\face0.jpg')}}"
                                 style="object-fit: cover; width:180px; height:180px" alt="" id="profile_image">
-                            <div class="card-img-actions-overlay card-img rounded-circle">
+                            <!-- <div class="card-img-actions-overlay card-img rounded-circle">
                                 <a href="#"
                                     class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
                                     <i class="icon-plus3"></i>
@@ -186,7 +188,7 @@ $user = auth()->user();
                                     class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round ml-2">
                                     <i class="icon-link"></i>
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
 
                         <h6 class="font-weight-semibold mb-0">{{$user->first_name.' '.$user->last_name}}</h6>

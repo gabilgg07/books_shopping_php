@@ -9,8 +9,7 @@
     <title>Pustok Admin Login</title>
 
     <!-- Global stylesheets -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
-        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
     <link href="{{asset('admin/global_assets\css\icons\icomoon\styles.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('admin/assets\css\bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('admin/assets\css\bootstrap_limitless.min.css')}}" rel="stylesheet" type="text/css">
@@ -49,8 +48,7 @@
                     <div class="card mb-0">
                         <div class="card-body">
                             <div class="text-center mb-3">
-                                <i
-                                    class="icon-reading icon-2x text-slate-300 border-slate-300 border-3 rounded-round p-3 mb-3 mt-1"></i>
+                                <i class="icon-reading icon-2x text-slate-300 border-slate-300 border-3 rounded-round p-3 mb-3 mt-1"></i>
                                 <h5 class="mb-0">Login to your account</h5>
                                 <span class="d-block text-muted">Enter your credentials below</span>
                             </div>
@@ -72,9 +70,14 @@
                             <div class="text-center mb-2">
                                 <a href="{{route('manager.register')}}">I have not account</a>
                             </div>
+
+                            @if ($errors->any())
+                            <div class="d-flex justify-content-center">
+                                <label class="validation-invalid-label">Email or password is invalid!</label>
+                            </div>
+                            @endif
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">Sign in <i
-                                        class="icon-circle-right2 ml-2"></i></button>
+                                <button type="submit" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 ml-2"></i></button>
                             </div>
 
                             <div class="text-center">

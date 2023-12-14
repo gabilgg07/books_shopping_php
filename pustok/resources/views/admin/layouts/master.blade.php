@@ -24,7 +24,6 @@
         <div class="content-wrapper">
 
             <!-- Page header -->
-            <!-- @include("admin.layouts.partials.header") -->
             <x-admin-header-component />
             <!-- /page header -->
 
@@ -35,7 +34,6 @@
 
 
             <!-- Footer -->
-            <!-- @include("admin.layouts.partials.footer") -->
             <x-admin-footer-component />
             <!-- /footer -->
 

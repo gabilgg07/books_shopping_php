@@ -3,31 +3,14 @@
 Categories Index
 @endpush
 @section("content")
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Categories</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Categories</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<div class="content">
     <!-- Main content -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title  d-flex justify-content-between float-none align-items-center">
                 Categories Table
                 <div class="box-btn">
-                    <a href="{{route('admin.categories.create')}}" type="button" class="btn btn-block btn-success">
+                    <a href="{{route('manager.categories.create')}}" type="button" class="btn btn-block btn-success">
                         <i class="fas fa-plus mr-2"></i> Create New Category</a>
                 </div>
             </h3>
@@ -53,13 +36,14 @@ Categories Index
                         <td>{{$category->slug}}</td>
                         <td>{{$category->status}}</td>
                         <td>
-                            <a href="{{route('admin.categories.edit', $category->id)}}" class="btn btn-warning">Edit</a>
+                            <a href="{{route('manager.categories.edit', $category->id)}}" class="btn btn-warning"><i
+                                    class="icon-pencil3 mr-2"></i> Edit</a>
                             <form onsubmit="return confirm('Are you sure?')" method="post"
-                                action="{{route('admin.categories.destroy', $category->id)}}" class="d-inline-block">
+                                action="{{route('manager.categories.destroy', $category->id)}}" class="d-inline-block">
                                 @method('delete')
                                 @csrf
-                                <input type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"
-                                    value="Delete">
+                                <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i
+                                        class="icon-pencil3 mr-2"></i> Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -80,7 +64,5 @@ Categories Index
     </div>
 </div>
 <!-- /.content -->
-
-</div>
 
 @endsection

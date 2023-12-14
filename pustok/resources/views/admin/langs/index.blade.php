@@ -1,6 +1,6 @@
 @extends("admin.layouts.master")
 @push("page_title")
-Users Index
+Langs Index
 @endpush
 @section("content")
 <div class="content">
@@ -15,49 +15,41 @@ Users Index
         </div>
         @endif
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Users
+            <h5 class="card-title">Langs
             </h5>
             <div class="header-elements">
-                <a href="{{route('manager.users.create')}}" class="btn btn-success">Add User</a>
+                <a href="{{route('manager.langs.create')}}" class="btn btn-success">Add Language</a>
             </div>
         </div>
 
         <table class="table datatable-basic">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>E-mail</th>
-                    <th>Created At</th>
-                    <th>Is Admin</th>
+                    <th>Code</th>
+                    <th>Country</th>
+                    <th>Image</th>
                     <th>Is Deleted</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $user)
+                @foreach ($langs as $lang)
                 <tr>
-                    <td>{{$user->first_name}}</td>
-                    <td>{{$user->last_name}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->created_at}}</td>
+                    <td>{{$lang->code}}</td>
+                    <td>{{$lang->country}}</td>
+                    <td>{{$lang->image}}</td>
                     <td>
-                        @if ($user->is_admin)
-                        <span class="badge badge-success">Admin</span>
-                        @else
-                        <span class="badge badge-info">User</span>
-                        @endif
-                    </td>
-                    <td>
-                        @if (!$user->is_deleted)
+                        @if (!$lang->is_deleted)
                         <span class="badge badge-success">No</span>
                         @else
                         <span class="badge badge-danger">Yes</span>
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('manager.users.edit',$user->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
-                        <a href="{{route('manager.users.destroy',$user->id)}}" class="btn btn-danger"><i class="icon-file-minus2 mr-2"></i>Delete</a>
+                        <a href="{{route('manager.langs.edit',$lang->id)}}" class="btn btn-warning"><i
+                                class="icon-pencil3 mr-2"></i> Edit</a>
+                        <a href="{{route('manager.langs.destroy',$lang->id)}}" class="btn btn-danger"><i
+                                class="icon-file-minus2 mr-2"></i>Delete</a>
                     </td>
                 </tr>
                 @endforeach

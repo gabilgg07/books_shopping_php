@@ -24,6 +24,10 @@ class AdminController extends Controller
 
     public function signin(Request $request)
     {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
 
@@ -48,9 +52,19 @@ class AdminController extends Controller
         $created = User::create($data);
 
         if ($created) {
-            return redirect()->route("auth.signin")->with("success", "");
+            return redirect()->route("manager.dashboard")
+                ->with('type', 'success')
+                ->with('message', 'Wellcome to The Pustok Admin Panel');
         } else {
-            dd("error");
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'Something went wrong');
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('manager.login');
     }
 }

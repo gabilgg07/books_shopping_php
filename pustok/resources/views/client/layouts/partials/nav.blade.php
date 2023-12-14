@@ -1,5 +1,5 @@
 <li class="menu-item {{ request()->routeIs('client.home.index') ? 'active' : '' }}">
-    <a href="{{route('client.home.index')}}">Home </a>
+    <a href="{{route('client.home.index')}}">{{__('menu.home')}} </a>
 
 </li>
 <!-- Shop -->

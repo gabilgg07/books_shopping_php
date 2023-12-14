@@ -29,6 +29,22 @@
                                 <span>or</span><a href="{{route('auth.signup')}}">Register</a>
                                 @endif
                             </div>
+                            <div class="langs-block">
+                                <p class="lang">{{ Str::upper(LaravelLocalization::getCurrentLocale()) }} <i
+                                        class="ml-1 fas fa-angle-down "></i></p>
+                                <ul class="langs">
+                                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                    @if (LaravelLocalization::getCurrentLocale() !== $localeCode)
+                                    <li class="lang-item">
+                                        <a rel="alternate" hreflang="{{ $localeCode }}"
+                                            href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                            {{ Str::upper($localeCode) }}
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @endforeach
+                                </ul>
+                            </div>
                             <div class="cart-block">
                                 <div class="cart-total">
                                     <span class="text-number">

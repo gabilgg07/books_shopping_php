@@ -1,8 +1,9 @@
 @extends("admin.layouts.master")
+@push("page_title")
+Users Create
+@endpush
 @push("theme_js")
-<script src="{{asset('admin/global_assets\js\plugins\forms\styling\uniform.min.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\plugins\forms\styling\switch.min.js')}}"></script>
 @endpush
 @push('page_js')
 <script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
@@ -73,7 +74,8 @@
                 </fieldset>
 
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Submit <i class="icon-paperplane ml-2"></i></button>
+                    <button type="submit" class="btn btn-primary"><i class="icon-database-insert mr-2"></i>
+                        Insert</button>
                 </div>
             </form>
         </div>

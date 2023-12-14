@@ -2,26 +2,14 @@
 @push("page_title")
 Categories Create
 @endpush
+@push("theme_js")
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
+@endpush
+@push('page_js')
+<script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
+@endpush
 @section("content")
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Categories</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.categories.index')}}">Categories</a></li>
-                        <li class="breadcrumb-item active">Create</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
     <!-- Main content -->
     <div class="card card-primary m-3">
         <div class="card-header">
@@ -29,7 +17,7 @@ Categories Create
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form method="post" action="{{route('admin.categories.store')}}">
+        <form method="post" action="{{route('manager.categories.store')}}">
             @csrf
             <div class="card-body">
                 @foreach (LaravelLocalization::getSupportedLanguagesKeys() as $lang)
@@ -47,15 +35,23 @@ Categories Create
                         @endforeach
                     </select>
                 </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" checked id="status" name="status">
-                    <label class="form-check-label" for="status">Status</label>
+                <!-- <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="is_deleted" name="is_deleted">
+                    <label class="form-check-label" for="is_deleted">Is Deleted</label>
+                </div> -->
+                <div class="form-check form-check-switchery form-check-inline form-check-right">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input-switchery-danger" name="is_deleted" data-fouc="">
+                        Is Deleted?
+                    </label>
                 </div>
             </div>
             <!-- /.card-body -->
 
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Create</button>
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-primary">
+                    <i class="icon-database-insert mr-2"></i> Insert
+                </button>
             </div>
         </form>
     </div>

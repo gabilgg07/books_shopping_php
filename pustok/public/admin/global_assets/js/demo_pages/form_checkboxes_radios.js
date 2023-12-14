@@ -119,9 +119,9 @@ var InputsCheckboxesRadios = (function () {
 
     return {
         initComponents: function () {
-            _componentUniform();
+            // _componentUniform();
             _componentSwitchery();
-            _componentBootstrapSwitch();
+            // _componentBootstrapSwitch();
         },
     };
 })();
