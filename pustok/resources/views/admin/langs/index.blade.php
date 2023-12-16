@@ -18,11 +18,11 @@ Langs Index
             <h5 class="card-title">Langs
             </h5>
             <div class="header-elements">
-                <a href="{{route('manager.langs.create')}}" class="btn btn-success">Add Language</a>
+                <a href="{{route('manager.langs.create')}}" class="btn btn-success"><i class="icon-plus-circle2 mr-2"></i> Add Language</a>
             </div>
         </div>
 
-        <table class="table datatable-basic">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Code</th>
@@ -46,10 +46,8 @@ Langs Index
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('manager.langs.edit',$lang->id)}}" class="btn btn-warning"><i
-                                class="icon-pencil3 mr-2"></i> Edit</a>
-                        <a href="{{route('manager.langs.destroy',$lang->id)}}" class="btn btn-danger"><i
-                                class="icon-file-minus2 mr-2"></i>Delete</a>
+                        <a href="{{route('manager.langs.edit',$lang->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
+                        <a href="{{route('manager.langs.destroy',$lang->id)}}" class="btn btn-outline-danger"><i class="icon-trash mr-2"></i>Delete</a>
                     </td>
                 </tr>
                 @endforeach

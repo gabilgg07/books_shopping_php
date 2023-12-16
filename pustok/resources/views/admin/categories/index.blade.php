@@ -11,7 +11,7 @@ Categories Index
                 Categories Table
                 <div class="box-btn">
                     <a href="{{route('manager.categories.create')}}" type="button" class="btn btn-block btn-success">
-                        <i class="fas fa-plus mr-2"></i> Create New Category</a>
+                        <i class="icon-plus-circle2 mr-2"></i> Add Category</a>
                 </div>
             </h3>
         </div>
@@ -24,8 +24,8 @@ Categories Index
                         <th>Title</th>
                         <th>Slug</th>
                         <!-- <th style="width: 40px">Label</th> -->
-                        <th style="width: 200px;">Status</th>
-                        <th style="width: 200px;">Controlls</th>
+                        <th>Is Deleted</th>
+                        <th>Controlls</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,16 +34,24 @@ Categories Index
                         <td>{{$category->id}}</td>
                         <td>{{$category->title}}</td>
                         <td>{{$category->slug}}</td>
-                        <td>{{$category->status}}</td>
                         <td>
+                            @if (!$category->is_deleted)
+                            <span class="badge badge-success">No</span>
+                            @else
+                            <span class="badge badge-danger">Yes</span>
+                            @endif
+                        </td>
+                        <td class="text-right">
                             <a href="{{route('manager.categories.edit', $category->id)}}" class="btn btn-warning"><i
                                     class="icon-pencil3 mr-2"></i> Edit</a>
+                            <!-- <a href="{{route('manager.categories.destroy', $category->id)}}"
+                                class="btn btn-outline-danger"><i class="icon-trash mr-2"></i> Delete</a> -->
                             <form onsubmit="return confirm('Are you sure?')" method="post"
                                 action="{{route('manager.categories.destroy', $category->id)}}" class="d-inline-block">
                                 @method('delete')
                                 @csrf
                                 <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i
-                                        class="icon-pencil3 mr-2"></i> Delete</button>
+                                        class="icon-trash mr-2"></i> Delete</button>
                             </form>
                         </td>
                     </tr>

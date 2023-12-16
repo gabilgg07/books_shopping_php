@@ -21,7 +21,6 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
-
         $this->validate($request, [
             "first_name" => "required",
             "last_name" => "required",
@@ -35,9 +34,13 @@ class UsersController extends Controller
         $created = User::create($data);
 
         if ($created) {
-            return redirect()->route('manager.users.index')->with("type", "success")->with("message", "User creted");
+            return redirect()->route('manager.users.index')
+                ->with('type', 'success')
+                ->with('message', 'User has been stored.');
         } else {
-            dd("error");
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'Something went wrong!');
         }
     }
 

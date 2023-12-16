@@ -18,7 +18,8 @@ Users Index
             <h5 class="card-title">Users
             </h5>
             <div class="header-elements">
-                <a href="{{route('manager.users.create')}}" class="btn btn-success">Add User</a>
+                <a href="{{route('manager.users.create')}}" class="btn btn-success"><i
+                        class="icon-plus-circle2 mr-2"></i> Add User</a>
             </div>
         </div>
 
@@ -56,8 +57,10 @@ Users Index
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('manager.users.edit',$user->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
-                        <a href="{{route('manager.users.destroy',$user->id)}}" class="btn btn-danger"><i class="icon-file-minus2 mr-2"></i>Delete</a>
+                        <a href="{{route('manager.users.edit',$user->id)}}" class="btn btn-warning"><i
+                                class="icon-pencil3 mr-2"></i> Edit</a>
+                        <a href="{{route('manager.users.destroy',$user->id)}}" class="btn btn-outline-danger"><i
+                                class="icon-trash mr-2"></i>Delete</a>
                     </td>
                 </tr>
                 @endforeach

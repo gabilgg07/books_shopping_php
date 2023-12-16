@@ -37,7 +37,7 @@ class AccountController extends Controller
 
                 $fileExtension = $request->image->extension();
                 $imgName = 'account_profil_' . time() . rand(0, 999) . '.' . $fileExtension;
-                $imgPath = $request->file('image')->storeAs('uploads/admin', $imgName, 'public');
+                $imgPath = $request->file('image')->storeAs('uploads/admin/accounts', $imgName, 'public');
                 $user->image = '/storage/' . $imgPath;
             }
             $user->first_name = $request->first_name;
@@ -48,10 +48,14 @@ class AccountController extends Controller
 
             $user->save();
             DB::commit();
-            return redirect()->route('manager.account.index')->with('type', 'success')->with('message', 'Your account has been updated!');
+            return redirect()->route('manager.account.index')
+                ->with('type', 'success')
+                ->with('message', 'Your account has been updated!');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('manager.account.index')->with('type', 'danger')->with('message', 'Something went wrong!');
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'Something went wrong!');
         }
     }
 

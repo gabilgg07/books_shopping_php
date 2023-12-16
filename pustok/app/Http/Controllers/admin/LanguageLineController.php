@@ -37,14 +37,22 @@ class LanguageLineController extends Controller
             'key' => 'required',
             'text' => 'required|array',
         ]);
-        LanguageLine::create([
+        $created = LanguageLine::create([
             'group' => $request->group,
             'key' => $request->key,
             'text' => $request->text,
+            'is_deleted' => (bool)$request->is_deleted,
         ]);
-        return redirect()->route('manager.language_line.index')
-            ->with('type', 'success')
-            ->with('message', 'Language Line has been stored.');
+
+        if ($created) {
+            return redirect()->route('manager.language_line.index')
+                ->with('type', 'success')
+                ->with('message', 'Language Line has been stored.');
+        } else {
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'Something went wrong!');
+        }
     }
 
     /**

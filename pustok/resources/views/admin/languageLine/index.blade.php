@@ -14,17 +14,18 @@
             <h5 class="card-title">Language Lines</h5>
             <div class="header-elements">
                 <div class="list-icons">
-                    <a href="{{route('manager.language_line.create')}}" class="btn btn-primary btn-sm"><i
-                            class="icon-plus-circle2 mr-2"></i> Add Language Line</a>
+                    <a href="{{route('manager.language_line.create')}}" class="btn btn-success btn-sm"><i class="icon-plus-circle2 mr-2"></i> Add Language Line</a>
                 </div>
             </div>
         </div>
-        <table class="table datatable-colvis-multi">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Group</th>
                     <th>Key</th>
                     <th>Text</th>
+                    <th>Is Deleted</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,12 +36,21 @@
                     <td>{{$language->key}}</td>
                     <td>{{json_encode($language->text)}}</td>
                     <td>
-                        <div class="list-icons">
+                        @if (!$language->is_deleted)
+                        <span class="badge badge-success">No</span>
+                        @else
+                        <span class="badge badge-danger">Yes</span>
+                        @endif
+                    </td>
+                    <td>
+                        <!-- <div class="list-icons">
                             <a href="{{route('manager.language_line.edit',$language->id)}}" class="list-icons-item"><i
                                     class="icon-pencil7"></i></a>
                             <a href="{{route('manager.language_line.destroy',$language->id)}}"
                                 class="list-icons-item"><i class="icon-trash"></i></a>
-                        </div>
+                        </div> -->
+                        <a href="{{route('manager.language_line.edit', $language->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
+                        <a href="{{route('manager.language_line.destroy', $language->id)}}" class="btn btn-outline-danger"><i class="icon-trash mr-2"></i> Delete</a>
                     </td>
                 </tr>
                 @endforeach

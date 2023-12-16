@@ -1,8 +1,10 @@
 @extends('admin.layouts.master')
 @section('title', 'Language Line Create')
-@push('theme')
-<script src="{{asset('admin/global_assets\js\plugins\editors\summernote\summernote.min.js')}}"></script>
-<script src="{{asset('admin/global_assets\js\demo_pages\editor_summernote.js')}}"></script>
+@push('theme_js')
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
+@endpush
+@push('page_js')
+<script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
 @endpush
 @section('content')
 
@@ -14,7 +16,8 @@
                 <div class="card-body">
                     <ul class="nav nav-tabs nav-tabs-solid border-0">
                         @foreach($langs as $key=>$lang)
-                        <li class="nav-item"><a href="#{{$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}" data-toggle="tab">{{$lang->code}}</a></li>
+                        <li class="nav-item"><a href="#{{$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}"
+                                data-toggle="tab">{{$lang->code}}</a></li>
                         @endforeach
                     </ul>
 
@@ -26,7 +29,8 @@
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Text:</label>
-                                            <input type="text" class="form-control" name="text[{{$lang->code}}]" value="{{ old('text.' . $lang->code) }}">
+                                            <input type="text" class="form-control" name="text[{{$lang->code}}]"
+                                                value="{{ old('text.' . $lang->code) }}">
                                         </div>
                                     </fieldset>
                                 </div>
@@ -52,11 +56,17 @@
                         <label>Key:</label>
                         <input type="text" name="key" class="form-control">
                     </div>
-
+                    <div class="form-check form-check-switchery form-check-inline form-check-right">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input-switchery-danger" name="is_deleted"
+                                data-fouc="">
+                            Is Deleted?
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="text-right">
-                <button type="submit" class="btn btn-primary">Submit form <i class="icon-paperplane ml-2"></i></button>
+                <button type="submit" class="btn btn-primary"><i class="icon-database-insert mr-2"></i> Insert</button>
             </div>
         </div>
 
