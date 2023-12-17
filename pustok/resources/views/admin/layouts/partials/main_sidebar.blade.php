@@ -26,7 +26,7 @@ $user = auth()->user();
                         <div class="card-body">
                                 <div class="media">
                                         <div class="mr-3">
-                                                <a href="{{route('manager.account.index')}}"><img src="{{asset($user->image?$user->image:'admin/global_assets\images\demo\users\face0.jpg')}}" style="width: 38px; height: 38px; object-fit:cover" class="rounded-circle" alt=""></a>
+                                                <a href="{{route('manager.account.index')}}"><img src="{{asset($user->image?$user->image:'admin/global_assets\images\user_default_photo.png')}}" style="width: 38px; height: 38px; object-fit:cover" class="rounded-circle" alt=""></a>
                                         </div>
 
                                         <div class="media-body">

@@ -7,6 +7,17 @@ $user = auth()->user();
 @endpush
 @push('page_js')
 <script src="{{asset('admin/global_assets\js\demo_pages\user_pages_profile.js')}}"></script>
+<script>
+$(window).on('load', function() {
+    $("#profile_image_input").change(function(event) {
+        var tmppath = URL.createObjectURL(event.target.files[0]);
+        $("#profile_image").attr(
+            "src",
+            URL.createObjectURL(event.target.files[0])
+        );
+    });
+});
+</script>
 @endpush
 @section('content')
 
@@ -177,7 +188,7 @@ $user = auth()->user();
                     <div class="card-body text-center">
                         <div class="card-img-actions d-inline-block mb-3">
                             <img class="rounded-circle"
-                                src="{{asset($user->image?$user->image:'admin/global_assets\images\demo\users\face0.jpg')}}"
+                                src="{{asset($user->image?$user->image:'admin/global_assets\images\user_default_photo.png')}}"
                                 style="object-fit: cover; width:180px; height:180px" alt="" id="profile_image">
                             <!-- <div class="card-img-actions-overlay card-img rounded-circle">
                                 <a href="#"

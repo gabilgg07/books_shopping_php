@@ -107,8 +107,6 @@ class CategoriesController extends Controller
         $data = $request->all();
         $data['is_deleted'] = (bool)$request->is_deleted;
         $data['slug'] = $this->dataService->sluggableArray($data, 'title');
-
-        dd($data);
         $updated = $category->update($data);
 
         if ($updated) {

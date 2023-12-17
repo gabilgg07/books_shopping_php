@@ -44,8 +44,6 @@ Categories Index
                         <td class="text-right">
                             <a href="{{route('manager.categories.edit', $category->id)}}" class="btn btn-warning"><i
                                     class="icon-pencil3 mr-2"></i> Edit</a>
-                            <!-- <a href="{{route('manager.categories.destroy', $category->id)}}"
-                                class="btn btn-outline-danger"><i class="icon-trash mr-2"></i> Delete</a> -->
                             <form onsubmit="return confirm('Are you sure?')" method="post"
                                 action="{{route('manager.categories.destroy', $category->id)}}" class="d-inline-block">
                                 @method('delete')

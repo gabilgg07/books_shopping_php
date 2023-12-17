@@ -711,11 +711,11 @@ var UserProfile = (function () {
 document.addEventListener("DOMContentLoaded", function () {
     UserProfile.init();
 
-    $("#profile_image_input").change(function (event) {
-        var tmppath = URL.createObjectURL(event.target.files[0]);
-        $("#profile_image").attr(
-            "src",
-            URL.createObjectURL(event.target.files[0])
-        );
-    });
+    // $("#profile_image_input").change(function (event) {
+    //     var tmppath = URL.createObjectURL(event.target.files[0]);
+    //     $("#profile_image").attr(
+    //         "src",
+    //         URL.createObjectURL(event.target.files[0])
+    //     );
+    // });
 });

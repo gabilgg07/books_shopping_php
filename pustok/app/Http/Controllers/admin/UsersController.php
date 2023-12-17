@@ -60,8 +60,19 @@ class UsersController extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        dd($user);
+        $deleted = $user->delete();
+
+        if ($deleted) {
+            return redirect()->route("manager.categories.index")
+                ->with('type', 'success')
+                ->with('message', 'User has been deleted.');
+        } else {
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'Failed to delete user!');
+        }
     }
 }

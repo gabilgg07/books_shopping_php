@@ -28,7 +28,7 @@ Langs Index
                     <th>Code</th>
                     <th>Country</th>
                     <th>Image</th>
-                    <th>Is Deleted</th>
+                    <th>Is Active</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -37,17 +37,25 @@ Langs Index
                 <tr>
                     <td>{{$lang->code}}</td>
                     <td>{{$lang->country}}</td>
-                    <td>{{$lang->image}}</td>
                     <td>
-                        @if (!$lang->is_deleted)
-                        <span class="badge badge-success">No</span>
+                        <div class="image">
+                            <img src="{{$lang->image}}" alt="{{$lang->code.'-'.$lang->country}}" style="max-width: 100%;">
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        @if ($lang->is_active)
+                        <span class="badge badge-success">Yes</span>
                         @else
-                        <span class="badge badge-danger">Yes</span>
+                        <span class="badge badge-danger">No</span>
                         @endif
                     </td>
-                    <td>
+                    <td class="text-right">
                         <a href="{{route('manager.langs.edit',$lang->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
-                        <a href="{{route('manager.langs.destroy',$lang->id)}}" class="btn btn-outline-danger"><i class="icon-trash mr-2"></i>Delete</a>
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.langs.destroy', $lang->id)}}" class="d-inline-block">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i class="icon-trash mr-2"></i> Delete</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

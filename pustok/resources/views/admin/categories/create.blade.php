@@ -28,7 +28,8 @@ Categories Create
                 <div class="card-body">
                     <ul class="nav nav-tabs nav-tabs-solid border-0">
                         @foreach($langs as $key=>$lang)
-                        <li class="nav-item"><a href="#{{$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}" data-toggle="tab">{{$lang->code}}</a></li>
+                        <li class="nav-item"><a href="#{{$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}"
+                                data-toggle="tab">{{$lang->code}}</a></li>
                         @endforeach
                     </ul>
 
@@ -40,7 +41,8 @@ Categories Create
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Title:</label>
-                                            <input type="text" class="form-control" name="title[{{$lang->code}}]" value="{{ old('title.' . $lang->code) }}">
+                                            <input type="text" class="form-control" name="title[{{$lang->code}}]"
+                                                value="{{ old('title.' . $lang->code) }}">
                                             @error('title.'.$lang->code)
                                             <label class="validation-invalid-label">{{$message}}</label>
                                             @enderror
@@ -63,17 +65,20 @@ Categories Create
                 <div class="card-body">
                     <div class="form-group">
                         <label for="parent_id">Select Parent Category</label>
-                        <select class="custom-select form-control-border" id="parent_id" name="parent_id" value="{{old('parent_id')}}">
+                        <select class="custom-select form-control-border" id="parent_id" name="parent_id"
+                            value="{{old('parent_id')}}">
                             <option value="0">Parent Category</option>
                             @foreach ($categories as $parent_category)
-                            <option value="{{$parent_category->id}}" @selected(old('parent_id')===$parent_category->id)
+                            <option @selected((int)old('parent_id')===$parent_category->id)
+                                value="{{$parent_category->id}}"
                                 >{{$parent_category->title}}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-check form-check-switchery form-check-inline form-check-right">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery-danger" name="is_deleted" data-fouc="">
+                            <input type="checkbox" class="form-check-input-switchery-danger" name="is_deleted"
+                                data-fouc="">
                             Is Deleted?
                         </label>
                     </div>

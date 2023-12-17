@@ -1,3 +1,6 @@
+@php
+$user = auth()->user();
+@endphp
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
         <a href="{{route('manager.dashboard')}}" class="d-inline-block">
@@ -329,9 +332,9 @@
 
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{asset('admin/global_assets\images\demo\users\face0.jpg')}}" class="rounded-circle mr-2"
-                        height="34" alt="">
-                    <span>{{auth()->user()->first_name.' '.auth()->user()->last_name}}</span>
+                    <img src="{{asset($user->image?$user->image:'admin/global_assets\images\user_default_photo.png')}}"
+                        class="rounded-circle mr-2" height="34" alt="">
+                    <span>{{$user->first_name.' '.$user->last_name}}</span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">

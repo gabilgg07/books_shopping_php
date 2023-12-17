@@ -56,20 +56,13 @@ Categories Create
                 <div class="card-body">
                     <div class="form-group">
                         <label for="parent_id">Select Parent Category</label>
-                        <select class="custom-select form-control-border" id="parent_id" name="parent_id">
+                        <select class="custom-select form-control-border" id="parent_id" name="parent_id" value="{{old('parent_id', $category->
+                                parent_id)}}">
                             <option value="0">Parent Category</option>
                             @foreach ($categories as $parent_category)
-
-                            <option value="{{$parent_category->id}}" @selected(old('parent_id', $category->
+                            <option value="{{$parent_category->id}}" @selected((int)old('parent_id', $category->
                                 parent_id)===$parent_category->id)
                                 >{{$parent_category->title}}</option>
-
-                            <!-- <option value="{{$parent_category->id}}" 
-                            @if($category->parent_id == $parent_category->id ||
-                                old('parent_id') == $parent_category->id)
-                                selected=" selected" @endif()>
-                                {{$parent_category->title}}
-                            </option> -->
                             @endforeach
                         </select>
                     </div>

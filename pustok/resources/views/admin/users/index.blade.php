@@ -59,8 +59,16 @@ Users Index
                     <td>
                         <a href="{{route('manager.users.edit',$user->id)}}" class="btn btn-warning"><i
                                 class="icon-pencil3 mr-2"></i> Edit</a>
-                        <a href="{{route('manager.users.destroy',$user->id)}}" class="btn btn-outline-danger"><i
-                                class="icon-trash mr-2"></i>Delete</a>
+                        <!-- <a href="{{route('manager.users.destroy',$user->id)}}" class="btn btn-outline-danger"><i
+                                class="icon-trash mr-2"></i>Delete</a> -->
+
+                        <form onsubmit="return confirm('Are you sure?')" method="post"
+                            action="{{route('manager.users.destroy', $user->id)}}" class="d-inline-block">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i
+                                    class="icon-trash mr-2"></i> Delete</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

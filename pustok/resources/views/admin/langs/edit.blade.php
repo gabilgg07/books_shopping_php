@@ -1,6 +1,6 @@
 @extends("admin.layouts.master")
 @push("page_title")
-Langs Create
+Langs Update
 @endpush
 @push("theme_js")
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
@@ -10,16 +10,16 @@ Langs Create
 <script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\demo_pages\form_inputs.js')}}"></script>
 <script>
-    $(window).on('load', function() {
-        $("#lang_image_input").change(function(event) {
-            var tmppath = URL.createObjectURL(event.target.files[0]);
-            $("#lang_image").attr(
-                "src",
-                URL.createObjectURL(event.target.files[0])
-            );
-            $("#lang_image").removeClass('d-none');
-        });
+$(window).on('load', function() {
+    $("#lang_image_input").change(function(event) {
+        var tmppath = URL.createObjectURL(event.target.files[0]);
+        $("#lang_image").attr(
+            "src",
+            URL.createObjectURL(event.target.files[0])
+        );
+        $("#lang_image").removeClass('d-none');
     });
+});
 </script>
 @endpush
 @section("content")
@@ -28,17 +28,18 @@ Langs Create
     <!-- Form inputs -->
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Create New Lang</h5>
+            <h5 class="card-title">Update Lang</h5>
         </div>
 
         <div class="card-body">
-            <form method="post" action="{{route('manager.langs.store')}}" enctype="multipart/form-data">
+            <form method="post" action="{{route('manager.langs.update', $lang->id)}}" enctype="multipart/form-data">
                 @csrf
+                @method('PATCH')
                 <fieldset class="mb-3">
                     <div class="form-group row">
                         <label class="col-form-label col-lg-2">Code</label>
                         <div class="col-lg-10">
-                            <input type="text" class="form-control" name="code" value="{{old('code')}}">
+                            <input type="text" class="form-control" name="code" value="{{old('code', $lang->code)}}">
                         </div>
                         @error('code')
                         <span class="text-danger ml-2">{{$message}}</span>
@@ -47,7 +48,8 @@ Langs Create
                     <div class="form-group row">
                         <label class="col-form-label col-lg-2">Country</label>
                         <div class="col-lg-10">
-                            <input type="text" class="form-control" name="country" value="{{old('country')}}">
+                            <input type="text" class="form-control" name="country"
+                                value="{{old('country', $lang->country)}}">
                         </div>
                         @error('country')
                         <span class="text-danger ml-2">{{$message}}</span>
@@ -56,7 +58,8 @@ Langs Create
                     <div class="form-group row">
                         <label class="col-form-label col-lg-2">Upload lang image</label>
                         <div class="col-lg-10">
-                            <input type="file" id="lang_image_input" class="form-control-uniform" data-fouc="" name="image">
+                            <input type="file" id="lang_image_input" class="form-control-uniform" data-fouc=""
+                                name="image">
                             @error('image')
                             <label class="validation-invalid-label">{{$message}}</label>
                             @enderror
@@ -67,13 +70,16 @@ Langs Create
                     </div>
                     <div class="form-check form-check-switchery form-check-inline form-check-right mb-2">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc="" {{!old('_token')||old('is_active')?'checked':''}}>
+                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc=""
+                                {{old('is_active',$lang->is_active)?'checked':''}}>
                             Is Active?
                         </label>
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <img src="" alt="lang photo" id="lang_image" class="d-none" style="display:block; max-width:100%; max-height:50px;">
+                            <img src="{{$lang->image??''}}" alt="lang photo" id="lang_image"
+                                class="{{$lang->image?'':'d-none'}}"
+                                style="display:block; max-width:100%; max-height:50px;">
                         </div>
                     </div>
                 </fieldset>
