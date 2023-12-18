@@ -27,6 +27,12 @@ $(window).on('load', function() {
 
     <!-- Form inputs -->
     <div class="card">
+        @if (session('message'))
+        <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            {{session('message')}}
+        </div>
+        @endif
         <div class="card-header header-elements-inline">
             <h5 class="card-title">Update Lang</h5>
         </div>
@@ -55,6 +61,13 @@ $(window).on('load', function() {
                         <span class="text-danger ml-2">{{$message}}</span>
                         @enderror
                     </div>
+                    <div class="form-check form-check-switchery form-check-inline form-check-right mb-2">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc=""
+                                {{old('is_active',$lang->is_active)?'checked':''}}>
+                            Is Active?
+                        </label>
+                    </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-2">Upload lang image</label>
                         <div class="col-lg-10">
@@ -67,13 +80,6 @@ $(window).on('load', function() {
                                 file
                                 size 2Mb</span>
                         </div>
-                    </div>
-                    <div class="form-check form-check-switchery form-check-inline form-check-right mb-2">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc=""
-                                {{old('is_active',$lang->is_active)?'checked':''}}>
-                            Is Active?
-                        </label>
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-3">

@@ -1,0 +1,25 @@
+.ul_lang_list {
+    overflow: hidden;
+}
+
+.ul_lang_list li:first-of-type a {
+    border-top-left-radius: 0.1875rem;
+    border-top-right-radius: 0.1875rem;
+}
+.ul_lang_list li:last-of-type a {
+    border-bottom-left-radius: 0.1875rem;
+    border-bottom-right-radius: 0.1875rem;
+    border-bottom: none;
+}
+
+.ul_lang_list .lang_link {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.95rem;
+    color: #333;
+    border-bottom: 1px solid #80808054;
+}
+.ul_lang_list li:hover a {
+    background: #324148;
+    color: white;
+}

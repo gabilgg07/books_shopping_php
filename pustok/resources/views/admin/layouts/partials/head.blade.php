@@ -13,6 +13,7 @@
 <link href="{{asset('admin/assets/css\layout.min.css')}}" rel="stylesheet" type="text/css">
 <link href="{{asset('admin/assets/css\components.min.css')}}" rel="stylesheet" type="text/css">
 <link href="{{asset('admin/assets/css\colors.min.css')}}" rel="stylesheet" type="text/css">
+<link href="{{asset('admin/assets/css/additional.css')}}" rel="stylesheet" type="text/css">
 <!-- /global stylesheets -->
 
 <!-- Core JS files -->

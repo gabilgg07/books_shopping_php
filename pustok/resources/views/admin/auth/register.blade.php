@@ -45,6 +45,12 @@
             <!-- Content area -->
             <div class="content d-flex justify-content-center align-items-center">
 
+                @if (session('message'))
+                <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+                    {{session('message')}}
+                </div>
+                @endif
                 <!-- Registration form -->
                 <form class="login-form" method="post" action="{{route('manager.signup')}}">
                     @csrf

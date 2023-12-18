@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Lang;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LangsController extends Controller
 {
@@ -23,8 +24,8 @@ class LangsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|max:3',
-            'country' => 'required',
+            'code' => ['required', 'max:3', Rule::unique('langs', 'code')],
+            'country' => ['required', Rule::unique('langs', 'country')],
             'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
         ]);
 
@@ -57,59 +58,70 @@ class LangsController extends Controller
 
     public function edit(Lang $lang)
     {
-        return view('admin.langs.edit', compact('lang'));
+        if ($lang) {
+            return view('admin.langs.edit', compact('lang'));
+        } else {
+            abort(404);
+        }
     }
 
     public function update(Request $request, Lang $lang)
     {
-        $request->validate([
-            'code' => 'required|max:3',
-            'country' => 'required',
-            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
-        ]);
+        if ($lang) {
+            $request->validate([
+                'code' => ['required', 'max:3', Rule::unique('langs', 'code')->ignore($lang->id)],
+                'country' => ['required', Rule::unique('langs', 'country')->ignore($lang->id)],
+                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
+            ]);
 
-        $data = $request->all();
-        $data['is_active'] =  $request->is_active ? 1 : 0;
-        $data['updated_by_user_id'] =  auth()->user()->id;
-        $updated = $lang->update($data);
+            $data = $request->all();
+            $data['is_active'] =  $request->is_active ? 1 : 0;
+            $data['updated_by_user_id'] =  auth()->user()->id;
+            $updated = $lang->update($data);
 
-        if ($updated) {
-            if ($request->file()) {
-                if ($lang->image && file_exists(public_path($lang->image))) {
-                    unlink(public_path($lang->image));
+            if ($updated) {
+                if ($request->file()) {
+                    if ($lang->image && file_exists(public_path($lang->image))) {
+                        unlink(public_path($lang->image));
+                    }
+                    $fileExtension = $request->image->extension();
+                    $imgName = 'flag_' . $lang->code . '_' . time() . rand(0, 999) . '.' . $fileExtension;
+                    $imgPath = $request->file('image')->storeAs('uploads/admin/langs_flag', $imgName, 'public');
+                    $lang->image = '/storage/' . $imgPath;
+                    $lang->save();
                 }
-                $fileExtension = $request->image->extension();
-                $imgName = 'flag_' . $lang->code . '_' . time() . rand(0, 999) . '.' . $fileExtension;
-                $imgPath = $request->file('image')->storeAs('uploads/admin/langs_flag', $imgName, 'public');
-                $lang->image = '/storage/' . $imgPath;
-                $lang->save();
+                return redirect()->route("manager.langs.index")
+                    ->with('type', 'success')
+                    ->with('message', 'Language has been updated.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to update language!');
             }
-            return redirect()->route("manager.langs.index")
-                ->with('type', 'success')
-                ->with('message', 'Language has been updated.');
         } else {
-            return redirect()->back()
-                ->with('type', 'danger')
-                ->with('message', 'Failed to update language!');
+            abort(404);
         }
     }
 
     public function destroy(Lang $lang)
     {
-        // dd(strtotime(date('m/d/Y h:i:s a', time())));
-        $lang->is_deleted = 1;
-        $lang->deleted_by_user_id =  auth()->user()->id;
-        $lang->deleted_at = now();
-        $saved = $lang->save();
+        if ($lang) {
+            $lang->is_deleted = 1;
+            $lang->deleted_by_user_id =  auth()->user()->id;
+            $lang->deleted_at = now();
+            $saved = $lang->save();
 
-        if ($saved) {
-            return redirect()->route("manager.langs.index")
-                ->with('type', 'success')
-                ->with('message', 'Language has been deleted.');
+            if ($saved) {
+                return redirect()->route("manager.langs.index")
+                    ->with('type', 'success')
+                    ->with('message', 'Language has been deleted.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to delete language!');
+            }
         } else {
-            return redirect()->back()
-                ->with('type', 'danger')
-                ->with('message', 'Failed to delete language!');
+            abort(404);
         }
     }
 }

@@ -9,7 +9,7 @@ Langs Index
     <div class="card">
 
         @if (session('message'))
-        <div class="alert alert-success border-0 alert-dismissible">
+        <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
             <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
             {{session('message')}}
         </div>
@@ -25,6 +25,7 @@ Langs Index
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th style="width: 10px">#</th>
                     <th>Code</th>
                     <th>Country</th>
                     <th>Image</th>
@@ -35,6 +36,7 @@ Langs Index
             <tbody>
                 @foreach ($langs as $lang)
                 <tr>
+                    <td>{{$lang->id}}</td>
                     <td>{{$lang->code}}</td>
                     <td>{{$lang->country}}</td>
                     <td>

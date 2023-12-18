@@ -5,9 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\account\RegisterRequest;
 use App\Models\User;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -34,7 +34,7 @@ class AdminController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             return redirect()->route('manager.dashboard');
         } else {
-            return back()->with('type', 'error')->with('message', 'Email or password is invalide');
+            return back()->with('type', 'danger')->with('message', 'Email or password is invalide!');
         }
     }
 
@@ -45,12 +45,19 @@ class AdminController extends Controller
 
     public function signup(RegisterRequest $request)
     {
+        $this->validate($request, [
+            "first_name" => "required|min:3",
+            "last_name" => "required|min:3",
+            "email" => ["required", "email", Rule::unique('users', 'email')],
+            "password" => "required",
+        ]);
         $data = $request->all();
         unset($data['repeat_password']);
         $data['is_admin'] = 1;
 
         $created = User::create($data);
-
+        Auth::attempt(['email' => $created->email, 'password' => $request->password]);
+        $request->session()->regenerate();
         if ($created) {
             return redirect()->route("manager.dashboard")
                 ->with('type', 'success')

@@ -6,6 +6,12 @@ Categories Index
 <div class="content">
     <!-- Main content -->
     <div class="card">
+        @if (session('message'))
+        <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            {{session('message')}}
+        </div>
+        @endif
         <div class="card-header">
             <h3 class="card-title  d-flex justify-content-between float-none align-items-center">
                 Categories Table
@@ -23,8 +29,7 @@ Categories Index
                         <th style="width: 10px">#</th>
                         <th>Title</th>
                         <th>Slug</th>
-                        <!-- <th style="width: 40px">Label</th> -->
-                        <th>Is Deleted</th>
+                        <th>Is Avtive</th>
                         <th>Controlls</th>
                     </tr>
                 </thead>
@@ -32,13 +37,18 @@ Categories Index
                     @foreach ($categories as $category)
                     <tr>
                         <td>{{$category->id}}</td>
-                        <td>{{$category->title}}</td>
+                        <td>{{$category->title}}
+                            @if ($category->parent_id==0)
+                            <span class="badge badge-light badge-striped badge-striped-left border-left-info">parent
+                                caategory</span>
+                            @endif
+                        </td>
                         <td>{{$category->slug}}</td>
                         <td>
-                            @if (!$category->is_deleted)
-                            <span class="badge badge-success">No</span>
+                            @if ($category->is_active)
+                            <span class="badge badge-success">Yes</span>
                             @else
-                            <span class="badge badge-danger">Yes</span>
+                            <span class="badge badge-danger">No</span>
                             @endif
                         </td>
                         <td class="text-right">

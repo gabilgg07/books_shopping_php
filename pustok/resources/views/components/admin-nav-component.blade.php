@@ -1,6 +1,3 @@
-@php
-$user = auth()->user();
-@endphp
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
         <a href="{{route('manager.dashboard')}}" class="d-inline-block">
@@ -121,6 +118,41 @@ $user = auth()->user();
                     </div>
                 </div>
             </li> -->
+
+            <li class="nav-item dropdown">
+                <a href="#" class="navbar-nav-link dropdown-toggle caret-0 d-flex align-items-center"
+                    data-toggle="dropdown">
+                    <span class="mr-2">{{ Str::upper($currentLang->code) }}</span>
+                    @if ($currentLang->image)
+                    <span class="d-flex align-items-center">
+                        <img src="{{$currentLang->image}}" alt="{$currentLang->code.'-'.$currentLang->country}}">
+                    </span>
+                    @endif
+                </a>
+
+                <div class="dropdown-menu dropdown-content" style="min-width: auto;">
+                    <div class="dropdown-scrollable">
+                        <ul class="media-list ul_lang_list">
+                            @foreach($langs as $lang)
+                            @if ($currentLang->code !== $lang->code)
+                            <li class="flex-row">
+                                <a rel="alternate" hreflang="{{ $lang->code }}"
+                                    href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}"
+                                    class="lang_link">
+                                    <span class="mr-2">{{ Str::upper($lang->code) }}</span>
+                                    @if ($lang->image)
+                                    <span class="d-flex align-items-center">
+                                        <img src="{{$lang->image}}" alt="{$lang->code.'-'.$lang->country}}">
+                                    </span>
+                                    @endif
+                                </a>
+                            </li>
+                            @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </li>
         </ul>
 
         <!-- <span class="badge bg-success ml-md-3 mr-md-auto">Online</span> -->

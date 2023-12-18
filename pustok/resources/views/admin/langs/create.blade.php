@@ -27,6 +27,12 @@ Langs Create
 
     <!-- Form inputs -->
     <div class="card">
+        @if (session('message'))
+        <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            {{session('message')}}
+        </div>
+        @endif
         <div class="card-header header-elements-inline">
             <h5 class="card-title">Create New Lang</h5>
         </div>
@@ -53,6 +59,12 @@ Langs Create
                         <span class="text-danger ml-2">{{$message}}</span>
                         @enderror
                     </div>
+                    <div class="form-check form-check-switchery form-check-inline form-check-right mb-2">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc="" {{!old('_token')||old('is_active')?'checked':''}}>
+                            Is Active?
+                        </label>
+                    </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-2">Upload lang image</label>
                         <div class="col-lg-10">
@@ -64,12 +76,6 @@ Langs Create
                                 file
                                 size 2Mb</span>
                         </div>
-                    </div>
-                    <div class="form-check form-check-switchery form-check-inline form-check-right mb-2">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc="" {{!old('_token')||old('is_active')?'checked':''}}>
-                            Is Active?
-                        </label>
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-3">

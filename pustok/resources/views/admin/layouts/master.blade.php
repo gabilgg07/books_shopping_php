@@ -8,7 +8,7 @@
 <body>
 
     <!-- Main navbar -->
-    @include("admin.layouts.partials.main_navbar")
+    <x-admin-nav-component />
     <!-- /main navbar -->
 
 

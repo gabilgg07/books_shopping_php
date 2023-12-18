@@ -19,14 +19,14 @@ class CategoriesController extends Controller
 
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Category::where('is_deleted', 0)->get();
         return view("admin.categories.index", compact("categories"));
     }
 
     public function create()
     {
-        $langs = Lang::all();
-        $categories = Category::where('parent_id', 0)->get();
+        $langs = Lang::where('is_deleted', 0)->get();
+        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->get();
         return view("admin.categories.create", compact("categories", 'langs'));
     }
 
@@ -39,7 +39,7 @@ class CategoriesController extends Controller
         // ]);
         $this->validate($request, [
             'title' => ['required', 'array'],
-            'title.*' => ['required', 'max:255', function ($attribute, $value, $fail) use ($request) {
+            'title.*' => ['required', 'max:255', function ($attribute, $value, $fail) {
                 $slug = Str::slug($value);
                 $keyValue = Str::of($attribute)->afterLast('.');
                 $existingTitles = Category::whereJsonContains('slug->' . $keyValue, $slug)->exists();
@@ -51,20 +51,29 @@ class CategoriesController extends Controller
                     $fail("The $attribute must be unique.");
                 }
             }],
+            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
         ]);
 
         $data = $request->all();
-        $data['is_deleted'] = (bool)$request->is_deleted;
+        $data['is_active'] = (bool)$request->is_active;
         $data['slug'] = $this->dataService->sluggableArray($data, 'title');
+        $data['created_by_user_id'] =  auth()->user()->id;
         $created = Category::create($data);
         if ($created) {
+            if ($request->file()) {
+                $fileExtension = $request->image->extension();
+                $imgName = 'category' . $created->parent_id == 0 ? '_parent' : '' . '_' . time() . rand(0, 999) . '.' . $fileExtension;
+                $imgPath = $request->file('image')->storeAs('uploads/admin/categories', $imgName, 'public');
+                $created->image = '/storage/' . $imgPath;
+                $created->save();
+            }
             return redirect()->route("manager.categories.index")
                 ->with('type', 'success')
                 ->with('message', 'Category has been stored.');
         } else {
             return redirect()->back()
                 ->with('type', 'danger')
-                ->with('message', 'Something went wrong!');
+                ->with('message', 'Failed to store category!');
         }
     }
 
@@ -75,20 +84,8 @@ class CategoriesController extends Controller
 
     public function edit(Category $category)
     {
-        // $this->validate($category, [
-        //     "title" => "required|array",
-        // ]);
-        // $langs = Lang::all();
-        // $categories = Category::where('parent_id', 0)->get();
-        // // dd($category);
-        // if ($category) {
-        //     return view('admin.categories.edit', compact('langs', 'categories', 'category'));
-        // } else {
-        //     return '404 Not Faund';
-        // }
-
-        $langs = Lang::all();
-        $categories = Category::where('parent_id', 0)->get();
+        $langs = Lang::where('is_deleted', 0)->get();
+        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->get();
         if ($category) {
             return view('admin.categories.edit', compact('langs', 'categories', 'category'));
         } else {
@@ -98,25 +95,48 @@ class CategoriesController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $this->validate($request, [
-            // 'title' => ['required', 'array', Rule::unique('categories', 'title')->ignore($category->id)],
-            'title' => ['required', 'array'],
-            'title.*' => ['required', 'max:255'],
-        ]);
+        if ($category) {
+            $categoryId = $category->id;
+            $this->validate($request, [
+                'title' => ['required', 'array'],
+                'title.*' => ['required', 'max:255', function ($attribute, $value, $fail) use ($categoryId) {
+                    $slug = Str::slug($value);
+                    $keyValue = Str::of($attribute)->afterLast('.');
+                    $existingTitles = Category::where('id', '!=', $categoryId)->whereJsonContains('slug->' . $keyValue, $slug)->exists();
+                    if ($existingTitles) {
+                        $fail("The $attribute must be unique.");
+                    }
+                }],
+                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
+            ]);
 
-        $data = $request->all();
-        $data['is_deleted'] = (bool)$request->is_deleted;
-        $data['slug'] = $this->dataService->sluggableArray($data, 'title');
-        $updated = $category->update($data);
+            $data = $request->all();
+            $data['is_active'] = (bool)$request->is_active;
+            $data['slug'] = $this->dataService->sluggableArray($data, 'title');
+            $data['updated_by_user_id'] =  auth()->user()->id;
+            $updated = $category->update($data);
 
-        if ($updated) {
-            return redirect()->route("manager.categories.index")
-                ->with('type', 'success')
-                ->with('message', 'Category has been updated.');
+            if ($updated) {
+                if ($request->file()) {
+                    if ($category->image && file_exists(public_path($category->image))) {
+                        unlink(public_path($category->image));
+                    }
+                    $fileExtension = $request->image->extension();
+                    $imgName = 'category' . $category->parent_id == 0 ? '_parent' : '' . '_' . time() . rand(0, 999) . '.' . $fileExtension;
+                    $imgPath = $request->file('image')->storeAs('uploads/admin/categories', $imgName, 'public');
+                    $category->image = '/storage/' . $imgPath;
+                    $category->save();
+                }
+                return redirect()->route("manager.categories.index")
+                    ->with('type', 'success')
+                    ->with('message', 'Category has been updated.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Something went wrong!');
+            }
         } else {
-            return redirect()->back()
-                ->with('type', 'danger')
-                ->with('message', 'Something went wrong!');
+            abort(404);
         }
     }
 
