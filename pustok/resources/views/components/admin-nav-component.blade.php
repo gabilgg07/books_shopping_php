@@ -21,7 +21,33 @@
                     <i class="icon-paragraph-justify3"></i>
                 </a>
             </li>
-
+            <li class="nav-item">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown language-switch">
+                        <a class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            @if ($currentLang->image)
+                            <img src="{{$currentLang->image}}" class="img-flag mr-2"
+                                alt="{{$currentLang->code.'-'.$currentLang->country}}">
+                            @endif
+                            {{ Str::upper($currentLang->code) }}
+                        </a>
+                        <div class="dropdown-menu">
+                            @foreach($langs as $lang)
+                            @if ($currentLang->code !== $lang->code)
+                            <a rel="alternate" hreflang="{{ $lang->code }}"
+                                href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}"
+                                class="dropdown-item english">
+                                @if ($lang->image)
+                                <img src="{{$lang->image}}" class="img-flag" alt="{{$lang->code.'-'.$lang->country}}">
+                                @endif
+                                {{ Str::upper($lang->code) }}
+                            </a>
+                            @endif
+                            @endforeach
+                        </div>
+                    </li>
+                </ul>
+            </li>
             <!-- <li class="nav-item dropdown">
                 <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                     <i class="icon-git-compare"></i>
@@ -119,40 +145,6 @@
                 </div>
             </li> -->
 
-            <li class="nav-item dropdown">
-                <a href="#" class="navbar-nav-link dropdown-toggle caret-0 d-flex align-items-center"
-                    data-toggle="dropdown">
-                    <span class="mr-2">{{ Str::upper($currentLang->code) }}</span>
-                    @if ($currentLang->image)
-                    <span class="d-flex align-items-center">
-                        <img src="{{$currentLang->image}}" alt="{$currentLang->code.'-'.$currentLang->country}}">
-                    </span>
-                    @endif
-                </a>
-
-                <div class="dropdown-menu dropdown-content" style="min-width: auto;">
-                    <div class="dropdown-scrollable">
-                        <ul class="media-list ul_lang_list">
-                            @foreach($langs as $lang)
-                            @if ($currentLang->code !== $lang->code)
-                            <li class="flex-row">
-                                <a rel="alternate" hreflang="{{ $lang->code }}"
-                                    href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}"
-                                    class="lang_link">
-                                    <span class="mr-2">{{ Str::upper($lang->code) }}</span>
-                                    @if ($lang->image)
-                                    <span class="d-flex align-items-center">
-                                        <img src="{{$lang->image}}" alt="{$lang->code.'-'.$lang->country}}">
-                                    </span>
-                                    @endif
-                                </a>
-                            </li>
-                            @endif
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </li>
         </ul>
 
         <!-- <span class="badge bg-success ml-md-3 mr-md-auto">Online</span> -->

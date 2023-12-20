@@ -15,7 +15,7 @@ class DataService
     {
         return Str::slug($str);
     }
-
+    
     public function sluggableArray($array, $keyArr)
     {
         $slugs = [];
@@ -24,9 +24,7 @@ class DataService
         }
         return $slugs;
     }
-
-
-
+    
     public function search($model, $name, $q)
     {
         $locale = app()->getLocale();
@@ -37,4 +35,12 @@ class DataService
         }
         return $categories;
     }
+    
+    public $colorsArray = ['success', 'warning', 'indigo', 'teal', 'pink', 'purple', 'blue', 'slate', 'orange', 'brown'];
+
+    // public function getRandomNum(int $len):int
+    // {
+    //     $random = rand(1,$len);
+    //     return $random;
+    // }
 }

@@ -74,6 +74,8 @@ Route::group([
 
     Route::resource("/langs", LangsController::class);
     Route::resource("/language_line", LanguageLineController::class);
+    Route::get("/categories/deleteds", [CategoriesController::class, 'deleteds'])->name('categories.deleteds');
+    Route::get("/categories/restore/{category}", [CategoriesController::class, 'restore'])->name('categories.restore');
     Route::resource("/categories", CategoriesController::class);
     Route::resource("/users", UsersController::class);
 });

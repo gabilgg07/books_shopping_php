@@ -25,7 +25,7 @@ Categories Create
 @section("content")
 
 <div class="content">
-    <form action="{{route('manager.categories.update', $category->id)}}" method="POST" class="row">
+    <form action="{{route('manager.categories.update', $category->id)}}" method="POST" class="row" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
         <div class="col-md-6">
@@ -62,9 +62,6 @@ Categories Create
                         </div>
                         @endforeach
                     </div>
-
-
-
                 </div>
             </div>
         </div>

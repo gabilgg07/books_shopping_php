@@ -1,4 +1,4 @@
-.ul_lang_list {
+/* .ul_lang_list {
     overflow: hidden;
 }
 
@@ -22,4 +22,42 @@
 .ul_lang_list li:hover a {
     background: #324148;
     color: white;
+} */
+.img-flag {
+    height: 1rem;
+    width: 30px;
+    margin-top: 0.18752rem;
+    vertical-align: top;
+    object-fit: cover;
+    border: 0.5px solid;
+}
+
+.td_details:hover {
+    background: #e4e3e3;
+}
+
+.details_status {
+    font-size: 30px;
+    position: absolute;
+    top: -20px;
+    right: 10px;
+    z-index: 999;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+.details_status.is_deleted {
+    transform: rotate(40deg);
+    border-style: dashed;
+}
+.details_status.is_active {
+    transform: rotate(30deg);
+    border-style: solid;
+}
+.details_status.not_is_active {
+    border-style: dotted;
 }

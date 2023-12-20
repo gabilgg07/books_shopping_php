@@ -18,7 +18,8 @@ Langs Index
             <h5 class="card-title">Langs
             </h5>
             <div class="header-elements">
-                <a href="{{route('manager.langs.create')}}" class="btn btn-success"><i class="icon-plus-circle2 mr-2"></i> Add Language</a>
+                <a href="{{route('manager.langs.create')}}" class="btn btn-success"><i
+                        class="icon-plus-circle2 mr-2"></i> Add Language</a>
             </div>
         </div>
 
@@ -41,7 +42,8 @@ Langs Index
                     <td>{{$lang->country}}</td>
                     <td>
                         <div class="image">
-                            <img src="{{$lang->image}}" alt="{{$lang->code.'-'.$lang->country}}" style="max-width: 100%;">
+                            <img src="{{$lang->image}}" alt="{{$lang->code.'-'.$lang->country}}"
+                                style="max-width: 100%;">
                         </div>
                     </td>
                     <td class="text-center">
@@ -52,11 +54,14 @@ Langs Index
                         @endif
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.langs.edit',$lang->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
-                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.langs.destroy', $lang->id)}}" class="d-inline-block">
+                        <a href="{{route('manager.langs.edit',$lang->id)}}" class="btn btn-warning"><i
+                                class="icon-pencil3 mr-2"></i> Edit</a>
+                        <form onsubmit="return confirm('Are you sure?')" method="post"
+                            action="{{route('manager.langs.destroy', $lang->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i class="icon-trash mr-2"></i> Delete</button>
+                            <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i
+                                    class="icon-trash mr-2"></i> Delete</button>
                         </form>
                     </td>
                 </tr>

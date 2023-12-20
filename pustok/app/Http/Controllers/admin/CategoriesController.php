@@ -5,10 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Lang;
+use App\Models\User;
 use App\Services\DataService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
@@ -51,7 +50,7 @@ class CategoriesController extends Controller
                     $fail("The $attribute must be unique.");
                 }
             }],
-            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
+            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,webp|max:2024',
         ]);
 
         $data = $request->all();
@@ -62,7 +61,7 @@ class CategoriesController extends Controller
         if ($created) {
             if ($request->file()) {
                 $fileExtension = $request->image->extension();
-                $imgName = 'category' . $created->parent_id == 0 ? '_parent' : '' . '_' . time() . rand(0, 999) . '.' . $fileExtension;
+                $imgName = 'category' . ($created->parent_id == 0 ? '_parent' : '') . '_' . time() . rand(0, 999) . '.' . $fileExtension;
                 $imgPath = $request->file('image')->storeAs('uploads/admin/categories', $imgName, 'public');
                 $created->image = '/storage/' . $imgPath;
                 $created->save();
@@ -77,9 +76,43 @@ class CategoriesController extends Controller
         }
     }
 
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        $category_show_model = [
+            'colorClasses' => $this->dataService->colorsArray,
+            'category' => $category,
+        ];
+
+        if ($category->parent_id != 0) {
+            $parentCategory = Category::where('id', $category->parent_id)->first();
+            if ($parentCategory) {
+                $category_show_model['parent_category'] = $parentCategory;
+            }
+        }
+
+        $category_show_model['titles'] = $category->getTranslations('title');
+        $category_show_model['slugs'] = $category->getTranslations('slug');
+        if ($category->created_by_user_id) {
+            $created_by_user = User::where('id', $category->created_by_user_id)->first();
+            if ($created_by_user) {
+                $category_show_model['created_by_user'] = $created_by_user;
+            }
+
+            if ($category->updated_by_user_id && $category->updated_by_user_id !== $category->created_by_user_id) {
+                $updated_by_user = User::where('id', $category->updated_by_user_id)->first();
+                if ($updated_by_user) {
+                    $category_show_model['updated_by_user'] = $updated_by_user;
+                }
+            }
+        }
+        if ($category->deleted_by_user_id) {
+            $deleted_by_user = User::where('id', $category->deleted_by_user_id)->first();
+            if ($deleted_by_user) {
+                $category_show_model['deleted_by_user'] = $deleted_by_user;
+            }
+        }
+
+        return view('admin.categories.show', compact('category_show_model'));
     }
 
     public function edit(Category $category)
@@ -107,7 +140,7 @@ class CategoriesController extends Controller
                         $fail("The $attribute must be unique.");
                     }
                 }],
-                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
+                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,webp|max:2024',
             ]);
 
             $data = $request->all();
@@ -122,7 +155,7 @@ class CategoriesController extends Controller
                         unlink(public_path($category->image));
                     }
                     $fileExtension = $request->image->extension();
-                    $imgName = 'category' . $category->parent_id == 0 ? '_parent' : '' . '_' . time() . rand(0, 999) . '.' . $fileExtension;
+                    $imgName = 'category' . ($category->parent_id == 0 ? '_parent' : '') . '_' . time() . rand(0, 999) . '.' . $fileExtension;
                     $imgPath = $request->file('image')->storeAs('uploads/admin/categories', $imgName, 'public');
                     $category->image = '/storage/' . $imgPath;
                     $category->save();
@@ -142,16 +175,77 @@ class CategoriesController extends Controller
 
     public function destroy(Category $category)
     {
-        $deleted = $category->delete();
+        if ($category) {
+            $category->is_deleted = 1;
+            $category->deleted_by_user_id =  auth()->user()->id;
+            $category->deleted_at = now();
+            if ($category->parent_id == 0) {
+                $childCategories = Category::where('parent_id', $category->id)->where('is_deleted', 0)->get();
+                if (count($childCategories)) {
+                    foreach ($childCategories as $child) {
 
-        if ($deleted) {
-            return redirect()->route("manager.categories.index")
-                ->with('type', 'success')
-                ->with('message', 'Category has been deleted.');
+                        $child->is_deleted = 1;
+                        $child->deleted_by_user_id =  auth()->user()->id;
+                        $child->deleted_at = now();
+                        $childSaved = $child->save();
+                        if (!$childSaved) {
+                            return redirect()->back()
+                                ->with('type', 'danger')
+                                ->with('message', "Failed to delete category child:$child->title!");
+                        }
+                    }
+                }
+            }
+            $saved = $category->save();
+
+            if ($saved) {
+                return redirect()->route("manager.categories.index")
+                    ->with('type', 'success')
+                    ->with('message', 'Category has been deleted.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to delete category!');
+            }
         } else {
-            return redirect()->back()
-                ->with('type', 'danger')
-                ->with('message', 'Failed to delete category!');
+            abort(404);
+        }
+    }
+
+    public function deleteds()
+    {
+        $categories = Category::where('is_deleted', 1)->get();
+        return view("admin.categories.deleteds", compact("categories"));
+    }
+    public function restore(Category $category)
+    {
+        if ($category) {
+            if ($category->parent_id) {
+                $parentCategory = Category::where('id', $category->parent_id)->first();
+                if ($parentCategory->is_deleted) {
+                    $routeRestore = route('manager.categories.restore', $parentCategory->id);
+                    $goHref = "<a href='$routeRestore'>Restore id $parentCategory->id parent category</a>";
+                    return redirect()->back()
+                        ->with('type', 'danger')
+                        ->with('message', "Failed to restore category! Please, first restore parent category: $goHref");
+                }
+            }
+            $category->is_deleted = 0;
+            $category->deleted_by_user_id =  0;
+            $category->deleted_at = null;
+            $updated = $category->update();
+
+            if ($updated) {
+                return redirect()->route("manager.categories.index")
+                    ->with('type', 'success')
+                    ->with('message', 'Category has been restored.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to restore category!');
+            }
+        } else {
+            abort(404);
         }
     }
 }
