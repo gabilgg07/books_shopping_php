@@ -33,7 +33,7 @@ Categories Create
                 @if (session('message'))
                 <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
-                    {{session('message')}}
+                    {!!session('message')!!}
                 </div>
                 @endif
                 <div class="card-body">
@@ -83,7 +83,7 @@ Categories Create
                     </div>
                     <div class="form-check form-check-switchery form-check-inline form-check-right">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc="" {{old('is_active',$lang->is_active)?'checked':''}}>
+                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc="" {{old('is_active',$category->is_active)?'checked':''}}>
                             Is Active?
                         </label>
                     </div>

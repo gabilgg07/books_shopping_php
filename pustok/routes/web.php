@@ -72,10 +72,16 @@ Route::group([
         Route::patch("/change-password", [AdminAccountController::class, "changePassword"])->name("account.changePassword");
     });
 
+    Route::get("/langs/deleteds", [LangsController::class, 'deleteds'])->name('langs.deleteds');
+    Route::get("/langs/restore/{lang}", [LangsController::class, 'restore'])->name('langs.restore');
+    Route::delete("/langs/permanently_delete/{lang}", [LangsController::class, 'permanently_delete'])->name('langs.permanently_delete');
     Route::resource("/langs", LangsController::class);
+
     Route::resource("/language_line", LanguageLineController::class);
+
     Route::get("/categories/deleteds", [CategoriesController::class, 'deleteds'])->name('categories.deleteds');
     Route::get("/categories/restore/{category}", [CategoriesController::class, 'restore'])->name('categories.restore');
     Route::resource("/categories", CategoriesController::class);
+
     Route::resource("/users", UsersController::class);
 });

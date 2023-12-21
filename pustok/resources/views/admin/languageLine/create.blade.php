@@ -58,9 +58,9 @@
                     </div>
                     <div class="form-check form-check-switchery form-check-inline form-check-right">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery-danger" name="is_deleted"
-                                data-fouc="">
-                            Is Deleted?
+                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc=""
+                                {{!old('_token')||old('is_active')?'checked':''}}>
+                            Is Active?
                         </label>
                     </div>
                 </div>

@@ -32,15 +32,18 @@
     border: 0.5px solid;
 }
 
-.td_details:hover {
-    background: #e4e3e3;
+.lang-flag {
+    display: block;
+    max-width: 100%;
+    max-height: 50px;
+    border: 0.5px solid;
 }
 
 .details_status {
     font-size: 30px;
     position: absolute;
-    top: -20px;
-    right: 10px;
+    top: 5px;
+    right: 5px;
     z-index: 999;
     width: 150px;
     height: 150px;
@@ -49,6 +52,9 @@
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    box-shadow: 0 0 12px 5px #00000099;
+    text-shadow: 2px 2px 3px #000000;
+    backdrop-filter: blur(10px);
 }
 .details_status.is_deleted {
     transform: rotate(40deg);
@@ -60,4 +66,6 @@
 }
 .details_status.not_is_active {
     border-style: dotted;
+    width: 200px;
+    height: 200px;
 }

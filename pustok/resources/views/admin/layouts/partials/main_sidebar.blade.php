@@ -70,7 +70,7 @@ $user = auth()->user();
                     class="nav-item nav-item-submenu {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'nav-item-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'active' : '' }}"><i
-                            class="icon-table2"></i> <span>Language CRUDs</span></a>
+                            class="icon-table2"></i> <span>Language Tables</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts"
                         {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'style=display:block;' : 'style=display:none;' }}">
@@ -88,7 +88,7 @@ $user = auth()->user();
                     class="nav-item nav-item-submenu {{ request()->routeIs(['*.categories.*','*.users.*']) ? 'nav-item-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ request()->routeIs(['*.categories.*','*.users.*']) ? 'active' : '' }}"><i
-                            class="icon-table2"></i> <span>CRUDs</span></a>
+                            class="icon-table2"></i> <span>Models Tables</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts"
                         {{ request()->routeIs(['*.categories.*','*.users.*']) ? 'style=display:block;' : 'style=display:none;' }}">

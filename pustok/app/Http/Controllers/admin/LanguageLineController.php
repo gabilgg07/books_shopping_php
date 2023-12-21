@@ -4,17 +4,23 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lang;
+use App\Models\User;
+use App\Services\DataService;
 use Illuminate\Http\Request;
 use Spatie\TranslationLoader\LanguageLine;
 
 class LanguageLineController extends Controller
 {
+
+    public function __construct(private DataService $dataService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = LanguageLine::all();
+        $data = LanguageLine::where('is_deleted', 0)->get();
         return view('admin.languageLine.index', compact('data'));
     }
 
@@ -23,7 +29,7 @@ class LanguageLineController extends Controller
      */
     public function create()
     {
-        $langs = Lang::all();
+        $langs = Lang::where('is_deleted', 0)->get();
         return view('admin.languageLine.create', compact('langs'));
     }
 
@@ -35,14 +41,14 @@ class LanguageLineController extends Controller
         $request->validate([
             'group' => 'required',
             'key' => 'required',
-            'text' => 'required|array',
+            'text' => ['required', 'array'],
+            'text.*' => ['required', 'max:255'],
         ]);
-        $created = LanguageLine::create([
-            'group' => $request->group,
-            'key' => $request->key,
-            'text' => $request->text,
-            'is_deleted' => (bool)$request->is_deleted,
-        ]);
+
+        $data = $request->all();
+        $data['is_active'] = (bool)$request->is_active;
+        $data['created_by_user_id'] =  auth()->user()->id;
+        $created = LanguageLine::create($data);
 
         if ($created) {
             return redirect()->route('manager.language_line.index')
@@ -51,16 +57,43 @@ class LanguageLineController extends Controller
         } else {
             return redirect()->back()
                 ->with('type', 'danger')
-                ->with('message', 'Something went wrong!');
+                ->with('message', 'Failed to store language line!');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(LanguageLine $languageLine)
     {
-        //
+        $model = $languageLine;
+        $show_view_model = [
+            'colorClasses' => $this->dataService->colorsArray,
+            'model' => $model,
+        ];
+
+        $show_view_model['texts'] = $model->getTranslations('text');
+        if ($model->created_by_user_id) {
+            $created_by_user = User::where('id', $model->created_by_user_id)->first();
+            if ($created_by_user) {
+                $show_view_model['created_by_user'] = $created_by_user;
+            }
+
+            if ($model->updated_by_user_id && $model->updated_by_user_id !== $model->created_by_user_id) {
+                $updated_by_user = User::where('id', $model->updated_by_user_id)->first();
+                if ($updated_by_user) {
+                    $show_view_model['updated_by_user'] = $updated_by_user;
+                }
+            }
+        }
+        if ($model->deleted_by_user_id) {
+            $deleted_by_user = User::where('id', $model->deleted_by_user_id)->first();
+            if ($deleted_by_user) {
+                $show_view_model['deleted_by_user'] = $deleted_by_user;
+            }
+        }
+
+        return view('admin.categories.show', compact('show_view_model'));
     }
 
     /**

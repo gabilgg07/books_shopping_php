@@ -1,6 +1,11 @@
+@php
+$model_name=$edit_view_model['model_name'];
+$route=$edit_view_model['route'];
+$model=$edit_view_model['model'];
+@endphp
 @extends("admin.layouts.master")
 @push("page_title")
-Langs Update
+{{Str::headline($model_name)}} Edit
 @endpush
 @push("theme_js")
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
@@ -11,85 +16,37 @@ Langs Update
 <script src="{{asset('admin/global_assets\js\demo_pages\form_inputs.js')}}"></script>
 <script>
 $(window).on('load', function() {
-    $("#lang_image_input").change(function(event) {
+    $("#image_input").change(function(event) {
         var tmppath = URL.createObjectURL(event.target.files[0]);
-        $("#lang_image").attr(
+        $("#image").attr(
             "src",
             URL.createObjectURL(event.target.files[0])
         );
-        $("#lang_image").removeClass('d-none');
+        $("#image").removeClass('d-none');
     });
 });
 </script>
 @endpush
 @section("content")
 <div class="content">
-
-    <!-- Form inputs -->
     <div class="card">
-        @if (session('message'))
-        <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
-            {{session('message')}}
-        </div>
-        @endif
+        @include('admin.layouts.includes.alert')
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Update Lang</h5>
+            <h5 class="card-title">{{Str::headline($model_name)}} Edit</h5>
         </div>
 
         <div class="card-body">
-            <form method="post" action="{{route('manager.langs.update', $lang->id)}}" enctype="multipart/form-data">
+            <form method="post" action="{{route('manager.'. $route .'.update', $model->id)}}"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <fieldset class="mb-3">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-2">Code</label>
-                        <div class="col-lg-10">
-                            <input type="text" class="form-control" name="code" value="{{old('code', $lang->code)}}">
-                        </div>
-                        @error('code')
-                        <span class="text-danger ml-2">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-2">Country</label>
-                        <div class="col-lg-10">
-                            <input type="text" class="form-control" name="country"
-                                value="{{old('country', $lang->country)}}">
-                        </div>
-                        @error('country')
-                        <span class="text-danger ml-2">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="form-check form-check-switchery form-check-inline form-check-right mb-2">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery" name="is_active" data-fouc=""
-                                {{old('is_active',$lang->is_active)?'checked':''}}>
-                            Is Active?
-                        </label>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-2">Upload lang image</label>
-                        <div class="col-lg-10">
-                            <input type="file" id="lang_image_input" class="form-control-uniform" data-fouc=""
-                                name="image">
-                            @error('image')
-                            <label class="validation-invalid-label">{{$message}}</label>
-                            @enderror
-                            <span class="form-text text-muted">Accepted formats: gif, png, jpg, jpeg. Max
-                                file
-                                size 2Mb</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-lg-3">
-                            <img src="{{$lang->image??''}}" alt="lang photo" id="lang_image"
-                                class="{{$lang->image?'':'d-none'}}"
-                                style="display:block; max-width:100%; max-height:50px;">
-                        </div>
-                    </div>
+                    @include('admin.layouts.includes.edit_input',['field_name'=>'code','field_value'=>$model->code])
+                    @include('admin.layouts.includes.edit_input',['field_name'=>'country','field_value'=>$model->country])
+                    @include('admin.layouts.includes.edit_check',['field_name'=>'is_active','field_value'=>$model->is_active])
+                    @include('admin.layouts.includes.image_input',['model_name'=>$model_name])
+                    @include('admin.layouts.includes.image',['field_value'=>$model->image, 'class_name' =>'lang-flag'])
                 </fieldset>
-
                 <div class="text-right">
                     <button type="submit" class="btn btn-primary"><i class="icon-database-insert mr-2"></i>
                         Insert</button>
@@ -97,7 +54,5 @@ $(window).on('load', function() {
             </form>
         </div>
     </div>
-    <!-- /form inputs -->
-
 </div>
 @endsection

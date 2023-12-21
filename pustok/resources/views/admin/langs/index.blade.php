@@ -1,28 +1,32 @@
+@php
+$model_name = $index_view_model['model_name'];
+$table_name = $index_view_model['table_name'];
+$models = $index_view_model['models'];
+@endphp
 @extends("admin.layouts.master")
 @push("page_title")
-Langs Index
+{{Str::headline($table_name)}} Index
 @endpush
 @section("content")
 <div class="content">
-
-    <!-- Basic datatable -->
     <div class="card">
-
-        @if (session('message'))
-        <div class="alert alert-{{session('type')}} border-0 alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
-            {{session('message')}}
+        @include('admin.layouts.includes.alert')
+        <div class="card-header">
+            <h3 class="card-title  d-flex justify-content-between float-none align-items-center">
+                {{Str::headline($table_name)}} Index Table
+                <div style="display: flex; gap: 10px;">
+                    <div class="box-btn">
+                        <a href="{{route('manager.'.$table_name.'.create')}}" type="button" class="btn btn-block btn-success">
+                            <i class="icon-plus-circle2 mr-2"></i> Add {{Str::headline($model_name)}}</a>
+                    </div>
+                    <div class="box-btn">
+                        <a href="{{route('manager.'.$table_name.'.deleteds')}}" class="btn btn-danger">
+                            <i class="mi-delete-sweep mr-1" style="font-size: 18px;"></i>
+                            Deleted {{Str::headline($table_name)}} Table</a>
+                    </div>
+                </div>
+            </h3>
         </div>
-        @endif
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">Langs
-            </h5>
-            <div class="header-elements">
-                <a href="{{route('manager.langs.create')}}" class="btn btn-success"><i
-                        class="icon-plus-circle2 mr-2"></i> Add Language</a>
-            </div>
-        </div>
-
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -35,33 +39,32 @@ Langs Index
                 </tr>
             </thead>
             <tbody>
-                @foreach ($langs as $lang)
+                @foreach ($models as $model)
                 <tr>
-                    <td>{{$lang->id}}</td>
-                    <td>{{$lang->code}}</td>
-                    <td>{{$lang->country}}</td>
-                    <td>
+                    <td>{{$model->id}}</td>
+                    <td>{{Str::upper($model->code)}}</td>
+                    <td>{{Str::headline($model->country)}}</td>
+                    <td width='200'>
+                        @if ($model->image)
                         <div class="image">
-                            <img src="{{$lang->image}}" alt="{{$lang->code.'-'.$lang->country}}"
-                                style="max-width: 100%;">
+                            <img src="{{$model->image}}" alt="{{$model->code.'-'.$model->country}}" style="max-width: 100%; border:0.5px solid;">
                         </div>
+                        @endif
                     </td>
                     <td class="text-center">
-                        @if ($lang->is_active)
+                        @if ($model->is_active)
                         <span class="badge badge-success">Yes</span>
                         @else
                         <span class="badge badge-danger">No</span>
                         @endif
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.langs.edit',$lang->id)}}" class="btn btn-warning"><i
-                                class="icon-pencil3 mr-2"></i> Edit</a>
-                        <form onsubmit="return confirm('Are you sure?')" method="post"
-                            action="{{route('manager.langs.destroy', $lang->id)}}" class="d-inline-block">
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i
-                                    class="icon-trash mr-2"></i> Delete</button>
+                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger ml-1"><i class="mi-delete mr-2"></i> Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -69,7 +72,5 @@ Langs Index
             </tbody>
         </table>
     </div>
-    <!-- /basic datatable -->
-
 </div>
 @endsection

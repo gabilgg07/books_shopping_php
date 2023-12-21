@@ -78,41 +78,42 @@ class CategoriesController extends Controller
 
     public function show(Category $category)
     {
-        $category_show_model = [
+        $model = $category;
+        $show_view_model = [
             'colorClasses' => $this->dataService->colorsArray,
-            'category' => $category,
+            'model' => $model,
         ];
 
-        if ($category->parent_id != 0) {
-            $parentCategory = Category::where('id', $category->parent_id)->first();
+        if ($model->parent_id != 0) {
+            $parentCategory = Category::where('id', $model->parent_id)->first();
             if ($parentCategory) {
-                $category_show_model['parent_category'] = $parentCategory;
+                $show_view_model['parent_category'] = $parentCategory;
             }
         }
 
-        $category_show_model['titles'] = $category->getTranslations('title');
-        $category_show_model['slugs'] = $category->getTranslations('slug');
-        if ($category->created_by_user_id) {
-            $created_by_user = User::where('id', $category->created_by_user_id)->first();
+        $show_view_model['titles'] = $model->getTranslations('title');
+        $show_view_model['slugs'] = $model->getTranslations('slug');
+        if ($model->created_by_user_id) {
+            $created_by_user = User::where('id', $model->created_by_user_id)->first();
             if ($created_by_user) {
-                $category_show_model['created_by_user'] = $created_by_user;
+                $show_view_model['created_by_user'] = $created_by_user;
             }
 
-            if ($category->updated_by_user_id && $category->updated_by_user_id !== $category->created_by_user_id) {
-                $updated_by_user = User::where('id', $category->updated_by_user_id)->first();
+            if ($model->updated_by_user_id && $model->updated_by_user_id !== $model->created_by_user_id) {
+                $updated_by_user = User::where('id', $model->updated_by_user_id)->first();
                 if ($updated_by_user) {
-                    $category_show_model['updated_by_user'] = $updated_by_user;
+                    $show_view_model['updated_by_user'] = $updated_by_user;
                 }
             }
         }
-        if ($category->deleted_by_user_id) {
-            $deleted_by_user = User::where('id', $category->deleted_by_user_id)->first();
+        if ($model->deleted_by_user_id) {
+            $deleted_by_user = User::where('id', $model->deleted_by_user_id)->first();
             if ($deleted_by_user) {
-                $category_show_model['deleted_by_user'] = $deleted_by_user;
+                $show_view_model['deleted_by_user'] = $deleted_by_user;
             }
         }
 
-        return view('admin.categories.show', compact('category_show_model'));
+        return view('admin.categories.show', compact('show_view_model'));
     }
 
     public function edit(Category $category)
@@ -145,6 +146,32 @@ class CategoriesController extends Controller
 
             $data = $request->all();
             $data['is_active'] = (bool)$request->is_active;
+            if ($category->parent_id == 0 && !(bool)$request->is_active) {
+                $childCategories = Category::where('parent_id', $category->id)->get();
+                if (count($childCategories)) {
+                    foreach ($childCategories as $child) {
+                        $child->is_active = false;
+                        $child->updated_by_user_id =  auth()->user()->id;
+                        $child->updated_at = now();
+                        $childSaved = $child->save();
+                        if (!$childSaved) {
+                            return redirect()->back()
+                                ->with('type', 'danger')
+                                ->with('message', "Failed to change is active category child:$child->title!");
+                        }
+                    }
+                }
+            }
+            if ($category->parent_id != 0 && (bool)$request->is_active) {
+                $parentCategory = Category::where('id', $category->parent_id)->first();
+                if (!$parentCategory->is_active) {
+                    $routeRestore = route('manager.categories.edit', $parentCategory->id);
+                    $goHref = "<a href='$routeRestore'>Do active id $parentCategory->id parent category</a>";
+                    return redirect()->back()
+                        ->with('type', 'danger')
+                        ->with('message', "Failed to do active category! Please, first do active parent category: $goHref");
+                }
+            }
             $data['slug'] = $this->dataService->sluggableArray($data, 'title');
             $data['updated_by_user_id'] =  auth()->user()->id;
             $updated = $category->update($data);
