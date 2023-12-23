@@ -51,7 +51,7 @@ class CategoriesController extends Controller
                 }
             }],
             'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,webp|max:2024',
-        ]);
+        ], []);
 
         $data = $request->all();
         $data['is_active'] = (bool)$request->is_active;

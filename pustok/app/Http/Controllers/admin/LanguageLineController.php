@@ -43,7 +43,7 @@ class LanguageLineController extends Controller
             'key' => 'required',
             'text' => ['required', 'array'],
             'text.*' => ['required', 'max:255'],
-        ]);
+        ], []);
 
         $data = $request->all();
         $data['is_active'] = (bool)$request->is_active;

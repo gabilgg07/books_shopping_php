@@ -59,7 +59,7 @@ Route::group(["middleware" => "auth.admin.check", "prefix" => LaravelLocalizatio
 
 // Admin Logined
 Route::group([
-    "middleware" => ['web', 'auth.admin'],
+    "middleware" => ['web', 'auth.admin', 'check.route'],
     "prefix" => LaravelLocalization::setLocale() . "/manager",
     "as" => "manager."
 ], function () {

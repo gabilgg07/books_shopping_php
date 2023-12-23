@@ -41,11 +41,17 @@ class LangsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'code' => ['required', 'max:3', Rule::unique($this->table_name, 'code')],
-            'country' => ['required', Rule::unique($this->table_name, 'country')],
-            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
-        ]);
+        $request->validate(
+            [
+                'code' => ['required', 'max:3', Rule::unique($this->table_name, 'code')],
+                'country' => ['required', Rule::unique($this->table_name, 'country')],
+                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
+            ],
+            [
+                'code.required' => 'Code ' . __('validation.required'),
+                'country.required' => 'Country ' . __('validation.required'),
+            ]
+        );
 
         $data = $request->all();
         $data['is_active'] =  $request->is_active ? 1 : 0;

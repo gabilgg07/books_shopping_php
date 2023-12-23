@@ -10,16 +10,16 @@
 <script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\demo_pages\form_inputs.js')}}"></script>
 <script>
-    $(window).on('load', function() {
-        $("#image_input").change(function(event) {
-            var tmppath = URL.createObjectURL(event.target.files[0]);
-            $("#image").attr(
-                "src",
-                URL.createObjectURL(event.target.files[0])
-            );
-            $("#image").removeClass('d-none');
-        });
+$(window).on('load', function() {
+    $("#image_input").change(function(event) {
+        var tmppath = URL.createObjectURL(event.target.files[0]);
+        $("#image").attr(
+            "src",
+            URL.createObjectURL(event.target.files[0])
+        );
+        $("#image").removeClass('d-none');
     });
+});
 </script>
 @endpush
 @section("content")

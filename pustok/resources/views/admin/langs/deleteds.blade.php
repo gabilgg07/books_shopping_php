@@ -36,7 +36,7 @@ Deleted {{Str::headline($table_name)}}
                         <td>{{Str::headline($model->country)}}</td>
                         <td width='200'>
                             @if ($model->image)
-                            <img src="{{$model->image}}" alt="{{$model_name.'-'.$model->id}}" class="img-fluid w-100" style="object-fit: cover; object-position: center; height:100px;">
+                            <img src="{{$model->image}}" alt="{{$model_name.'-'.$model->id}}" class="img-fluid border-1">
                             @endif
                         </td>
                         <td class="text-right">
