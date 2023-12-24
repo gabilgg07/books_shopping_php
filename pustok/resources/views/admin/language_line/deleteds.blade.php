@@ -18,7 +18,7 @@ Deleted {{Str::headline($table_name)}}
             </h3>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <!-- <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th style="width: 10px">#</th>
@@ -53,10 +53,58 @@ Deleted {{Str::headline($table_name)}}
                     </tr>
                     @endforeach
                 </tbody>
+            </table> -->
+
+            <table class="table table-bordered datatable-basic">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">Id</th>
+                        <th>Group</th>
+                        <th>Key</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($models as $model)
+                    <tr>
+                        <td>{{$model->id}}</td>
+                        <td>{{$model->group}}</td>
+                        <td>{{$model->key}}</td>
+                        <!-- <td class="text-right d-flex align-items-center justify-content-between">
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info d-flex align-items-center mr-1"><i class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning d-flex align-items-center mr-1"><i class="icon-pencil3 mr-2"></i>
+                            Edit</a>
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger d-flex align-items-center
+                            "><i class="mi-delete mr-2"></i> Delete</button>
+                        </form>
+                    </td> -->
+
+                        <td class="text-right">
+                            <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
+                                    class="mi-info mr-2"></i> Info</a>
+                            <a href="{{route('manager.'.$table_name.'.restore', $model->id)}}" class="btn btn-success">
+                                <i class="mi-restore-page mr-3"></i>
+                                Restore</a>
+                            <form onsubmit="return confirm('Are you sure you want permanently delete this data?')"
+                                method="post"
+                                action="{{route('manager.'.$table_name.'.permanently_delete', $model->id)}}"
+                                class="d-inline-block">
+                                @method('delete')
+                                @csrf
+                                <button type="submit" style="width:fit-content;" class="btn btn-danger ml-1"><i
+                                        class="mi-delete-forever mr-2"></i>Permanently Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer clearfix">
+        <!-- <div class="card-footer clearfix">
             <ul class="pagination pagination-sm m-0 float-right">
                 <li class="page-item"><a class="page-link" href="#">«</a></li>
                 <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -64,7 +112,7 @@ Deleted {{Str::headline($table_name)}}
                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item"><a class="page-link" href="#">»</a></li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </div>
 <!-- /.content -->

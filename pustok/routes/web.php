@@ -21,7 +21,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 // Client 
 
 // Client Out of Auth
-Route::group(["middleware" => ['web', 'auth.user.check'], "prefix" => LaravelLocalization::setLocale() . "", "as" => "auth."], function () {
+Route::group(["middleware" => ['web', 'auth.user.check', 'check.route'], "prefix" => LaravelLocalization::setLocale() . "", "as" => "auth."], function () {
     Route::get("/signup", [AccountController::class, "signup"])->name("signup");
     Route::post("/register", [AccountController::class, "register"])->name("register");
 
@@ -30,7 +30,7 @@ Route::group(["middleware" => ['web', 'auth.user.check'], "prefix" => LaravelLoc
 });
 
 // Client Logined
-Route::group(["prefix" => LaravelLocalization::setLocale() . "", "as" => "client."], function () {
+Route::group(["middleware" => ['check.route'], "prefix" => LaravelLocalization::setLocale() . "", "as" => "client."], function () {
     Route::get("/", [HomeController::class, "index"])->name("home.index");
 
     Route::get("/shop", [ShopController::class, "index"])->name("shop.index");
@@ -50,7 +50,7 @@ Route::group(["prefix" => LaravelLocalization::setLocale() . "", "as" => "client
 // Admin 
 
 // Admin Out of Auth
-Route::group(["middleware" => "auth.admin.check", "prefix" => LaravelLocalization::setLocale() . "/manager", "as" => "manager."], function () {
+Route::group(["middleware" => ["auth.admin.check", 'check.route'], "prefix" => LaravelLocalization::setLocale() . "/manager", "as" => "manager."], function () {
     Route::get("/register", [AdminController::class, "register"])->name("register");
     Route::post("/signup", [AdminController::class, "signup"])->name("signup");
     Route::get("/login", [AdminController::class, "login"])->name("login");
@@ -77,6 +77,9 @@ Route::group([
     Route::delete("/langs/permanently_delete/{lang}", [LangsController::class, 'permanently_delete'])->name('langs.permanently_delete');
     Route::resource("/langs", LangsController::class);
 
+    Route::get("/language_line/deleteds", [LanguageLineController::class, 'deleteds'])->name('language_line.deleteds');
+    Route::get("/language_line/restore/{language_line}", [LanguageLineController::class, 'restore'])->name('language_line.restore');
+    Route::delete("/language_line/permanently_delete/{language_line}", [LanguageLineController::class, 'permanently_delete'])->name('language_line.permanently_delete');
     Route::resource("/language_line", LanguageLineController::class);
 
     Route::get("/categories/deleteds", [CategoriesController::class, 'deleteds'])->name('categories.deleteds');

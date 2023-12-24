@@ -32,6 +32,10 @@ class AdminController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            if (!auth()->user()->is_admin) {
+                auth()->logout();
+                return back()->with('type', 'danger')->with('message', 'Email or password is invalide!');
+            }
             return redirect()->route('manager.dashboard');
         } else {
             return back()->with('type', 'danger')->with('message', 'Email or password is invalide!');

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('group')->index();
             $table->string('key');
+            // add group_key for check unique
             $table->json('text');
             $table->timestamps();
         });

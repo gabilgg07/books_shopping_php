@@ -9,15 +9,14 @@ $models = $index_view_model['models'];
 @endpush
 @section("content")
 <div class="content">
+    @include('admin.layouts.includes.alert')
     <div class="card">
-        @include('admin.layouts.includes.alert')
         <div class="card-header">
             <h3 class="card-title  d-flex justify-content-between float-none align-items-center">
                 {{Str::headline($table_name)}} Index Table
                 <div style="display: flex; gap: 10px;">
                     <div class="box-btn">
-                        <a href="{{route('manager.'.$table_name.'.create')}}" type="button"
-                            class="btn btn-block btn-success">
+                        <a href="{{route('manager.'.$table_name.'.create')}}" type="button" class="btn btn-block btn-success">
                             <i class="icon-plus-circle2 mr-2"></i> Add {{Str::headline($model_name)}}</a>
                     </div>
                     <div class="box-btn">
@@ -48,8 +47,7 @@ $models = $index_view_model['models'];
                     <td width='200'>
                         @if ($model->image)
                         <div class="image">
-                            <img src="{{$model->image}}" alt="{{$model->code.'-'.$model->country}}"
-                                class="img-fluid border-1">
+                            <img src="{{$model->image}}" alt="{{$model->code.'-'.$model->country}}" class="img-fluid border-1">
                         </div>
                         @endif
                     </td>
@@ -61,16 +59,13 @@ $models = $index_view_model['models'];
                         @endif
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
-                                class="mi-info mr-2"></i> Info</a>
-                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i
-                                class="icon-pencil3 mr-2"></i> Edit</a>
-                        <form onsubmit="return confirm('Are you sure?')" method="post"
-                            action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger ml-1"><i
-                                    class="mi-delete mr-2"></i> Delete</button>
+                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger
+                            "><i class="mi-delete mr-2"></i> Delete</button>
                         </form>
                     </td>
                 </tr>

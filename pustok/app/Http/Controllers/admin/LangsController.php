@@ -4,7 +4,6 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lang as Model;
-use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
 use Illuminate\Http\Request;
@@ -49,7 +48,11 @@ class LangsController extends Controller
             ],
             [
                 'code.required' => 'Code ' . __('validation.required'),
+                'code.unique' => 'Code ' . __('validation.unique'),
                 'country.required' => 'Country ' . __('validation.required'),
+                'country.unique' => 'Country ' . __('validation.unique'),
+                'image.image' => 'Image ' . __('validation.image'),
+                'image.uploaded' => __('validation.uploaded') . ' 2 Mb',
             ]
         );
 
@@ -65,7 +68,7 @@ class LangsController extends Controller
                 $created->image = '/storage/' . $imgPath;
                 $created->save();
             }
-            return redirect()->route('manager' . $this->table_name . 'index')
+            return redirect()->route('manager.' . $this->table_name . '.index')
                 ->with('type', 'success')
                 ->with('message', Str::headline($this->model_name) . ' has been stored.');
         } else {
@@ -117,7 +120,7 @@ class LangsController extends Controller
         if ($model) {
             $edit_view_model = [
                 'model_name' => $this->model_name,
-                'route' => $this->table_name,
+                'table_name' => $this->table_name,
                 'model' => $model,
             ];
             return view('admin.' . $this->table_name . '.edit', compact('edit_view_model'));
@@ -134,6 +137,13 @@ class LangsController extends Controller
                 'code' => ['required', 'max:3', Rule::unique($this->table_name, 'code')->ignore($model->id)],
                 'country' => ['required', Rule::unique($this->table_name, 'country')->ignore($model->id)],
                 'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
+            ], [
+                'code.required' => 'Code ' . __('validation.required'),
+                'code.unique' => 'Code ' . __('validation.unique'),
+                'country.required' => 'Country ' . __('validation.required'),
+                'country.unique' => 'Country ' . __('validation.unique'),
+                'image.image' => 'Image ' . __('validation.image'),
+                'image.uploaded' => __('validation.uploaded') . ' 2 Mb',
             ]);
 
             $data = $request->all();
@@ -174,7 +184,7 @@ class LangsController extends Controller
             $model->deleted_at = now();
             $saved = $model->save();
             if ($saved) {
-                $currentLang = Lang::where('is_deleted', 0)->first();
+                $currentLang = Model::where('is_deleted', 0)->first();
                 App::setLocale($currentLang->code);
                 $route = route('manager.' . $this->table_name . '.index');
                 $redirect = Str::replace($model->code, $currentLang->code, $route);
@@ -201,6 +211,7 @@ class LangsController extends Controller
         ];
         return view('admin.' . $this->table_name . '.deleteds', compact("deleteds_view_model"));
     }
+
     public function restore(Model $lang)
     {
         $model = $lang;

@@ -1,7 +1,5 @@
 @extends("admin.layouts.master")
-@push("page_title")
-{{Str::headline($table_name)}} Create
-@endpush
+
 @push("theme_js")
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\uniform.min.js')}}"></script>
@@ -22,10 +20,15 @@ $(window).on('load', function() {
 });
 </script>
 @endpush
+
+@push("page_title")
+{{Str::headline($table_name)}} Create
+@endpush
+
 @section("content")
 <div class="content">
+    @include('admin.layouts.includes.alert')
     <div class="card">
-        @include('admin.layouts.includes.alert')
         <div class="card-header header-elements-inline">
             <h5 class="card-title">{{Str::headline($table_name)}} Create Form</h5>
         </div>

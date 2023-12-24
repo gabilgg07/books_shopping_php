@@ -1,12 +1,11 @@
 @php
 $model_name=$edit_view_model['model_name'];
-$route=$edit_view_model['route'];
+$table_name=$edit_view_model['table_name'];
 $model=$edit_view_model['model'];
 @endphp
+
 @extends("admin.layouts.master")
-@push("page_title")
-{{Str::headline($model_name)}} Edit
-@endpush
+
 @push("theme_js")
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\uniform.min.js')}}"></script>
@@ -27,16 +26,20 @@ $(window).on('load', function() {
 });
 </script>
 @endpush
+
+@push("page_title")
+{{Str::headline($model_name)}} Edit
+@endpush
+
 @section("content")
 <div class="content">
+    @include('admin.layouts.includes.alert')
     <div class="card">
-        @include('admin.layouts.includes.alert')
         <div class="card-header header-elements-inline">
             <h5 class="card-title">{{Str::headline($model_name)}} Edit</h5>
         </div>
-
         <div class="card-body">
-            <form method="post" action="{{route('manager.'. $route .'.update', $model->id)}}"
+            <form method="post" action="{{route('manager.'. $table_name .'.update', $model->id)}}"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
@@ -48,8 +51,8 @@ $(window).on('load', function() {
                     @include('admin.layouts.includes.image',['field_value'=>$model->image, 'class_name' =>'lang-flag'])
                 </fieldset>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary"><i class="icon-database-insert mr-2"></i>
-                        Insert</button>
+                    <button type="submit" class="btn btn-success"><i class="icon-database-edit2 mr-2"></i>
+                        Update</button>
                 </div>
             </form>
         </div>

@@ -8,19 +8,19 @@
                         <img src="{{asset('client/assets/image/logo.png')}}" alt="">
                     </a>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <div class="header-search-block">
                         <input type="text" placeholder="Search entire store here">
                         <button>Search</button>
                     </div>
                 </div>
-                <d iv class="col-lg-4">
+                <d iv class="col-lg-5">
                     <div class="main-navigation flex-lg-right">
                         <div class="cart-widget">
                             <div class="login-block">
-                                @if (auth()->user() && !auth()->user()->is_admin)
+                                @if ($user && !$user->is_admin)
                                 <a href="{{route('client.account.index')}}"
-                                    class="font-weight-bold">{{auth()->user()->first_name." ".auth()->user()->last_name}}</a>
+                                    class="font-weight-bold">{{$user->first_name." ".$user->last_name}}</a>
                                 <br>
                                 <span>or</span><a onclick="return confirm('Are you sure?')"
                                     href="{{route('client.account.logout')}}">Logout</a>
@@ -30,15 +30,24 @@
                                 @endif
                             </div>
                             <div class="langs-block">
-                                <p class="lang">{{ Str::upper(LaravelLocalization::getCurrentLocale()) }} <i
-                                        class="ml-1 fas fa-angle-down "></i></p>
+                                <p class="lang">
+                                    @if ($currentLang->image)
+                                    <img src="{{$currentLang->image}}" class="img-flag mr-2"
+                                        alt="{{$currentLang->code.'-'.$currentLang->country}}">
+                                    @endif
+                                    {{ Str::upper($currentLang->code) }} <i class="ml-1 fas fa-angle-down "></i>
+                                </p>
                                 <ul class="langs">
-                                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                    @if (LaravelLocalization::getCurrentLocale() !== $localeCode)
+                                    @foreach($langs as $lang)
+                                    @if ($currentLang->code !== $lang->code)
                                     <li class="lang-item">
-                                        <a rel="alternate" hreflang="{{ $localeCode }}"
-                                            href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                            {{ Str::upper($localeCode) }}
+                                        <a rel="alternate" hreflang="{{ $lang->code }}"
+                                            href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}">
+                                            @if ($lang->image)
+                                            <img src="{{$lang->image}}" class="img-flag mr-2"
+                                                alt="{{$lang->code.'-'.$lang->country}}">
+                                            @endif
+                                            {{ Str::upper($lang->code) }}
                                         </a>
                                     </li>
                                     @endif

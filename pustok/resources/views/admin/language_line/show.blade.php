@@ -17,7 +17,7 @@ $color_classes = $show_view_model['color_classes'];
         <div class="w-100 overflow-auto order-2 order-md-1">
             <div class="card">
                 <div class="card-body row">
-                    <div class="col-lg-12">
+                    <div class="col-md-12">
                         <h4 class="font-weight-semibold mb-1 d-flex justify-content-between align-items-center">
                             <span class="text-default text-info">Details of
                                 {{$model->id}} id {{Str::headline($model_name)}}
@@ -27,8 +27,7 @@ $color_classes = $show_view_model['color_classes'];
                                 Deleted !!!
                             </span>
                             @else
-                            <span
-                                class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
+                            <span class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
                                 {{$model->is_active?"Active":"Don't Active"}}
                             </span>
                             @endif
@@ -40,21 +39,47 @@ $color_classes = $show_view_model['color_classes'];
 
                     <div class="col-lg-12">
                         <div class="row">
-                            @include('admin.layouts.includes.mini_text',['field_name'=>'code','field_value'=>$model->code,
+                            <div class="col-lg-6">
+                                <div class="card border-warning">
+                                    <div class="card-header bg-warning header-elements-inline">
+                                        <span class="card-title font-weight-semibold">Texts</span>
+                                        <div class="header-elements">
+                                            <div class="list-icons">
+                                                <a class="list-icons-item" data-action="collapse"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body p-0">
+                                        <div class="nav nav-sidebar my-2">
+                                            @foreach ($show_view_model['texts'] as $lang=>$item)
+                                            @php
+                                            $r_class = $show_view_model['color_classes'][rand(0,
+                                            count($show_view_model['color_classes'])-1)];
+                                            @endphp
+                                            <li class="nav-item">
+                                                <span class="nav-link text-{{$r_class}} {{array_key_last($show_view_model['texts'])!=$lang?'border-bottom-1 border-bottom-dashed':''}}">
+                                                    {{$item}}
+                                                    <span class="font-size-sm font-weight-normal ml-auto text-{{$r_class}}-300">{{$lang}}</span>
+                                                </span>
+                                            </li>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="row">
+                            @include('admin.layouts.includes.mini_text',['field_name'=>'group','field_value'=>$model->group,
                             'color'=> $color_classes[rand(0,count($color_classes)-1)],
                             'upper'=>true])
 
-                            @include('admin.layouts.includes.mini_text',['field_name'=>'country','field_value'=>$model->country,
+                            @include('admin.layouts.includes.mini_text',['field_name'=>'key','field_value'=>$model->key,
                             'color'=> $color_classes[rand(0,count($color_classes)-1)],
                             'upper'=>false])
-
-                            @if ($model->image)
-
-                            @include('admin.layouts.includes.mini_img',['src'=>$model->image,
-                            'alt'=>$model_name.'-'.$model->id, 'color'=>
-                            $color_classes[rand(0,count($color_classes)-1)], 'class_name'=>'lang-flag'])
-
-                            @endif
                         </div>
                     </div>
 

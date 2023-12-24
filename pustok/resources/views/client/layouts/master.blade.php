@@ -7,7 +7,7 @@
 
 <body>
     <div class="site-wrapper" id="top">
-        @include("client.layouts.partials.header")
+        <x-client-header-component />
         @include("client.layouts.partials.menu")
         @include("client.layouts.partials.sticky")
         @yield("content")

@@ -43,6 +43,10 @@ class AccountController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            if (auth()->user()->is_admin) {
+                auth()->logout();
+                return back()->with('error', 'Email or password is invalide');
+            }
             return redirect()->route('client.account.index');
         } else {
             // return back()->with('error', __('form.password_invalid'));

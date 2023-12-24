@@ -23901,36 +23901,45 @@ input[type="number"] {
     -ms-flex-align: center;
     align-items: center;
     position: relative;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
 }
+
+.cart-widget .login-block {
+    /* margin-right: 5px; */
+    /* padding: 6px 0; */
+    /* text-align: left; */
+}
+
 .cart-widget .langs-block {
-    margin-right: 20px;
-    padding: 6px 0;
-    text-align: left;
     position: relative;
-    width: 35px;
+    /* margin-right: 5px; */
+    /* padding: 6px 0;
+    text-align: left; */
+    /* width: 80px; */
 }
 
 .cart-widget .langs-block .lang {
-    padding: 5px 0;
-    width: 120%;
-    border: 1px solid #333;
+    padding: 5px;
+    border: 1px solid #62ab00;
     border-radius: 5px;
     margin: 0;
     cursor: pointer;
-    transition: all 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
-}
-.cart-widget .langs-block .lang:hover {
-    border-color: #62ab00;
-    color: #fff;
     background-color: #62ab00;
+    color: #fff;
+}
+.cart-widget .langs-block .lang img {
+    width: 30px;
+    border: 1px solid white;
+    box-shadow: 0 0 2px 1px black;
 }
 .cart-widget .langs-block .langs {
     position: absolute;
-    top: 94%;
+    top: 105%;
     width: 100%;
     display: none;
     z-index: 999;
@@ -23945,8 +23954,8 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 0;
-    border: 1px solid #333;
+    padding: 5px;
+    border: 1px solid #62ab00;
     border-radius: 5px;
     width: 100%;
     cursor: pointer;
@@ -23955,8 +23964,15 @@ input[type="number"] {
 }
 
 .cart-widget .langs-block .langs .lang-item a {
-    display: block;
-    color: #333;
+    color: #62ab00;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+}
+.cart-widget .langs-block .langs .lang-item a img {
+    width: 30px;
+    border: 1px solid #62ab00;
+    box-shadow: 0 0 2px 1px black;
     transition: all 0.3s;
 }
 
@@ -23968,11 +23984,9 @@ input[type="number"] {
 .cart-widget .langs-block .langs .lang-item:hover a {
     color: #fff;
 }
-
-.cart-widget .login-block {
-    margin-right: 27px;
-    padding: 6px 0;
-    text-align: left;
+.cart-widget .langs-block .langs .lang-item:hover a img {
+    border-color: #777;
+    box-shadow: 0 0 3px 1px #ffffffd1;
 }
 
 .cart-block {

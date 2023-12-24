@@ -8,7 +8,7 @@
             @endif
 
             <div>
-                <p class="mb-1">This {{$model_name}} {{$action_name}} by
+                <p class="mb-1">This {{Str::headline($model_name)}} {{$action_name}} by
                     <cite>{{$user->first_name.' '.$user->last_name}}</cite>
                 </p>
                 <footer class="blockquote-footer">{{Str::headline($action_name)}} At:
