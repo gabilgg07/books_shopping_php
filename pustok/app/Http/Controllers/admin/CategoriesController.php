@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\categories\CreateRequest;
+use App\Http\Requests\admin\categories\UpdateRequest;
+use App\Models\Category as Model;
 use App\Models\Category;
 use App\Models\Lang;
 use App\Models\User;
@@ -12,142 +15,135 @@ use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
+    protected $table_name = 'categories';
+    protected $model_name = 'category';
     public function __construct(private DataService $dataService)
     {
     }
 
     public function index()
     {
-        $categories = Category::where('is_deleted', 0)->get();
-        return view("admin.categories.index", compact("categories"));
+        $models = Model::where('is_deleted', 0)->get();
+        $index_view_model = [
+            'model_name' => $this->model_name,
+            'table_name' => $this->table_name,
+            'models' => $models,
+        ];
+        return view('admin.' . $this->table_name . '.index', compact('index_view_model'));
     }
 
     public function create()
     {
         $langs = Lang::where('is_deleted', 0)->get();
         $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->get();
-        return view("admin.categories.create", compact("categories", 'langs'));
+        $create_view_model = [
+            'model_name' => $this->model_name,
+            'table_name' => $this->table_name,
+            'langs' => $langs,
+            'select_items' => $categories,
+        ];
+        return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        // $this->validate($request, [
-        //     'title' => ['required', 'array', Rule::unique('categories', 'title')],
-        //     // 'title' => 'required|array',
-        //     'title.*' => ['required', 'max:255'],
-        // ]);
-        $this->validate($request, [
-            'title' => ['required', 'array'],
-            'title.*' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                $slug = Str::slug($value);
-                $keyValue = Str::of($attribute)->afterLast('.');
-                $existingTitles = Category::whereJsonContains('slug->' . $keyValue, $slug)->exists();
-                // $exists = DB::table('categories')
-                //     ->whereRaw('JSON_CONTAINS(slug, JSON_QUOTE(?), "$.' . $keyValue . '")', [$slug])
-                //     ->exists();
-                // dump($existingTitles);
-                if ($existingTitles) {
-                    $fail("The $attribute must be unique.");
-                }
-            }],
-            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,webp|max:2024',
-        ], []);
-
         $data = $request->all();
-        $data['is_active'] = (bool)$request->is_active;
+        $data['is_active'] = $request->is_active ? 1 : 0;
         $data['slug'] = $this->dataService->sluggableArray($data, 'title');
         $data['created_by_user_id'] =  auth()->user()->id;
-        $created = Category::create($data);
+        $created = Model::create($data);
+
         if ($created) {
             if ($request->file()) {
                 $fileExtension = $request->image->extension();
-                $imgName = 'category' . ($created->parent_id == 0 ? '_parent' : '') . '_' . time() . rand(0, 999) . '.' . $fileExtension;
-                $imgPath = $request->file('image')->storeAs('uploads/admin/categories', $imgName, 'public');
+                $imgName = $this->model_name . ($created->parent_id == 0 ? '_parent' : '') . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
+                $imgPath = $request->file('image')->storeAs('uploads/admin/' . $this->table_name, $imgName, 'public');
                 $created->image = '/storage/' . $imgPath;
                 $created->save();
             }
-            return redirect()->route("manager.categories.index")
+            return redirect()->route("manager.' . $this->table_name . '.index")
                 ->with('type', 'success')
-                ->with('message', 'Category has been stored.');
+                ->with('message', Str::headline($this->model_name) . ' has been stored.');
         } else {
             return redirect()->back()
                 ->with('type', 'danger')
-                ->with('message', 'Failed to store category!');
+                ->with('message', 'Failed to store ' . $this->model_name . '!');
         }
     }
 
-    public function show(Category $category)
+    public function show(Model $category)
     {
         $model = $category;
-        $show_view_model = [
-            'colorClasses' => $this->dataService->colorsArray,
-            'model' => $model,
-        ];
+        if ($model) {
+            $show_view_model = [
+                'color_classes' => $this->dataService->colorsArray,
+                'model_name' => $this->model_name,
+                'model' => $model,
+            ];
 
-        if ($model->parent_id != 0) {
-            $parentCategory = Category::where('id', $model->parent_id)->first();
-            if ($parentCategory) {
-                $show_view_model['parent_category'] = $parentCategory;
-            }
-        }
-
-        $show_view_model['titles'] = $model->getTranslations('title');
-        $show_view_model['slugs'] = $model->getTranslations('slug');
-        if ($model->created_by_user_id) {
-            $created_by_user = User::where('id', $model->created_by_user_id)->first();
-            if ($created_by_user) {
-                $show_view_model['created_by_user'] = $created_by_user;
-            }
-
-            if ($model->updated_by_user_id && $model->updated_by_user_id !== $model->created_by_user_id) {
-                $updated_by_user = User::where('id', $model->updated_by_user_id)->first();
-                if ($updated_by_user) {
-                    $show_view_model['updated_by_user'] = $updated_by_user;
+            if ($model->parent_id != 0) {
+                $parentCategory = Model::where('id', $model->parent_id)->first();
+                if ($parentCategory) {
+                    $show_view_model['parent_category'] = $parentCategory;
                 }
             }
-        }
-        if ($model->deleted_by_user_id) {
-            $deleted_by_user = User::where('id', $model->deleted_by_user_id)->first();
-            if ($deleted_by_user) {
-                $show_view_model['deleted_by_user'] = $deleted_by_user;
+
+            $show_view_model['titles'] = $model->getTranslations('title');
+            $show_view_model['slugs'] = $model->getTranslations('slug');
+            if ($model->created_by_user_id) {
+                $created_by_user = User::where('id', $model->created_by_user_id)->first();
+                if ($created_by_user) {
+                    $show_view_model['created_by_user'] = $created_by_user;
+                }
+
+                if ($model->updated_by_user_id && $model->updated_at !== $model->created_at && !$model->is_deleted) {
+                    $updated_by_user = User::where('id', $model->updated_by_user_id)->first();
+                    if ($updated_by_user) {
+                        $show_view_model['updated_by_user'] = $updated_by_user;
+                    }
+                }
             }
-        }
+            if ($model->deleted_by_user_id) {
+                $deleted_by_user = User::where('id', $model->deleted_by_user_id)->first();
+                if ($deleted_by_user) {
+                    $show_view_model['deleted_by_user'] = $deleted_by_user;
+                }
+            }
 
-        return view('admin.categories.show', compact('show_view_model'));
-    }
-
-    public function edit(Category $category)
-    {
-        $langs = Lang::where('is_deleted', 0)->get();
-        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->get();
-        if ($category) {
-            return view('admin.categories.edit', compact('langs', 'categories', 'category'));
+            return view('admin.' . $this->table_name . '.show', compact('show_view_model'));
         } else {
             abort(404);
         }
     }
 
-    public function update(Request $request, Category $category)
+    public function edit(Model $category)
     {
-        if ($category) {
-            $categoryId = $category->id;
-            $this->validate($request, [
-                'title' => ['required', 'array'],
-                'title.*' => ['required', 'max:255', function ($attribute, $value, $fail) use ($categoryId) {
-                    $slug = Str::slug($value);
-                    $keyValue = Str::of($attribute)->afterLast('.');
-                    $existingTitles = Category::where('id', '!=', $categoryId)->whereJsonContains('slug->' . $keyValue, $slug)->exists();
-                    if ($existingTitles) {
-                        $fail("The $attribute must be unique.");
-                    }
-                }],
-                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,webp|max:2024',
-            ]);
+        $langs = Lang::where('is_deleted', 0)->get();
+        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->get();
+        $model = $category;
+        if ($model) {
+            $edit_view_model = [
+                'model_name' => $this->model_name,
+                'table_name' => $this->table_name,
+                'model' => $model,
+                'langs' => $langs,
+                'select_items' => $categories,
+            ];
+            $edit_view_model['json_field'] = $model->getTranslations('title');
+            return view('admin.' . $this->table_name . '.edit', compact('edit_view_model'));
+        } else {
+            abort(404);
+        }
+    }
 
+    public function update(UpdateRequest $request, Model $category)
+    {
+        $model = $category;
+        if ($model) {
             $data = $request->all();
-            $data['is_active'] = (bool)$request->is_active;
-            if ($category->parent_id == 0 && !(bool)$request->is_active) {
-                $childCategories = Category::where('parent_id', $category->id)->get();
+            $data['is_active'] = $request->is_active ? 1 : 0;
+            if ($model->parent_id == 0 && !(bool)$request->is_active) {
+                $childCategories = Model::where('parent_id', $model->id)->get();
                 if (count($childCategories)) {
                     foreach ($childCategories as $child) {
                         $child->is_active = false;
@@ -157,59 +153,60 @@ class CategoriesController extends Controller
                         if (!$childSaved) {
                             return redirect()->back()
                                 ->with('type', 'danger')
-                                ->with('message', "Failed to change is active category child:$child->title!");
+                                ->with('message', "Failed to change is_active field of child $this->model_name id:$child->id!");
                         }
                     }
                 }
             }
-            if ($category->parent_id != 0 && (bool)$request->is_active) {
-                $parentCategory = Category::where('id', $category->parent_id)->first();
-                if (!$parentCategory->is_active) {
-                    $routeRestore = route('manager.categories.edit', $parentCategory->id);
-                    $goHref = "<a href='$routeRestore'>Do active id $parentCategory->id parent category</a>";
+            if ($model->parent_id != 0 && (bool)$request->is_active) {
+                $parentModel = Model::where('id', $model->parent_id)->first();
+                if (!$parentModel->is_active) {
+                    $route = route('manager.' . $this->table_name . '.edit', $parentModel->id);
+                    $goHref = "<a href='$route'>Do active id $parentModel->id parent $this->model_name</a>";
                     return redirect()->back()
                         ->with('type', 'danger')
-                        ->with('message', "Failed to do active category! Please, first do active parent category: $goHref");
+                        ->with('message', "Failed to do active $this->model_name! Please, first do active parent $this->model_name: $goHref");
                 }
             }
             $data['slug'] = $this->dataService->sluggableArray($data, 'title');
             $data['updated_by_user_id'] =  auth()->user()->id;
-            $updated = $category->update($data);
+            $updated = $model->update($data);
 
             if ($updated) {
                 if ($request->file()) {
-                    if ($category->image && file_exists(public_path($category->image))) {
-                        unlink(public_path($category->image));
+                    if ($model->image && file_exists(public_path($model->image))) {
+                        unlink(public_path($model->image));
                     }
                     $fileExtension = $request->image->extension();
-                    $imgName = 'category' . ($category->parent_id == 0 ? '_parent' : '') . '_' . time() . rand(0, 999) . '.' . $fileExtension;
-                    $imgPath = $request->file('image')->storeAs('uploads/admin/categories', $imgName, 'public');
-                    $category->image = '/storage/' . $imgPath;
-                    $category->save();
+                    $imgName = $this->model_name . ($model->parent_id == 0 ? '_parent' : '') . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
+                    $imgPath = $request->file('image')->storeAs('uploads/admin/' . $this->table_name, $imgName, 'public');
+                    $model->image = '/storage/' . $imgPath;
+                    $model->save();
                 }
-                return redirect()->route("manager.categories.index")
+                return redirect()->route('manager.' . $this->table_name . '.index')
                     ->with('type', 'success')
-                    ->with('message', 'Category has been updated.');
+                    ->with('message', Str::headline($this->model_name) . ' has been updated.');
             } else {
                 return redirect()->back()
-                    ->with('type', 'danger')
-                    ->with('message', 'Something went wrong!');
+                    ->with('type', 'danger')->with('message', 'Failed to update ' . $this->model_name . '!');
             }
         } else {
             abort(404);
         }
     }
 
-    public function destroy(Category $category)
+    public function destroy(Model $category)
     {
-        if ($category) {
-            $category->is_deleted = 1;
-            $category->deleted_by_user_id =  auth()->user()->id;
-            $category->deleted_at = now();
-            if ($category->parent_id == 0) {
-                $childCategories = Category::where('parent_id', $category->id)->where('is_deleted', 0)->get();
-                if (count($childCategories)) {
-                    foreach ($childCategories as $child) {
+
+        $model = $category;
+        if ($model) {
+            $model->is_deleted = 1;
+            $model->deleted_by_user_id =  auth()->user()->id;
+            $model->deleted_at = now();
+            if ($model->parent_id == 0) {
+                $childModels = Model::where('parent_id', $model->id)->where('is_deleted', 0)->get();
+                if (count($childModels)) {
+                    foreach ($childModels as $child) {
 
                         $child->is_deleted = 1;
                         $child->deleted_by_user_id =  auth()->user()->id;
@@ -218,21 +215,20 @@ class CategoriesController extends Controller
                         if (!$childSaved) {
                             return redirect()->back()
                                 ->with('type', 'danger')
-                                ->with('message', "Failed to delete category child:$child->title!");
+                                ->with('message', "Failed to delete child $this->model_name id:$child->id !");
                         }
                     }
                 }
             }
-            $saved = $category->save();
-
+            $saved = $model->save();
             if ($saved) {
-                return redirect()->route("manager.categories.index")
+                return redirect()->route('manager.' . $this->table_name . '.index')
                     ->with('type', 'success')
-                    ->with('message', 'Category has been deleted.');
+                    ->with('message', Str::headline($this->model_name) . ' has been deleted.');
             } else {
                 return redirect()->back()
                     ->with('type', 'danger')
-                    ->with('message', 'Failed to delete category!');
+                    ->with('message', 'Failed to delete ' . $this->model_name . '!');
             }
         } else {
             abort(404);
@@ -241,14 +237,20 @@ class CategoriesController extends Controller
 
     public function deleteds()
     {
-        $categories = Category::where('is_deleted', 1)->get();
-        return view("admin.categories.deleteds", compact("categories"));
+        $models = Model::where('is_deleted', 1)->get();
+        $deleteds_view_model = [
+            'model_name' => $this->model_name,
+            'table_name' => $this->table_name,
+            'models' => $models,
+        ];
+        return view('admin.' . $this->table_name . '.deleteds', compact("deleteds_view_model"));
     }
-    public function restore(Category $category)
+
+    public function restore(Model $category)
     {
         if ($category) {
             if ($category->parent_id) {
-                $parentCategory = Category::where('id', $category->parent_id)->first();
+                $parentCategory = Model::where('id', $category->parent_id)->first();
                 if ($parentCategory->is_deleted) {
                     $routeRestore = route('manager.categories.restore', $parentCategory->id);
                     $goHref = "<a href='$routeRestore'>Restore id $parentCategory->id parent category</a>";

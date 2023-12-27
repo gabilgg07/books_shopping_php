@@ -72,19 +72,27 @@ Route::group([
         Route::patch("/change-password", [AdminAccountController::class, "changePassword"])->name("account.changePassword");
     });
 
+    // LANGS
     Route::get("/langs/deleteds", [LangsController::class, 'deleteds'])->name('langs.deleteds');
     Route::get("/langs/restore/{lang}", [LangsController::class, 'restore'])->name('langs.restore');
     Route::delete("/langs/permanently_delete/{lang}", [LangsController::class, 'permanently_delete'])->name('langs.permanently_delete');
     Route::resource("/langs", LangsController::class);
 
+    // LANGUAGE_LINE
     Route::get("/language_line/deleteds", [LanguageLineController::class, 'deleteds'])->name('language_line.deleteds');
     Route::get("/language_line/restore/{language_line}", [LanguageLineController::class, 'restore'])->name('language_line.restore');
     Route::delete("/language_line/permanently_delete/{language_line}", [LanguageLineController::class, 'permanently_delete'])->name('language_line.permanently_delete');
     Route::resource("/language_line", LanguageLineController::class);
 
+    // CATEGORIES
     Route::get("/categories/deleteds", [CategoriesController::class, 'deleteds'])->name('categories.deleteds');
     Route::get("/categories/restore/{category}", [CategoriesController::class, 'restore'])->name('categories.restore');
+    Route::delete("/categories/permanently_delete/{category}", [CategoriesController::class, 'permanently_delete'])->name('categories.permanently_delete');
     Route::resource("/categories", CategoriesController::class);
 
+    // USERS
+    Route::get("/users/deleteds", [UsersController::class, 'deleteds'])->name('users.deleteds');
+    Route::get("/users/restore/{user}", [UsersController::class, 'restore'])->name('users.restore');
+    Route::delete("/users/permanently_delete/{user}", [UsersController::class, 'permanently_delete'])->name('users.permanently_delete');
     Route::resource("/users", UsersController::class);
 });

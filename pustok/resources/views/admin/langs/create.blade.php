@@ -40,7 +40,8 @@ $(window).on('load', function() {
                     @include('admin.layouts.includes.create_input',['field_name'=>'country'])
                     @include('admin.layouts.includes.create_check',['field_name'=>'is_active'])
                     @include('admin.layouts.includes.image_input',['model_name'=>'lang'])
-                    @include('admin.layouts.includes.image',['field_value'=>'','class_name'=>'lang-flag'])
+                    @include('admin.layouts.includes.image',['field_value'=>'','class_name'=>'lang-flag',
+                    'col_count'=>3])
                 </fieldset>
 
                 <div class="text-right">

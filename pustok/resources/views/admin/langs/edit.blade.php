@@ -48,7 +48,8 @@ $(window).on('load', function() {
                     @include('admin.layouts.includes.edit_input',['field_name'=>'country','field_value'=>$model->country])
                     @include('admin.layouts.includes.edit_check',['field_name'=>'is_active','field_value'=>$model->is_active])
                     @include('admin.layouts.includes.image_input',['model_name'=>$model_name])
-                    @include('admin.layouts.includes.image',['field_value'=>$model->image, 'class_name' =>'lang-flag'])
+                    @include('admin.layouts.includes.image',['field_value'=>$model->image, 'class_name' =>'lang-flag',
+                    'col_count'=>3])
                 </fieldset>
                 <div class="text-right">
                     <button type="submit" class="btn btn-success"><i class="icon-database-edit2 mr-2"></i>

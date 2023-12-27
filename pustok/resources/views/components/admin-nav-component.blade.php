@@ -1,7 +1,8 @@
 <div class="navbar navbar-expand-md navbar-dark">
-    <div class="navbar-brand">
-        <a href="{{route('manager.dashboard')}}" class="d-inline-block">
-            <img src="{{asset('admin/global_assets\images\logo_light.png')}}" alt="light logo">
+    <div class="navbar-brand m-0">
+        <a href="{{route('manager.dashboard')}}" class="d-flex align-items-center text-light" style="font-size: 16px; gap:10px;">
+            <img src="{{asset('admin/global_assets\images\logo_icon_light.png')}}" alt="light logo">
+            Admin Panel Pustok
         </a>
     </div>
 
@@ -26,17 +27,14 @@
                     <li class="nav-item dropdown language-switch">
                         <a class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             @if ($currentLang->image)
-                            <img src="{{$currentLang->image}}" class="img-flag mr-2"
-                                alt="{{$currentLang->code.'-'.$currentLang->country}}">
+                            <img src="{{$currentLang->image}}" class="img-flag mr-2" alt="{{$currentLang->code.'-'.$currentLang->country}}">
                             @endif
                             {{ Str::upper($currentLang->code) }}
                         </a>
                         <div class="dropdown-menu">
                             @foreach($langs as $lang)
                             @if ($currentLang->code !== $lang->code)
-                            <a rel="alternate" hreflang="{{ $lang->code }}"
-                                href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}"
-                                class="dropdown-item english">
+                            <a rel="alternate" hreflang="{{ $lang->code }}" href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}" class="dropdown-item english">
                                 @if ($lang->image)
                                 <img src="{{$lang->image}}" class="img-flag" alt="{{$lang->code.'-'.$lang->country}}">
                                 @endif
@@ -356,8 +354,7 @@
 
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{asset($user->image?$user->image:'admin/global_assets\images\user_default_photo.png')}}"
-                        class="rounded-circle mr-2" height="34" alt="">
+                    <img src="{{asset($user->image?$user->image:'admin/global_assets\images\user_default_photo.png')}}" class="rounded-circle mr-2" height="34" alt="">
                     <span>{{$user->first_name.' '.$user->last_name}}</span>
                 </a>
 

@@ -39,35 +39,7 @@ $color_classes = $show_view_model['color_classes'];
 
                     <div class="col-lg-12">
                         <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card border-warning">
-                                    <div class="card-header bg-warning header-elements-inline">
-                                        <span class="card-title font-weight-semibold">Texts</span>
-                                        <div class="header-elements">
-                                            <div class="list-icons">
-                                                <a class="list-icons-item" data-action="collapse"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-body p-0">
-                                        <div class="nav nav-sidebar my-2">
-                                            @foreach ($show_view_model['texts'] as $lang=>$item)
-                                            @php
-                                            $r_class = $show_view_model['color_classes'][rand(0,
-                                            count($show_view_model['color_classes'])-1)];
-                                            @endphp
-                                            <li class="nav-item">
-                                                <span class="nav-link text-{{$r_class}} {{array_key_last($show_view_model['texts'])!=$lang?'border-bottom-1 border-bottom-dashed':''}}">
-                                                    {{$item}}
-                                                    <span class="font-size-sm font-weight-normal ml-auto text-{{$r_class}}-300">{{$lang}}</span>
-                                                </span>
-                                            </li>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('admin.layouts.includes.lang_tab',['color'=>$color_classes[rand(0,count($color_classes)-1)],'colors'=>$color_classes,'field_name'=>'texts','field_value'=>$show_view_model['texts']])
                         </div>
                     </div>
 

@@ -3,7 +3,9 @@ $model_name = $index_view_model['model_name'];
 $table_name = $index_view_model['table_name'];
 $models = $index_view_model['models'];
 @endphp
+
 @extends('admin.layouts.master')
+
 @push('theme_js')
 <script src="{{asset('admin/global_assets\js\plugins\tables\datatables\datatables.min.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\plugins\forms\selects\select2.min.js')}}"></script>
@@ -11,9 +13,11 @@ $models = $index_view_model['models'];
 @push('page_js')
 <script src="{{asset('admin/global_assets\js\demo_pages\datatables_basic.js')}}"></script>
 @endpush
+
 @push("page_title")
 {{Str::headline($table_name)}} Index
 @endpush
+
 @section('content')
 <div class="content">
     @include('admin.layouts.includes.alert')

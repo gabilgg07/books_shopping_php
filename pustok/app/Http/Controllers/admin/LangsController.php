@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\LangRequest;
 use App\Models\Lang as Model;
 use App\Models\User;
 use App\Services\DataService;
@@ -38,24 +39,8 @@ class LangsController extends Controller
         return view('admin.' . $this->table_name . '.create', compact('model_name', 'table_name'));
     }
 
-    public function store(Request $request)
+    public function store(LangRequest $request)
     {
-        $request->validate(
-            [
-                'code' => ['required', 'max:3', Rule::unique($this->table_name, 'code')],
-                'country' => ['required', Rule::unique($this->table_name, 'country')],
-                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
-            ],
-            [
-                'code.required' => 'Code ' . __('validation.required'),
-                'code.unique' => 'Code ' . __('validation.unique'),
-                'country.required' => 'Country ' . __('validation.required'),
-                'country.unique' => 'Country ' . __('validation.unique'),
-                'image.image' => 'Image ' . __('validation.image'),
-                'image.uploaded' => __('validation.uploaded') . ' 2 Mb',
-            ]
-        );
-
         $data = $request->all();
         $data['is_active'] =  $request->is_active ? 1 : 0;
         $data['created_by_user_id'] =  auth()->user()->id;
@@ -129,23 +114,10 @@ class LangsController extends Controller
         }
     }
 
-    public function update(Request $request, Model $lang)
+    public function update(LangRequest $request, Model $lang)
     {
         $model = $lang;
         if ($model) {
-            $request->validate([
-                'code' => ['required', 'max:3', Rule::unique($this->table_name, 'code')->ignore($model->id)],
-                'country' => ['required', Rule::unique($this->table_name, 'country')->ignore($model->id)],
-                'image' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:2024',
-            ], [
-                'code.required' => 'Code ' . __('validation.required'),
-                'code.unique' => 'Code ' . __('validation.unique'),
-                'country.required' => 'Country ' . __('validation.required'),
-                'country.unique' => 'Country ' . __('validation.unique'),
-                'image.image' => 'Image ' . __('validation.image'),
-                'image.uploaded' => __('validation.uploaded') . ' 2 Mb',
-            ]);
-
             $data = $request->all();
             $data['is_active'] =  $request->is_active ? 1 : 0;
             $data['updated_by_user_id'] =  auth()->user()->id;

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\LanguageLineRequest;
 use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
-use Illuminate\Http\Request;
 use Spatie\TranslationLoader\LanguageLine as Model;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class LanguageLineController extends Controller
 {
@@ -42,19 +41,8 @@ class LanguageLineController extends Controller
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(Request $request)
+    public function store(LanguageLineRequest $request)
     {
-        $request->validate([
-            'group' => 'required',
-            'key' => 'required',
-            'text' => ['required', 'array'],
-            'text.*' => ['required', 'max:255'],
-        ], [
-            'group.required' => 'Group ' . __('validation.required'),
-            'key.required' => 'Key ' . __('validation.required'),
-            'text.*.required' => 'Text ' . __('validation.required'),
-        ]);
-
         $data = $request->all();
         $data['is_active'] = $request->is_active ? 1 : 0;
         $data['created_by_user_id'] =  auth()->user()->id;
@@ -74,34 +62,36 @@ class LanguageLineController extends Controller
     public function show(Model $languageLine)
     {
         $model = $languageLine;
-        $show_view_model = [
-            'color_classes' => $this->dataService->colorsArray,
-            'model_name' => $this->model_name,
-            'model' => $model,
-        ];
+        if ($model) {
+            $show_view_model = [
+                'color_classes' => $this->dataService->colorsArray,
+                'model_name' => $this->model_name,
+                'model' => $model,
+            ];
 
-        $show_view_model['texts'] = $model->text;
-        if ($model->created_by_user_id) {
-            $created_by_user = User::where('id', $model->created_by_user_id)->first();
-            if ($created_by_user) {
-                $show_view_model['created_by_user'] = $created_by_user;
-            }
+            $show_view_model['texts'] = $model->text;
+            if ($model->created_by_user_id) {
+                $created_by_user = User::where('id', $model->created_by_user_id)->first();
+                if ($created_by_user) {
+                    $show_view_model['created_by_user'] = $created_by_user;
+                }
 
-            if ($model->updated_by_user_id && $model->updated_at !== $model->created_at && !$model->is_deleted) {
-                $updated_by_user = User::where('id', $model->updated_by_user_id)->first();
-                if ($updated_by_user) {
-                    $show_view_model['updated_by_user'] = $updated_by_user;
+                if ($model->updated_by_user_id && $model->updated_at !== $model->created_at && !$model->is_deleted) {
+                    $updated_by_user = User::where('id', $model->updated_by_user_id)->first();
+                    if ($updated_by_user) {
+                        $show_view_model['updated_by_user'] = $updated_by_user;
+                    }
                 }
             }
-        }
-        if ($model->deleted_by_user_id) {
-            $deleted_by_user = User::where('id', $model->deleted_by_user_id)->first();
-            if ($deleted_by_user) {
-                $show_view_model['deleted_by_user'] = $deleted_by_user;
+            if ($model->deleted_by_user_id) {
+                $deleted_by_user = User::where('id', $model->deleted_by_user_id)->first();
+                if ($deleted_by_user) {
+                    $show_view_model['deleted_by_user'] = $deleted_by_user;
+                }
             }
-        }
 
-        return view('admin.' . $this->table_name . '.show', compact('show_view_model'));
+            return view('admin.' . $this->table_name . '.show', compact('show_view_model'));
+        }
     }
 
     public function edit(Model $languageLine)
@@ -121,21 +111,10 @@ class LanguageLineController extends Controller
         }
     }
 
-    public function update(Request $request, Model $languageLine)
+    public function update(LanguageLineRequest $request, Model $languageLine)
     {
         $model = $languageLine;
         if ($model) {
-            $request->validate([
-                'group' => 'required',
-                'key' => 'required',
-                'text' => ['required', 'array'],
-                'text.*' => ['required', 'max:255'],
-            ], [
-                'group.required' => 'Group ' . __('validation.required'),
-                'key.required' => 'Key ' . __('validation.required'),
-                'text.*.required' => 'Text ' . __('validation.required'),
-            ]);
-
             $data = $request->all();
             $data['is_active'] =  $request->is_active ? 1 : 0;
             $data['updated_by_user_id'] =  auth()->user()->id;
