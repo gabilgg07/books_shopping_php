@@ -76,6 +76,7 @@ Route::group([
     Route::get("/langs/deleteds", [LangsController::class, 'deleteds'])->name('langs.deleteds');
     Route::get("/langs/restore/{lang}", [LangsController::class, 'restore'])->name('langs.restore');
     Route::delete("/langs/permanently_delete/{lang}", [LangsController::class, 'permanently_delete'])->name('langs.permanently_delete');
+    Route::patch("/langs/change_active", [LangsController::class, 'change_active'])->name('langs.change_active');
     Route::resource("/langs", LangsController::class);
 
     // LANGUAGE_LINE

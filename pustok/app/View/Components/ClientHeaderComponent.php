@@ -23,7 +23,7 @@ class ClientHeaderComponent extends Component
      */
     public function render(): View|Closure|string
     {
-        $langs = Lang::where('is_deleted', 0)->get();
+        $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
         $currentLang = Lang::where('code', LaravelLocalization::getCurrentLocale())->first();
         $user = auth()->user();
         return view('components.client-header-component', compact('langs', 'currentLang', 'user'));

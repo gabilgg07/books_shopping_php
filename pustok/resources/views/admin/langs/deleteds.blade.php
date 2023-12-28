@@ -3,14 +3,27 @@ $model_name = $deleteds_view_model['model_name'];
 $table_name = $deleteds_view_model['table_name'];
 $models = $deleteds_view_model['models'];
 @endphp
+
 @extends("admin.layouts.master")
+
+@push('theme_js')
+<script src="{{asset('admin/global_assets\js\plugins\tables\datatables\datatables.min.js')}}"></script>
+@endpush
+@push('page_js')
+<script src="{{asset('admin/global_assets\js\demo_pages\datatables_basic.js')}}"></script>
+@endpush
+
 @push("page_title")
 Deleted {{Str::headline($table_name)}}
 @endpush
+
 @section("content")
 <div class="content">
-    <!-- Main content -->
     @include('admin.layouts.includes.alert')
+    <div class="card mb-2 d-none alert alert-dismissible" id="alert_message">
+        <button type="button" class="close close-alert"><span>×</span></button>
+        <span class="msg-text"></span>
+    </div>
     <div class="card">
         <div class="card-header">
             <h3 class="card-title  d-flex justify-content-between float-none align-items-center">
@@ -18,14 +31,15 @@ Deleted {{Str::headline($table_name)}}
             </h3>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered datatable-basic">
                 <thead>
                     <tr>
                         <th style="width: 10px">#</th>
                         <th>Code</th>
                         <th>Country</th>
+                        <th>Deleted At</th>
                         <th>Image</th>
-                        <th>Actions</th>
+                        <th class="w-auto">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +48,7 @@ Deleted {{Str::headline($table_name)}}
                         <td>{{$model->id}}</td>
                         <td>{{Str::upper($model->code)}}</td>
                         <td>{{Str::headline($model->country)}}</td>
+                        <td>{{$model->deleted_at}}</td>
                         <td width='200'>
                             @if ($model->image)
                             <img src="{{$model->image}}" alt="{{$model_name.'-'.$model->id}}" class="img-fluid border-1">
@@ -55,18 +70,7 @@ Deleted {{Str::headline($table_name)}}
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer clearfix">
-            <ul class="pagination pagination-sm m-0 float-right">
-                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>
-            </ul>
-        </div>
     </div>
 </div>
-<!-- /.content -->
 
 @endsection

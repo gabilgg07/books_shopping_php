@@ -61,7 +61,7 @@ class CategoriesController extends Controller
                 $created->image = '/storage/' . $imgPath;
                 $created->save();
             }
-            return redirect()->route("manager.' . $this->table_name . '.index")
+            return redirect()->route('manager.' . $this->table_name . '.index')
                 ->with('type', 'success')
                 ->with('message', Str::headline($this->model_name) . ' has been stored.');
         } else {
@@ -265,7 +265,7 @@ class CategoriesController extends Controller
             $updated = $category->update();
 
             if ($updated) {
-                return redirect()->route("manager.categories.index")
+                return redirect()->route('manager.categories.index')
                     ->with('type', 'success')
                     ->with('message', 'Category has been restored.');
             } else {

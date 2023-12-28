@@ -43,6 +43,7 @@
     </div>
     <!-- /page content -->
 
+    @stack('custom_js')
 </body>
 
 </html>

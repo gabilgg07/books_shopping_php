@@ -19,11 +19,11 @@ class CheckRoute
     public function handle(Request $request, Closure $next): Response
     {
         $routeLang = Str::before($request->path(), '/');
-        $hasLang = Lang::where('is_deleted', 0)->where('code', $routeLang)->first();
+        $hasLang = Lang::where('is_deleted', 0)->where('is_active', 1)->where('code', $routeLang)->first();
 
         if (strlen($routeLang) == 2 && !$hasLang) {
             $acceptedLanguages = $request->getLanguages();
-            $supportedLanguages = Lang::where('is_deleted', 0)->pluck('code')->toArray();
+            $supportedLanguages = Lang::where('is_deleted', 0)->where('is_active', 1)->pluck('code')->toArray();
             foreach ($acceptedLanguages as $acceptedLanguage) {
                 if (in_array($acceptedLanguage, $supportedLanguages)) {
                     App::setLocale($acceptedLanguage);

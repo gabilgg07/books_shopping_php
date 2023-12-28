@@ -35,7 +35,7 @@ Deleted {{Str::headline($table_name)}}
                     <th>Key</th>
                     <th>Created At</th>
                     <th>Deleted At</th>
-                    <th class="text-right">Actions</th>
+                    <th class="text-right w-auto">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,11 +46,10 @@ Deleted {{Str::headline($table_name)}}
                     <td>{{$model->key}}</td>
                     <td>{{$model->created_at}}</td>
                     <td>{{$model->deleted_at}}</td>
-                    <td class="text-right d-flex align-items-center justify-content-between border-0">
-                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}"
-                            class="btn btn-info d-flex align-items-center mr-1"><i class="mi-info mr-2"></i> Info</a>
-                        <a href="{{route('manager.'.$table_name.'.restore', $model->id)}}"
-                            class="btn btn-success d-flex align-items-center mr-1">
+                    <td class="text-right">
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
+                                class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.restore', $model->id)}}" class="btn btn-success">
                             <i class="mi-restore-page mr-2"></i>
                             Restore</a>
                         <form onsubmit="return confirm('Are you sure you want permanently delete this data?')"
@@ -58,8 +57,7 @@ Deleted {{Str::headline($table_name)}}
                             class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="min-width:170px;"
-                                class="btn btn-danger d-flex align-items-center mr-1"><i
+                            <button type="submit" style="min-width:170px;" class="btn btn-danger"><i
                                     class="mi-delete-forever mr-2"></i>Permanently Delete</button>
                         </form>
                     </td>
