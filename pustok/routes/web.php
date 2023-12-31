@@ -83,12 +83,14 @@ Route::group([
     Route::get("/language_line/deleteds", [LanguageLineController::class, 'deleteds'])->name('language_line.deleteds');
     Route::get("/language_line/restore/{language_line}", [LanguageLineController::class, 'restore'])->name('language_line.restore');
     Route::delete("/language_line/permanently_delete/{language_line}", [LanguageLineController::class, 'permanently_delete'])->name('language_line.permanently_delete');
+    Route::patch("/language_line/change_active", [LanguageLineController::class, 'change_active'])->name('language_line.change_active');
     Route::resource("/language_line", LanguageLineController::class);
 
     // CATEGORIES
     Route::get("/categories/deleteds", [CategoriesController::class, 'deleteds'])->name('categories.deleteds');
     Route::get("/categories/restore/{category}", [CategoriesController::class, 'restore'])->name('categories.restore');
     Route::delete("/categories/permanently_delete/{category}", [CategoriesController::class, 'permanently_delete'])->name('categories.permanently_delete');
+    Route::patch("/categories/change_active", [CategoriesController::class, 'change_active'])->name('categories.change_active');
     Route::resource("/categories", CategoriesController::class);
 
     // USERS

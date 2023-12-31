@@ -34,8 +34,8 @@ class CategoriesController extends Controller
 
     public function create()
     {
-        $langs = Lang::where('is_deleted', 0)->get();
-        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->get();
+        $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
+        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
         $create_view_model = [
             'model_name' => $this->model_name,
             'table_name' => $this->table_name,
@@ -118,8 +118,8 @@ class CategoriesController extends Controller
 
     public function edit(Model $category)
     {
-        $langs = Lang::where('is_deleted', 0)->get();
-        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->get();
+        $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
+        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
         $model = $category;
         if ($model) {
             $edit_view_model = [
@@ -192,6 +192,67 @@ class CategoriesController extends Controller
             }
         } else {
             abort(404);
+        }
+    }
+
+    public function change_active(Request $request)
+    {
+        return $request->all();
+        $id = $request->id;
+        $is_active = $request->is_active === 'true' ? 1 : 0;
+        $model = Model::where('id', $id)->first();
+        $childrenIds = [];
+        try {
+            if ($model->parent_id == 0 && !$is_active) {
+                $childCategories = Model::where('parent_id', $model->id)->get();
+                if (count($childCategories)) {
+                    foreach ($childCategories as $child) {
+                        $child->is_active = false;
+                        $child->updated_by_user_id =  auth()->user()->id;
+                        $child->updated_at = now();
+                        $childSaved = $child->save();
+                        if (!$childSaved) {
+                            return json_encode([
+                                'type' => 'danger',
+                                'message' => 'Failed to change is_active field of child ' . $this->model_name . ' model, id: ' . $id,
+                            ]);
+                        }
+                        $childrenIds[] = $child->id;
+                    }
+                }
+            }
+            if ($model->parent_id != 0) {
+                $parentModel = Model::where('id', $model->parent_id)->first();
+                if (!$parentModel->is_active) {
+                    $route = route('manager.' . $this->table_name . '.edit', $parentModel->id);
+                    $goHref = "<a href='$route'> do active parent $this->model_name, id: $parentModel->id</a>";
+                    return json_encode([
+                        'type' => 'danger',
+                        'message' => 'Failed to do active ' . $this->model_name . ' model! Please, first: ' . $goHref,
+                    ]);
+                }
+            }
+            $updated = Model::where('id', $id)->update([
+                'is_active' => $is_active
+            ]);
+
+            if ($updated) {
+                $data = [
+                    'type' => 'success',
+                    'message' => Str::headline($this->model_name) . ' model\'s is active field changed, id: ' . $id,
+                ];
+                if ($childrenIds && count($childrenIds)) {
+                    $data['ids'] = $childrenIds;
+                }
+                return json_encode($data);
+            } else {
+                return json_encode([
+                    'type' => 'danger',
+                    'message' => 'Failed to change is active field of ' . $this->model_name . ' model, id: ' . $id,
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return 'error: ' . $th;
         }
     }
 

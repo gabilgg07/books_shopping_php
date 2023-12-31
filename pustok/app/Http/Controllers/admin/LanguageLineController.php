@@ -7,6 +7,7 @@ use App\Http\Requests\admin\LanguageLineRequest;
 use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
+use Illuminate\Http\Request;
 use Spatie\TranslationLoader\LanguageLine as Model;
 use Illuminate\Support\Str;
 
@@ -132,6 +133,33 @@ class LanguageLineController extends Controller
             abort(404);
         }
     }
+
+    public function change_active(Request $request)
+    {
+        $id = $request->id;
+        $is_active = $request->is_active === 'true' ? 1 : 0;
+
+        try {
+            $updated = Model::where('id', $id)->update([
+                'is_active' => $is_active
+            ]);
+
+            if ($updated) {
+                return json_encode([
+                    'type' => 'success',
+                    'message' => Str::headline($this->model_name) . ' model\'s is active field changed, id: ' . $id,
+                ]);
+            } else {
+                return json_encode([
+                    'type' => 'danger',
+                    'message' => 'Failed to change is active field of ' . $this->model_name . ' model, id: ' . $id,
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return 'error: ' . $th;
+        }
+    }
+
 
     public function destroy(Model $languageLine)
     {
