@@ -95,112 +95,34 @@ $models = $index_view_model['models'];
 
 @push('custom_js')
 <script>
+    let ids = [];
     $(document).ready(function() {
-        const alertElement = $('#alert_message');
-        let msg = '';
 
-        $('.close-alert').click(function() {
-            alertElement.addClass('d-none');
-        });
-
-        $('.isActive').click(function() {
-            let typeMsg = 'card mb-2 alert alert-dismissible alert-';
-            const id = $(this).attr('id');
-            const is_active = $(this).is(':checked');
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "{{ route('manager.'.$table_name.'.change_active') }}",
-                type: 'PATCH',
-                data: {
-                    id: id,
-                    is_active: is_active,
-                },
-                success: function(result) {
-                    if (isJsonString(result)) {
-                        const data = JSON.parse(result);
-                        if (data['type'] && data['message']) {
-                            const {
-                                type,
-                                message
-                            } = data;
-                            typeMsg += type;
-                            msg = message;
-
-                            if (type === 'danger') {
-                                console.log(id);
-                                deactive(id);
-                            }
-                        }
-
-                        if (data['ids']) {
-                            deactiveAll(data['ids']);
-                        }
+        const url = "{{ route('manager.'.$table_name.'.change_active') }}";
+        if ($(".isActive").length) {
+            $(".datatable-basic").DataTable({
+                drawCallback: function() {
+                    if (ids.length) {
+                        ids.forEach((value, index, array) => {
+                            deactiveAll(value.ids);
+                        })
                     }
+                    const alertElement = $("#alert_message");
+                    let msg = "";
+
+                    $(".close-alert").click(function() {
+                        alertElement.addClass("d-none");
+                    });
+
+                    $(".datatable-basic tbody").off("click", ".isActive");
+                    $(".datatable-basic tbody").on("click", ".isActive", (e) => {
+                        testIsActive(e, msg, alertElement, url, ids);
+                    });
                 },
-                error: function(result) {
-                    const data = JSON.parse(result);
-                    const {
-                        type,
-                        message
-                    } = data;
-                    typeMsg += type;
-                    msg = message;
-                },
-                complete: function(result) {
-                    alertElement.removeClass('d-none');
-                    alertElement[0].className = typeMsg;
-                    alertElement.children('.msg-text').html(msg);
-                }
             });
-        });
-    });
-
-    function deactiveAll(arr = []) {
-        arr.forEach(id => {
-            deactive(id);
-        });
-    }
-
-    function deactive(id) {
-        $('[id=' + id + ']').prop('checked', false);
-        $('[id=' + id + ']').next().css({
-            boxShadow: 'rgb(223, 223, 223) 0px 0px 0px 0px inset',
-            borderColor: ' rgb(223, 223, 223)',
-            backgroundColor: 'rgb(255, 255, 255)',
-            transition: 'border 0.4s ease 0s, box-shadow 0.4s ease 0s',
-        });
-        $('[id=' + id + ']').next().children('small').css({
-            left: '0px',
-            transition: 'background-color 0.4s ease 0s, left 0.2s ease 0s'
-        });
-    }
-
-    function doActive(id) {
-        $('[id=' + id + ']').prop('checked', true);
-        $('[id=' + id + ']').next().css({
-            boxShadow: 'rgb(100, 189, 99) 0px 0px 0px 10px inset',
-            borderColor: ' rgb(100, 189, 99)',
-            backgroundColor: 'rgb(100, 189, 99)',
-            transition: 'border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s',
-        });
-        $('[id=' + id + ']').next().children('small').css({
-            left: '18px',
-            transition: 'background-color 0.4s ease 0s, left 0.2s ease 0s',
-            backgroundColor: 'rgb(255, 255, 255)'
-        });
-    }
-
-    function isJsonString(str) {
-        try {
-            JSON.parse(str);
-        } catch (e) {
-            return false;
+        } else {
+            $(".datatable-basic").DataTable();
         }
-        return true;
-    }
+    });
 </script>
 @endpush

@@ -197,7 +197,6 @@ class CategoriesController extends Controller
 
     public function change_active(Request $request)
     {
-        return $request->all();
         $id = $request->id;
         $is_active = $request->is_active === 'true' ? 1 : 0;
         $model = Model::where('id', $id)->first();
@@ -223,7 +222,7 @@ class CategoriesController extends Controller
             }
             if ($model->parent_id != 0) {
                 $parentModel = Model::where('id', $model->parent_id)->first();
-                if (!$parentModel->is_active) {
+                if ($parentModel && !$parentModel->is_active) {
                     $route = route('manager.' . $this->table_name . '.edit', $parentModel->id);
                     $goHref = "<a href='$route'> do active parent $this->model_name, id: $parentModel->id</a>";
                     return json_encode([

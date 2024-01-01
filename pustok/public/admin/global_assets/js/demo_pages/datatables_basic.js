@@ -47,7 +47,10 @@ var DatatableBasic = (function () {
         });
 
         // Basic datatable
-        $(".datatable-basic").DataTable();
+
+        if (!$(".isActive").length) {
+            $(".datatable-basic").DataTable();
+        }
 
         // Alternative pagination
         $(".datatable-pagination").DataTable({
@@ -116,3 +119,132 @@ var DatatableBasic = (function () {
 document.addEventListener("DOMContentLoaded", function () {
     DatatableBasic.init();
 });
+
+function deactive(id) {
+    $("[id=" + id + "]").prop("checked", false);
+    $("[id=" + id + "]")
+        .next()
+        .css({
+            boxShadow: "rgb(223, 223, 223) 0px 0px 0px 0px inset",
+            borderColor: " rgb(223, 223, 223)",
+            backgroundColor: "rgb(255, 255, 255)",
+            transition: "border 0.4s ease 0s, box-shadow 0.4s ease 0s",
+        });
+    $("[id=" + id + "]")
+        .next()
+        .children("small")
+        .css({
+            left: "0px",
+            transition: "background-color 0.4s ease 0s, left 0.2s ease 0s",
+        });
+}
+
+function deactiveAll(arr = []) {
+    arr.forEach((id) => {
+        deactive(id);
+    });
+}
+
+function doActive(id) {
+    $("[id=" + id + "]").prop("checked", true);
+    $("[id=" + id + "]")
+        .next()
+        .css({
+            boxShadow: "rgb(100, 189, 99) 0px 0px 0px 10px inset",
+            borderColor: " rgb(100, 189, 99)",
+            backgroundColor: "rgb(100, 189, 99)",
+            transition:
+                "border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s",
+        });
+    $("[id=" + id + "]")
+        .next()
+        .children("small")
+        .css({
+            left: "18px",
+            transition: "background-color 0.4s ease 0s, left 0.2s ease 0s",
+            backgroundColor: "rgb(255, 255, 255)",
+        });
+}
+
+function isJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+Array.prototype.remove = function (x) {
+    var i;
+    for (i in this) {
+        if (this[i].toString() == x.toString()) {
+            this.splice(i, 1);
+        }
+    }
+};
+function testIsActive(e, msg, alertElement, url, ids) {
+    let typeMsg = "card mb-2 alert alert-dismissible alert-";
+    const id = $(e.currentTarget).attr("id");
+    const is_active = $(e.currentTarget).is(":checked");
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    let test = $.ajax({
+        url: url,
+        type: "PATCH",
+        data: {
+            id: id,
+            is_active: is_active,
+        },
+        success: function (result) {
+            if (isJsonString(result)) {
+                const data = JSON.parse(result);
+                if (data["type"] && data["message"]) {
+                    const { type, message } = data;
+                    typeMsg += type;
+                    msg = message;
+
+                    if (type === "danger") {
+                        deactive(id);
+                    }
+
+                    if (type === "success" && ids && ids.length) {
+                        if (is_active) {
+                            const found = ids.find(
+                                (value, index, array) => value.id === id
+                            );
+                            if (found) {
+                                ids.remove(found);
+                            }
+                        }
+                    }
+                }
+
+                if (data["ids"]) {
+                    if (!ids.find((value) => value.id === id)) {
+                        ids.push({
+                            id: id,
+                            ids: data["ids"],
+                        });
+                    }
+                    deactiveAll(data["ids"]);
+                }
+            }
+        },
+        error: function (result) {
+            if (isJsonString(result)) {
+                const data = JSON.parse(result);
+                const { type, message } = data;
+                typeMsg += type;
+                msg = message;
+            }
+        },
+        complete: function (result) {
+            alertElement.removeClass("d-none");
+            alertElement[0].className = typeMsg;
+            alertElement.children(".msg-text").html(msg);
+        },
+    });
+}
