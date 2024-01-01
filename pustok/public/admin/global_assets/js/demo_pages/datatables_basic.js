@@ -182,7 +182,7 @@ Array.prototype.remove = function (x) {
         }
     }
 };
-function testIsActive(e, msg, alertElement, url, ids) {
+function changeIsActive(e, msg, alertElement, url, ids = null) {
     let typeMsg = "card mb-2 alert alert-dismissible alert-";
     const id = $(e.currentTarget).attr("id");
     const is_active = $(e.currentTarget).is(":checked");
@@ -191,7 +191,7 @@ function testIsActive(e, msg, alertElement, url, ids) {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-    let test = $.ajax({
+    $.ajax({
         url: url,
         type: "PATCH",
         data: {
@@ -212,9 +212,7 @@ function testIsActive(e, msg, alertElement, url, ids) {
 
                     if (type === "success" && ids && ids.length) {
                         if (is_active) {
-                            const found = ids.find(
-                                (value, index, array) => value.id === id
-                            );
+                            const found = ids.find((value) => value.id === id);
                             if (found) {
                                 ids.remove(found);
                             }
@@ -222,7 +220,7 @@ function testIsActive(e, msg, alertElement, url, ids) {
                     }
                 }
 
-                if (data["ids"]) {
+                if (ids && data["ids"]) {
                     if (!ids.find((value) => value.id === id)) {
                         ids.push({
                             id: id,

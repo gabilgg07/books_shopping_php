@@ -85,54 +85,31 @@ $models = $index_view_model['models'];
 @push('custom_js')
 <script>
     $(document).ready(function() {
-        const alertElement = $('#alert_message');
-        $('.close-alert').click(function() {
-            alertElement.addClass('d-none');
-        });
-        let typeMsg = 'alert-';
-        let msg = '';
-        $('.isActive').click(function() {
-            const id = $(this).attr('id');
-            const is_active = $(this).is(':checked');
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "{{ route('manager.'.$table_name.'.change_active') }}",
-                type: 'PATCH',
-                data: {
-                    id: id,
-                    is_active: is_active,
-                },
-                success: function(result) {
-                    const data = JSON.parse(result);
-                    const {
-                        type,
-                        message
-                    } = data;
+        const url = "{{ route('manager.'.$table_name.'.change_active') }}";
+        if ($(".isActive").length) {
+            $(".datatable-basic").DataTable({
+                drawCallback: function() {
+                    if (ids.length) {
+                        ids.forEach((value, index, array) => {
+                            deactiveAll(value.ids);
+                        })
+                    }
+                    const alertElement = $("#alert_message");
+                    let msg = "";
 
-                    typeMsg += type;
-                    msg = message;
-                },
-                error: function(result) {
-                    const data = JSON.parse(result);
-                    const {
-                        type,
-                        message
-                    } = data;
-                    typeMsg += type;
-                    msg = message;
-                },
-                complete: function(result) {
-                    alertElement.removeClass('d-none');
-                    alertElement.addClass(typeMsg);
-                    alertElement.children('.msg-text').text(msg);
-                }
-            });
+                    $(".close-alert").click(function() {
+                        alertElement.addClass("d-none");
+                    });
 
-        });
+                    $(".datatable-basic tbody").off("click", ".isActive");
+                    $(".datatable-basic tbody").on("click", ".isActive", (e) => {
+                        changeIsActive(e, msg, alertElement, url);
+                    });
+                },
+            });
+        } else {
+            $(".datatable-basic").DataTable();
+        }
     });
 </script>
 @endpush
