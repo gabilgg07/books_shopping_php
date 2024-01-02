@@ -221,7 +221,7 @@ class LangsController extends Controller
             $updated = $model->update();
 
             if ($updated) {
-                return redirect()->route('manager.' . $this->table_name . '.index')
+                return redirect()->route('manager.' . $this->table_name . '.deleteds')
                     ->with('type', 'success')
                     ->with('message', Str::headline($this->model_name) . ' has been restored.');
             } else {
@@ -243,7 +243,7 @@ class LangsController extends Controller
             }
             $deleted = $model->delete();
             if ($deleted) {
-                return redirect()->route('manager.' . $this->table_name . '.index')
+                return redirect()->route('manager.' . $this->table_name . '.deleteds')
                     ->with('type', 'success')
                     ->with('message', Str::headline($this->model_name) . ' has been permanently deleted!');
             } else {

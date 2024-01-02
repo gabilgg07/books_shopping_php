@@ -35,12 +35,12 @@ class CategoriesController extends Controller
     public function create()
     {
         $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
-        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
+        $select_items = Model::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
         $create_view_model = [
             'model_name' => $this->model_name,
             'table_name' => $this->table_name,
             'langs' => $langs,
-            'select_items' => $categories,
+            'select_items' => $select_items,
         ];
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
@@ -119,7 +119,7 @@ class CategoriesController extends Controller
     public function edit(Model $category)
     {
         $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
-        $categories = Category::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
+        $select_items = Model::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
         $model = $category;
         if ($model) {
             $edit_view_model = [
@@ -127,7 +127,7 @@ class CategoriesController extends Controller
                 'table_name' => $this->table_name,
                 'model' => $model,
                 'langs' => $langs,
-                'select_items' => $categories,
+                'select_items' => $select_items,
             ];
             $edit_view_model['json_field'] = $model->getTranslations('title');
             return view('admin.' . $this->table_name . '.edit', compact('edit_view_model'));
@@ -308,30 +308,65 @@ class CategoriesController extends Controller
 
     public function restore(Model $category)
     {
-        if ($category) {
-            if ($category->parent_id) {
-                $parentCategory = Model::where('id', $category->parent_id)->first();
-                if ($parentCategory->is_deleted) {
-                    $routeRestore = route('manager.categories.restore', $parentCategory->id);
-                    $goHref = "<a href='$routeRestore'>Restore id $parentCategory->id parent category</a>";
+        $model = $category;
+        if ($model) {
+            if ($model->parent_id) {
+                $parentModel = Model::where('id', $model->parent_id)->first();
+                if ($parentModel->is_deleted) {
+                    $route = route('manager.' . $this->table_name . '.restore', $parentModel->id);
+                    $goHref = "<a href='$route'> Restore id $parentModel->id parent $this->model_name</a>";
                     return redirect()->back()
                         ->with('type', 'danger')
-                        ->with('message', "Failed to restore category! Please, first restore parent category: $goHref");
+                        ->with('message', "Failed to restore $this->model_name! Please, first restore parent $this->model_name: $goHref");
                 }
             }
-            $category->is_deleted = 0;
-            $category->deleted_by_user_id =  0;
-            $category->deleted_at = null;
-            $updated = $category->update();
+            $model->is_deleted = 0;
+            $model->deleted_by_user_id =  0;
+            $model->deleted_at = null;
+            $updated = $model->update();
 
             if ($updated) {
-                return redirect()->route('manager.categories.index')
+                return redirect()->route('manager.' . $this->table_name . '.deleteds')
                     ->with('type', 'success')
-                    ->with('message', 'Category has been restored.');
+                    ->with('message', Str::headline($this->model_name) . ' has been restored.');
             } else {
                 return redirect()->back()
                     ->with('type', 'danger')
-                    ->with('message', 'Failed to restore category!');
+                    ->with('message', 'Failed to restore ' . $this->model_name . '!');
+            }
+        } else {
+            abort(404);
+        }
+    }
+
+
+    public function permanently_delete(Model $category)
+    {
+        $model = $category;
+        if ($model) {
+            if ($model->parent_id == 0) {
+                $childModels = Model::where('parent_id', $model->id)->get();
+                if (count($childModels)) {
+                    foreach ($childModels as $child) {
+
+                        $childDeleted = $child->delete();
+                        if (!$childDeleted) {
+                            return redirect()->back()
+                                ->with('type', 'danger')
+                                ->with('message', "Failed to permanently delete child $this->model_name id:$child->id !");
+                        }
+                    }
+                }
+            }
+            $deleted = $model->delete();
+            if ($deleted) {
+                return redirect()->route('manager.' . $this->table_name . '.deleteds')
+                    ->with('type', 'success')
+                    ->with('message', Str::headline($this->model_name) . ' has been permanently deleted!');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to permanently deleted ' . $this->model_name . '!');
             }
         } else {
             abort(404);

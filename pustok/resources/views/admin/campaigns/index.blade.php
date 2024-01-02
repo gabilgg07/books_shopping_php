@@ -31,8 +31,7 @@ $models = $index_view_model['models'];
             <h5 class="card-title">{{Str::headline($table_name)}} Index Table</h5>
             <div style="display: flex; gap: 10px;">
                 <div class="box-btn">
-                    <a href="{{route('manager.'.$table_name.'.create')}}" type="button"
-                        class="btn btn-block btn-success">
+                    <a href="{{route('manager.'.$table_name.'.create')}}" type="button" class="btn btn-block btn-success">
                         <i class="icon-plus-circle2 mr-2"></i> Add {{Str::headline($model_name)}}</a>
                 </div>
                 <div class="box-btn">
@@ -45,10 +44,10 @@ $models = $index_view_model['models'];
         <table class="table table-bordered datatable-basic">
             <thead>
                 <tr>
-                    <th style="width: 10px">Id</th>
-                    <th>Group</th>
-                    <th>Key</th>
-                    <th>Text</th>
+                    <th style="width: 10px">#</th>
+                    <th>Title</th>
+                    <th>Discount Percent</th>
+                    <th>Created At</th>
                     <th>Is Active</th>
                     <th class="w-auto">Actions</th>
                 </tr>
@@ -57,27 +56,29 @@ $models = $index_view_model['models'];
                 @foreach ($models as $model)
                 <tr>
                     <td>{{$model->id}}</td>
-                    <td>{{$model->group}}</td>
-                    <td>{{$model->key}}</td>
-                    <td>{{Str::limit(json_encode($model->text),100)}}</td>
+                    <td>
+                        {{$model->title}}
+                    </td>
+                    <td>
+                        {{$model->discount_percent}}
+                    </td>
+                    <td>
+                        {{$model->created_at}}
+                    </td>
                     <td class="text-center">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}"
-                                data-fouc="" {{$model->is_active?'checked':''}}>
+                            <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}" data-fouc="" {{$model->is_active?'checked':''}}>
                         </label>
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
-                                class="mi-info mr-2"></i> Info</a>
-                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i
-                                class="icon-pencil3 mr-2"></i>
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i>
                             Edit</a>
-                        <form onsubmit="return confirm('Are you sure?')" method="post"
-                            action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger"><i
-                                    class="mi-delete mr-2"></i> Delete</button>
+                            <button type="submit" class="btn btn-outline-danger"><i class="mi-delete mr-2"></i>
+                                Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -90,27 +91,27 @@ $models = $index_view_model['models'];
 
 @push('custom_js')
 <script>
-$(document).ready(function() {
-    const url = "{{ route('manager.'.$table_name.'.change_active') }}";
-    if ($(".isActive").length) {
-        $(".datatable-basic").DataTable({
-            drawCallback: function() {
-                const alertElement = $("#alert_message");
-                let msg = "";
+    $(document).ready(function() {
+        const url = "{{ route('manager.'.$table_name.'.change_active') }}";
+        if ($(".isActive").length) {
+            $(".datatable-basic").DataTable({
+                drawCallback: function() {
+                    const alertElement = $("#alert_message");
+                    let msg = "";
 
-                $(".close-alert").click(function() {
-                    alertElement.addClass("d-none");
-                });
+                    $(".close-alert").click(function() {
+                        alertElement.addClass("d-none");
+                    });
 
-                $(".datatable-basic tbody").off("click", ".isActive");
-                $(".datatable-basic tbody").on("click", ".isActive", (e) => {
-                    changeIsActive(e, msg, alertElement, url);
-                });
-            },
-        });
-    } else {
-        $(".datatable-basic").DataTable();
-    }
-});
+                    $(".datatable-basic tbody").off("click", ".isActive");
+                    $(".datatable-basic tbody").on("click", ".isActive", (e) => {
+                        changeIsActive(e, msg, alertElement, url);
+                    });
+                },
+            });
+        } else {
+            $(".datatable-basic").DataTable();
+        }
+    });
 </script>
 @endpush

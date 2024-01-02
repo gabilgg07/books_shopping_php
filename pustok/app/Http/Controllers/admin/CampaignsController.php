@@ -3,23 +3,21 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\admin\LanguageLineRequest;
+use App\Http\Requests\admin\CampaignRequest;
+use App\Models\Campaign as Model;
 use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
 use Illuminate\Http\Request;
-use Spatie\TranslationLoader\LanguageLine as Model;
 use Illuminate\Support\Str;
 
-class LanguageLineController extends Controller
+class CampaignsController extends Controller
 {
-
-    protected $table_name = 'language_line';
-    protected $model_name = 'language_line';
+    protected $table_name = 'campaigns';
+    protected $model_name = 'campaign';
     public function __construct(private DataService $dataService)
     {
     }
-
     public function index()
     {
         $models = Model::where('is_deleted', 0)->get();
@@ -42,8 +40,9 @@ class LanguageLineController extends Controller
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(LanguageLineRequest $request)
+    public function store(CampaignRequest $request)
     {
+        // dd($request->all());
         $data = $request->all();
         $data['is_active'] = $request->is_active ? 1 : 0;
         $data['created_by_user_id'] =  auth()->user()->id;
@@ -54,15 +53,15 @@ class LanguageLineController extends Controller
                 ->with('type', 'success')
                 ->with('message', Str::headline($this->model_name) . ' has been stored.');
         } else {
-            return back()
+            return redirect()->back()
                 ->with('type', 'danger')
                 ->with('message', 'Failed to store ' . $this->model_name . '!');
         }
     }
 
-    public function show(Model $languageLine)
+    public function show(Model $campaign)
     {
-        $model = $languageLine;
+        $model = $campaign;
         if ($model) {
             $show_view_model = [
                 'color_classes' => $this->dataService->colorsArray,
@@ -70,7 +69,8 @@ class LanguageLineController extends Controller
                 'model' => $model,
             ];
 
-            $show_view_model['texts'] = $model->text;
+            $show_view_model['titles'] = $model->getTranslations('title');
+
             if ($model->created_by_user_id) {
                 $created_by_user = User::where('id', $model->created_by_user_id)->first();
                 if ($created_by_user) {
@@ -92,13 +92,15 @@ class LanguageLineController extends Controller
             }
 
             return view('admin.' . $this->table_name . '.show', compact('show_view_model'));
+        } else {
+            abort(404);
         }
     }
 
-    public function edit(Model $languageLine)
+    public function edit(Model $campaign)
     {
         $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
-        $model = $languageLine;
+        $model = $campaign;
         if ($model) {
             $edit_view_model = [
                 'model_name' => $this->model_name,
@@ -106,28 +108,29 @@ class LanguageLineController extends Controller
                 'model' => $model,
                 'langs' => $langs,
             ];
+            $edit_view_model['json_field'] = $model->getTranslations('title');
             return view('admin.' . $this->table_name . '.edit', compact('edit_view_model'));
         } else {
             abort(404);
         }
     }
 
-    public function update(LanguageLineRequest $request, Model $languageLine)
+    public function update(CampaignRequest $request, Model $campaign)
     {
-        $model = $languageLine;
+        $model = $campaign;
         if ($model) {
             $data = $request->all();
-            $data['is_active'] =  $request->is_active ? 1 : 0;
+            $data['is_active'] = $request->is_active ? 1 : 0;
             $data['updated_by_user_id'] =  auth()->user()->id;
             $updated = $model->update($data);
+
             if ($updated) {
                 return redirect()->route('manager.' . $this->table_name . '.index')
                     ->with('type', 'success')
                     ->with('message', Str::headline($this->model_name) . ' has been updated.');
             } else {
                 return redirect()->back()
-                    ->with('type', 'danger')
-                    ->with('message', 'Failed to update ' . $this->model_name . '!');
+                    ->with('type', 'danger')->with('message', 'Failed to update ' . $this->model_name . '!');
             }
         } else {
             abort(404);
@@ -138,17 +141,17 @@ class LanguageLineController extends Controller
     {
         $id = $request->id;
         $is_active = $request->is_active === 'true' ? 1 : 0;
-
         try {
             $updated = Model::where('id', $id)->update([
                 'is_active' => $is_active
             ]);
 
             if ($updated) {
-                return json_encode([
+                $data = [
                     'type' => 'success',
                     'message' => Str::headline($this->model_name) . ' model\'s is active field changed, id: ' . $id,
-                ]);
+                ];
+                return json_encode($data);
             } else {
                 return json_encode([
                     'type' => 'danger',
@@ -160,10 +163,10 @@ class LanguageLineController extends Controller
         }
     }
 
-
-    public function destroy(Model $languageLine)
+    public function destroy(Model $campaign)
     {
-        $model = $languageLine;
+
+        $model = $campaign;
         if ($model) {
             $model->is_deleted = 1;
             $model->deleted_by_user_id =  auth()->user()->id;
@@ -194,9 +197,9 @@ class LanguageLineController extends Controller
         return view('admin.' . $this->table_name . '.deleteds', compact("deleteds_view_model"));
     }
 
-    public function restore(Model $languageLine)
+    public function restore(Model $campaign)
     {
-        $model = $languageLine;
+        $model = $campaign;
         if ($model) {
             $model->is_deleted = 0;
             $model->deleted_by_user_id =  0;
@@ -204,7 +207,7 @@ class LanguageLineController extends Controller
             $updated = $model->update();
 
             if ($updated) {
-                return redirect()->route('manager.' . $this->table_name . '.deleteds')
+                return redirect()->route('manager.' . $this->table_name . '.index')
                     ->with('type', 'success')
                     ->with('message', Str::headline($this->model_name) . ' has been restored.');
             } else {
@@ -217,9 +220,10 @@ class LanguageLineController extends Controller
         }
     }
 
-    public function permanently_delete(Model $languageLine)
+
+    public function permanently_delete(Model $campaign)
     {
-        $model = $languageLine;
+        $model = $campaign;
         if ($model) {
             $deleted = $model->delete();
             if ($deleted) {
