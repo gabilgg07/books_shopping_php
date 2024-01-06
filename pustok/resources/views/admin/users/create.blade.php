@@ -1,86 +1,78 @@
+@php
+$model_name = $create_view_model['model_name'];
+$table_name = $create_view_model['table_name'];
+@endphp
+
 @extends("admin.layouts.master")
-@push("page_title")
-Users Create
-@endpush
+
 @push("theme_js")
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\uniform.min.js')}}"></script>
 @endpush
 @push('page_js')
 <script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
+<script src="{{asset('admin/global_assets\js\demo_pages\form_inputs.js')}}"></script>
+<script>
+$(window).on('load', function() {
+    $("#image_input").change(function(event) {
+        var tmppath = URL.createObjectURL(event.target.files[0]);
+        $("#image").attr(
+            "src",
+            URL.createObjectURL(event.target.files[0])
+        );
+        $("#image").removeClass('d-none');
+    });
+});
+</script>
 @endpush
+
+@push("page_title")
+{{Str::headline($table_name)}} Create
+@endpush
+
 @section("content")
 <div class="content">
-
-    <!-- Form inputs -->
+    @include('admin.layouts.includes.alert')
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Create New User</h5>
+            <h5 class="card-title">{{Str::headline($table_name)}} Create Form</h5>
         </div>
-
-        <div class="card-body">
-            <form method="post" action="{{route('manager.users.store')}}">
-                @csrf
-                <fieldset class="mb-3">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-2">First Name</label>
-                        <div class="col-lg-10">
-                            <input type="text" class="form-control" name="first_name">
+        <form method="post" action="{{route('manager.'.$table_name.'.store')}}" enctype="multipart/form-data">
+            @csrf
+            <div class="card-body row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            @include('admin.layouts.includes.create_input',['field_name'=>'first_name'])
+                            @include('admin.layouts.includes.create_input',['field_name'=>'last_name'])
+                            @include('admin.layouts.includes.create_input_by_type', ['field_name'=>'email',
+                            'type'=>'email'])
+                            @include('admin.layouts.includes.create_input_by_type', ['field_name'=>'password',
+                            'type'=>'password'])
+                            @include('admin.layouts.includes.create_input_by_type', ['field_name'=>'repeat_password',
+                            'type'=>'password'])
                         </div>
-                        @error('first_name')
-                        <span class="text-danger ml-2">{{$message}}</span>
-                        @enderror
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-2">Last Name</label>
-                        <div class="col-lg-10">
-                            <input type="text" class="form-control" name="last_name">
-                        </div>
-                        @error('last_name')
-                        <span class="text-danger ml-2">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-2">E-mail</label>
-                        <div class="col-lg-10">
-                            <input type="email" class="form-control" name="email">
-                        </div>
-                        @error('email')
-                        <span class="text-danger ml-2">{{$message}}</span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-2">Password</label>
-                        <div class="col-lg-10">
-                            <input type="password" class="form-control" name="password">
-                        </div>
-                        @error('password')
-                        <span class="text-danger ml-2">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="form-check form-check-switchery form-check-inline form-check-right">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery-info" name="is_admin" data-fouc="">
-                            Is Admin?
-                        </label>
-                    </div>
-                    <div class="form-check form-check-switchery form-check-inline form-check-right">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery-danger" name="is_deleted"
-                                data-fouc="">
-                            Is Deleted?
-                        </label>
-                    </div>
-                </fieldset>
-
-                <div class="text-right">
-                    <button type="submit" class="btn btn-primary"><i class="icon-database-insert mr-2"></i>
-                        Insert</button>
                 </div>
-            </form>
-        </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            @include('admin.layouts.includes.create_input',['field_name'=>'phone'])
+                            @include('admin.layouts.includes.create_check',['field_name'=>'is_active'])
+                            @include('admin.layouts.includes.image_input',['model_name'=>'lang'])
+                            @include('admin.layouts.includes.image',['field_value'=>'',
+                            'col_count'=>6,'class_name'=>'img_selected'])
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary"><i class="icon-database-insert mr-2"></i>
+                            Insert</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-    <!-- /form inputs -->
-
 </div>
 @endsection

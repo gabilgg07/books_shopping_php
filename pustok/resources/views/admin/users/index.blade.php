@@ -1,73 +1,99 @@
+@php
+$model_name = $index_view_model['model_name'];
+$table_name = $index_view_model['table_name'];
+$models = $index_view_model['models'];
+@endphp
+
 @extends("admin.layouts.master")
-@push("page_title")
-Users Index
+
+@push('theme_js')
+<script src="{{asset('admin/global_assets\js\plugins\tables\datatables\datatables.min.js')}}"></script>
+<script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
 @endpush
+@push('page_js')
+<script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
+<script src="{{asset('admin/global_assets\js\demo_pages\datatables_basic.js')}}"></script>
+@endpush
+
+@push("page_title")
+{{Str::headline($table_name)}} Index
+@endpush
+
 @section("content")
 <div class="content">
-
-    <!-- Basic datatable -->
+    @include('admin.layouts.includes.alert')
+    <div class="card mb-2 d-none alert alert-dismissible" id="alert_message">
+        <button type="button" class="close close-alert"><span>×</span></button>
+        <span class="msg-text"></span>
+    </div>
     <div class="card">
-
-        @if (session('message'))
-        <div class="alert alert-success border-0 alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
-            {{session('message')}}
+        <div class="card-header">
+            <h3 class="card-title  d-flex justify-content-between float-none align-items-center">
+                {{Str::headline($table_name)}} Index Table
+                <div style="display: flex; gap: 10px;">
+                    <div class="box-btn">
+                        <a href="{{route('manager.'.$table_name.'.create')}}" type="button"
+                            class="btn btn-block btn-success">
+                            <i class="icon-plus-circle2 mr-2"></i> Add {{Str::headline($model_name)}}</a>
+                    </div>
+                    <div class="box-btn">
+                        <a href="{{route('manager.'.$table_name.'.deleteds')}}" class="btn btn-danger">
+                            <i class="mi-delete-sweep mr-1" style="font-size: 18px;"></i>
+                            Deleted {{Str::headline($table_name)}} Table</a>
+                    </div>
+                </div>
+            </h3>
         </div>
-        @endif
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">Users
-            </h5>
-            <div class="header-elements">
-                <a href="{{route('manager.users.create')}}" class="btn btn-success"><i
-                        class="icon-plus-circle2 mr-2"></i> Add User</a>
-            </div>
-        </div>
-
-        <table class="table datatable-basic">
+        <table class="table table-bordered datatable-basic">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th style="width: 10px">#</th>
+                    <th>Full Name</th>
                     <th>E-mail</th>
-                    <th>Created At</th>
                     <th>Is Admin</th>
-                    <th>Is Deleted</th>
-                    <th>Actions</th>
+                    <th>Image</th>
+                    <th>Is Active</th>
+                    <th class="w-auto">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $user)
+                @foreach ($models as $model)
                 <tr>
-                    <td>{{$user->first_name}}</td>
-                    <td>{{$user->last_name}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->created_at}}</td>
+                    <td>{{$model->id}}</td>
+                    <td>{{Str::headline($model->first_name.' '.$model->last_name)}}</td>
+                    <td>{{$model->email}}</td>
                     <td>
-                        @if ($user->is_admin)
+                        @if ($model->is_admin)
                         <span class="badge badge-success">Admin</span>
                         @else
                         <span class="badge badge-info">User</span>
                         @endif
                     </td>
-                    <td>
-                        @if (!$user->is_deleted)
-                        <span class="badge badge-success">No</span>
-                        @else
-                        <span class="badge badge-danger">Yes</span>
+                    <td width='200'>
+                        @if ($model->image)
+                        <div class="image">
+                            <img src="{{$model->image}}" alt="{{$model->code.'-'.$model->country}}"
+                                class="img-fluid border-1">
+                        </div>
                         @endif
                     </td>
-                    <td>
-                        <a href="{{route('manager.users.edit',$user->id)}}" class="btn btn-warning"><i
+                    <td class="text-center">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}"
+                                data-fouc="" {{$model->is_active?'checked':''}}>
+                        </label>
+                    </td>
+                    <td class="text-right">
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
+                                class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i
                                 class="icon-pencil3 mr-2"></i> Edit</a>
-                        <!-- <a href="{{route('manager.users.destroy',$user->id)}}" class="btn btn-outline-danger"><i
-                                class="icon-trash mr-2"></i>Delete</a> -->
-
                         <form onsubmit="return confirm('Are you sure?')" method="post"
-                            action="{{route('manager.users.destroy', $user->id)}}" class="d-inline-block">
+                            action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="width: 100px;" class="btn btn-outline-danger ml-1"><i
-                                    class="icon-trash mr-2"></i> Delete</button>
+                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger
+                            "><i class="mi-delete mr-2"></i> Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -75,7 +101,37 @@ Users Index
             </tbody>
         </table>
     </div>
-    <!-- /basic datatable -->
-
 </div>
 @endsection
+
+@push('custom_js')
+<script>
+$(document).ready(function() {
+    const url = "{{ route('manager.'.$table_name.'.change_active') }}";
+    if ($(".isActive").length) {
+        $(".datatable-basic").DataTable({
+            drawCallback: function() {
+                if (ids.length) {
+                    ids.forEach((value, index, array) => {
+                        deactiveAll(value.ids);
+                    })
+                }
+                const alertElement = $("#alert_message");
+                let msg = "";
+
+                $(".close-alert").click(function() {
+                    alertElement.addClass("d-none");
+                });
+
+                $(".datatable-basic tbody").off("click", ".isActive");
+                $(".datatable-basic tbody").on("click", ".isActive", (e) => {
+                    changeIsActive(e, msg, alertElement, url);
+                });
+            },
+        });
+    } else {
+        $(".datatable-basic").DataTable();
+    }
+});
+</script>
+@endpush

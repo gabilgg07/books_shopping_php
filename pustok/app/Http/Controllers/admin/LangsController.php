@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 
-use function PHPSTORM_META\type;
-
 class LangsController extends Controller
 {
 

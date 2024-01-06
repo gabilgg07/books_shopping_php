@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\admin\categories;
+namespace App\Http\Requests\admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Category;
 use Illuminate\Support\Str;
 
-class UpdateRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     public function rules(): array
     {

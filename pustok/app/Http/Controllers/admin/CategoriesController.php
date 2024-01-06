@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\admin\categories\CreateRequest;
-use App\Http\Requests\admin\categories\UpdateRequest;
+use App\Http\Requests\admin\CategoryRequest;
 use App\Models\Category as Model;
-use App\Models\Category;
 use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
@@ -45,7 +43,7 @@ class CategoriesController extends Controller
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(CreateRequest $request)
+    public function store(CategoryRequest $request)
     {
         $data = $request->all();
         $data['is_active'] = $request->is_active ? 1 : 0;
@@ -136,7 +134,7 @@ class CategoriesController extends Controller
         }
     }
 
-    public function update(UpdateRequest $request, Model $category)
+    public function update(CategoryRequest $request, Model $category)
     {
         $model = $category;
         if ($model) {

@@ -3,44 +3,63 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\UserRequest;
+use App\Models\User as Model;
 use App\Models\User;
+use App\Services\DataService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
+    protected $table_name = 'users';
+    protected $model_name = 'user';
+    public function __construct(private DataService $dataService)
+    {
+    }
     public function index()
     {
-        $data = User::all();
-        return view("admin.users.index", compact('data'));
+        $models = Model::where('id', '!=', auth()->user()->id)->where('is_deleted', 0)->get();
+        $index_view_model = [
+            'model_name' => $this->model_name,
+            'table_name' => $this->table_name,
+            'models' => $models,
+        ];
+        return view('admin.' . $this->table_name . '.index', compact('index_view_model'));
     }
 
     public function create()
     {
-        return view('admin.users.create');
+        $create_view_model = [
+            'model_name' => $this->model_name,
+            'table_name' => $this->table_name,
+        ];
+        return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $this->validate($request, [
-            "first_name" => "required",
-            "last_name" => "required",
-            "email" => ["required", "email"],
-            "password" => "required",
-        ]);
-
         $data = $request->all();
+        unset($data['repeat_password']);
         $data['is_admin'] =  $request->is_admin ? 1 : 0;
-        $data['is_deleted'] =  $request->is_deleted ? 1 : 0;
-        $created = User::create($data);
-
+        $data['is_active'] =  $request->is_active ? 1 : 0;
+        $data['created_by_user_id'] =  auth()->user()->id;
+        $created = Model::create($data);
         if ($created) {
-            return redirect()->route('manager.users.index')
+            if ($request->file()) {
+                $fileExtension = $request->image->extension();
+                $imgName = $this->model_name . '_' . $created->code . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
+                $imgPath = $request->file('image')->storeAs('uploads/admin/' . $this->table_name, $imgName, 'public');
+                $created->image = '/storage/' . $imgPath;
+                $created->save();
+            }
+            return redirect()->route('manager.' . $this->table_name . '.index')
                 ->with('type', 'success')
-                ->with('message', 'User has been stored.');
+                ->with('message', Str::headline($this->model_name) . ' has been stored.');
         } else {
-            return redirect()->back()
+            return back()
                 ->with('type', 'danger')
-                ->with('message', 'Something went wrong!');
+                ->with('message', 'Failed to store ' . $this->model_name . '!');
         }
     }
 
