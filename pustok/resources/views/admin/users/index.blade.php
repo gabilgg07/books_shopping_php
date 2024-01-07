@@ -72,7 +72,7 @@ $models = $index_view_model['models'];
                     <td width='200'>
                         @if ($model->image)
                         <div class="image">
-                            <img src="{{$model->image}}" alt="{{$model->code.'-'.$model->country}}"
+                            <img src="{{$model->image}}" alt="{{$model->first_name.'-'.$model->last_name}}"
                                 class="img-fluid border-1">
                         </div>
                         @endif
@@ -111,11 +111,6 @@ $(document).ready(function() {
     if ($(".isActive").length) {
         $(".datatable-basic").DataTable({
             drawCallback: function() {
-                if (ids.length) {
-                    ids.forEach((value, index, array) => {
-                        deactiveAll(value.ids);
-                    })
-                }
                 const alertElement = $("#alert_message");
                 let msg = "";
 

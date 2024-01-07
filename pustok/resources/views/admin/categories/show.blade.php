@@ -28,8 +28,7 @@ $color_classes = $show_view_model['color_classes'];
                                 Deleted !!!
                             </span>
                             @else
-                            <span
-                                class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
+                            <span class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
                                 {{$model->is_active?"Active":"Don't Active"}}
                             </span>
                             @endif
@@ -79,7 +78,7 @@ $color_classes = $show_view_model['color_classes'];
                     @endif
 
 
-                    @if ($show_view_model['model']->image)
+                    @if ($model->image)
                     <div class="col-lg-6 text-center">
                         <span class="d-inline-block">
                             <img src="{{$show_view_model['model']->image}}" class="img-fluid" alt="">

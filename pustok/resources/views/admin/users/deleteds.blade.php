@@ -35,8 +35,9 @@ Deleted {{Str::headline($table_name)}}
                 <thead>
                     <tr>
                         <th style="width: 10px">#</th>
-                        <th>Code</th>
-                        <th>Country</th>
+                        <th>Full Name</th>
+                        <th>E-mail</th>
+                        <th>Is Admin</th>
                         <th>Deleted At</th>
                         <th>Image</th>
                         <th class="w-auto">Actions</th>
@@ -46,12 +47,21 @@ Deleted {{Str::headline($table_name)}}
                     @foreach ($models as $model)
                     <tr>
                         <td>{{$model->id}}</td>
-                        <td>{{Str::upper($model->code)}}</td>
-                        <td>{{Str::headline($model->country)}}</td>
+                        <td>{{Str::headline($model->first_name.' '.$model->last_name)}}</td>
+                        <td>{{$model->email}}</td>
+                        <td>
+                            @if ($model->is_admin)
+                            <span class="badge badge-success">Admin</span>
+                            @else
+                            <span class="badge badge-info">User</span>
+                            @endif
+                        </td>
                         <td>{{$model->deleted_at}}</td>
                         <td width='200'>
                             @if ($model->image)
-                            <img src="{{$model->image}}" alt="{{$model_name.'-'.$model->id}}" class="img-fluid border-1">
+                            <div class="image">
+                                <img src="{{$model->image}}" alt="{{$model->first_name.'-'.$model->last_name}}" class="img-fluid border-1">
+                            </div>
                             @endif
                         </td>
                         <td class="text-right">

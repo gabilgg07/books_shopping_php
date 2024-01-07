@@ -43,7 +43,7 @@ class AccountController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            if (auth()->user()->is_admin) {
+            if (auth()->user()->is_admin || auth()->user()->is_deleted || !auth()->user()->is_active) {
                 auth()->logout();
                 return back()->with('error', 'Email or password is invalide');
             }

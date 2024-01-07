@@ -41,6 +41,15 @@
     box-shadow: 0 0 7px 2px #0000008c;
 }
 
+.img_user {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    box-shadow: 0 0 6px 4px #00000099;
+    border: 1px solid white;
+    border-radius: 6px;
+}
+
 .lang-flag {
     display: block;
     max-width: 100%;

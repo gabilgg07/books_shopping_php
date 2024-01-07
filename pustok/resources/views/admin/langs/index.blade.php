@@ -32,8 +32,7 @@ $models = $index_view_model['models'];
                 {{Str::headline($table_name)}} Index Table
                 <div style="display: flex; gap: 10px;">
                     <div class="box-btn">
-                        <a href="{{route('manager.'.$table_name.'.create')}}" type="button"
-                            class="btn btn-block btn-success">
+                        <a href="{{route('manager.'.$table_name.'.create')}}" type="button" class="btn btn-block btn-success">
                             <i class="icon-plus-circle2 mr-2"></i> Add {{Str::headline($model_name)}}</a>
                     </div>
                     <div class="box-btn">
@@ -64,24 +63,19 @@ $models = $index_view_model['models'];
                     <td width='200'>
                         @if ($model->image)
                         <div class="image">
-                            <img src="{{$model->image}}" alt="{{$model->code.'-'.$model->country}}"
-                                class="img-fluid border-1">
+                            <img src="{{$model->image}}" alt="{{$model->code.'-'.$model->country}}" class="img-fluid border-1">
                         </div>
                         @endif
                     </td>
                     <td class="text-center">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}"
-                                data-fouc="" {{$model->is_active?'checked':''}}>
+                            <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}" data-fouc="" {{$model->is_active?'checked':''}}>
                         </label>
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
-                                class="mi-info mr-2"></i> Info</a>
-                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i
-                                class="icon-pencil3 mr-2"></i> Edit</a>
-                        <form onsubmit="return confirm('Are you sure?')" method="post"
-                            action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i class="icon-pencil3 mr-2"></i> Edit</a>
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
                             <button type="submit" style="width: fit-content;" class="btn btn-outline-danger
@@ -98,32 +92,27 @@ $models = $index_view_model['models'];
 
 @push('custom_js')
 <script>
-$(document).ready(function() {
-    const url = "{{ route('manager.'.$table_name.'.change_active') }}";
-    if ($(".isActive").length) {
-        $(".datatable-basic").DataTable({
-            drawCallback: function() {
-                if (ids.length) {
-                    ids.forEach((value, index, array) => {
-                        deactiveAll(value.ids);
-                    })
-                }
-                const alertElement = $("#alert_message");
-                let msg = "";
+    $(document).ready(function() {
+        const url = "{{ route('manager.'.$table_name.'.change_active') }}";
+        if ($(".isActive").length) {
+            $(".datatable-basic").DataTable({
+                drawCallback: function() {
+                    const alertElement = $("#alert_message");
+                    let msg = "";
 
-                $(".close-alert").click(function() {
-                    alertElement.addClass("d-none");
-                });
+                    $(".close-alert").click(function() {
+                        alertElement.addClass("d-none");
+                    });
 
-                $(".datatable-basic tbody").off("click", ".isActive");
-                $(".datatable-basic tbody").on("click", ".isActive", (e) => {
-                    changeIsActive(e, msg, alertElement, url);
-                });
-            },
-        });
-    } else {
-        $(".datatable-basic").DataTable();
-    }
-});
+                    $(".datatable-basic tbody").off("click", ".isActive");
+                    $(".datatable-basic tbody").on("click", ".isActive", (e) => {
+                        changeIsActive(e, msg, alertElement, url);
+                    });
+                },
+            });
+        } else {
+            $(".datatable-basic").DataTable();
+        }
+    });
 </script>
 @endpush

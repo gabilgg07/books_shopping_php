@@ -47,7 +47,7 @@ $(window).on('load', function() {
                             @include('admin.layouts.includes.create_input',['field_name'=>'last_name'])
                             @include('admin.layouts.includes.create_input_by_type', ['field_name'=>'email',
                             'type'=>'email'])
-                            @include('admin.layouts.includes.create_input_by_type', ['field_name'=>'password',
+                            @include('admin.layouts.includes.create_input_by_type', ['field_name'=>'new_password',
                             'type'=>'password'])
                             @include('admin.layouts.includes.create_input_by_type', ['field_name'=>'repeat_password',
                             'type'=>'password'])
@@ -59,6 +59,7 @@ $(window).on('load', function() {
                         <div class="card-body">
                             @include('admin.layouts.includes.create_input',['field_name'=>'phone'])
                             @include('admin.layouts.includes.create_check',['field_name'=>'is_active'])
+                            @include('admin.layouts.includes.create_check',['field_name'=>'is_admin'])
                             @include('admin.layouts.includes.image_input',['model_name'=>'lang'])
                             @include('admin.layouts.includes.image',['field_value'=>'',
                             'col_count'=>6,'class_name'=>'img_selected'])

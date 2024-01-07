@@ -3,22 +3,22 @@
 namespace App\Http\Requests\admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
     public function rules(): array
     {
+        $modelId = $this->route('user')?->id;
         return [
             'first_name' => 'required|alpha|min:3',
             'last_name' => 'required|alpha|min:3',
-            'email' => ['required', 'email', Rule::unique('users', 'email')],
-            'password' => [
-                'required',
+            'email' => ['required', 'email', !$modelId ? 'unique:users' : 'unique:users' . ',email,' . $modelId],
+            'new_password' => [
+                !$modelId ? 'required' : 'nullable',
                 // 'min:8',
                 // 'regex:/^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/',
             ],
-            'repeat_password' => 'required|same:password',
+            'repeat_password' => !$modelId ? 'required|same:new_password' : 'same:new_password',
             'phone' => ['nullable', 'regex:/(^\+?[0-9]{1,3}-?[0-9]{6,14}$)|(^(0)[0-9]{9}$)/'],
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:4096|min:1024',
         ];
