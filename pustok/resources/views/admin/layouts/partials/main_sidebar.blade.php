@@ -85,13 +85,13 @@ $user = auth()->user();
                 </li>
 
                 <li
-                    class="nav-item nav-item-submenu {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*']) ? 'nav-item-open' : '' }}">
+                    class="nav-item nav-item-submenu {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'nav-item-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*']) ? 'active' : '' }}"><i
+                        class="nav-link {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'active' : '' }}"><i
                             class="icon-table2"></i> <span>Models Tables</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts"
-                        {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*']) ? 'style=display:block;' : 'style=display:none;' }}">
+                        {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'style=display:block;' : 'style=display:none;' }}">
                         <li class="nav-item"><a href="{{route('manager.categories.index')}}"
                                 class="nav-link {{ request()->routeIs('manager.categories.*') ? 'active' : '' }}">Categories</a>
                         </li>
@@ -100,6 +100,9 @@ $user = auth()->user();
                         </li>
                         <li class="nav-item"><a href="{{route('manager.campaigns.index')}}"
                                 class="nav-link {{ request()->routeIs('manager.campaigns.*') ? 'active' : '' }}">Campaings</a>
+                        </li>
+                        <li class="nav-item"><a href="{{route('manager.books.index')}}"
+                                class="nav-link {{ request()->routeIs('manager.books.*') ? 'active' : '' }}">Books</a>
                         </li>
                     </ul>
                 </li>

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('long_desc');
             $table->unsignedInteger('views');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('campaign_id');
+            $table->unsignedBigInteger('campaign_id')->default(0);
             $table->timestamps();
         });
     }

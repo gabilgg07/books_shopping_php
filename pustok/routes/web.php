@@ -3,6 +3,7 @@
 // admin controllers
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\AccountController as AdminAccountController;
+use App\Http\Controllers\admin\BooksController;
 use App\Http\Controllers\admin\CampaignsController;
 use App\Http\Controllers\admin\CategoriesController;
 use App\Http\Controllers\admin\LangsController;
@@ -78,6 +79,7 @@ Route::group([
     defineResourceRoutes('categories', 'category', CategoriesController::class);
     defineResourceRoutes('users', 'user', UsersController::class);
     defineResourceRoutes('campaigns', 'campaign', CampaignsController::class);
+    defineResourceRoutes('books', 'book', BooksController::class);
 });
 
 
