@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\BookRequest;
 use App\Models\Book as Model;
 use App\Models\Campaign;
 use App\Models\Category;
@@ -46,12 +47,23 @@ class BooksController extends Controller
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['is_active'] = $request->is_active ? 1 : 0;
+        $data['slug'] = $this->dataService->sluggableArray($data, 'title');
+        $data['created_by_user_id'] =  auth()->user()->id;
+        $created = Model::create($data);
+
+        if ($created) {
+            return redirect()->route('manager.' . $this->table_name . '.index')
+                ->with('type', 'success')
+                ->with('message', Str::headline($this->model_name) . ' has been stored.');
+        } else {
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'Failed to store ' . $this->model_name . '!');
+        }
     }
 
     /**

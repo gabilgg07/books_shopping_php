@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->double('price');
-            $table->string('product_code');
+            $table->double('reviews')->default(0);
             $table->unsignedInteger('count');
             $table->string('short_desc');
             $table->string('long_desc');

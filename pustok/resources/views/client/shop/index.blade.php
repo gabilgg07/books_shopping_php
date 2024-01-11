@@ -78,7 +78,7 @@
                                         <img src="{{ asset('client/assets/image/products/product-1.jpg') }}" alt="">
                                     </a>
                                     <div class="hover-btns">
-                                        <a href="cart.html" class="single-btn">
+                                        <a href="" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
                                         <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">

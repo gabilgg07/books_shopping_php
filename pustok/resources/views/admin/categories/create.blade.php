@@ -15,16 +15,16 @@ $select_items = $create_view_model['select_items'];
 <script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\demo_pages\form_inputs.js')}}"></script>
 <script>
-$(window).on('load', function() {
-    $("#image_input").change(function(event) {
-        var tmppath = URL.createObjectURL(event.target.files[0]);
-        $("#image").attr(
-            "src",
-            URL.createObjectURL(event.target.files[0])
-        );
-        $("#image").removeClass('d-none');
+    $(window).on('load', function() {
+        $("#image_input").change(function(event) {
+            var tmppath = URL.createObjectURL(event.target.files[0]);
+            $("#image").attr(
+                "src",
+                URL.createObjectURL(event.target.files[0])
+            );
+            $("#image").removeClass('d-none');
+        });
     });
-});
 </script>
 @endpush
 
@@ -48,7 +48,7 @@ $(window).on('load', function() {
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    @include('admin.layouts.includes.create_select_input',['field_label'=>'Parent
+                    @include('admin.layouts.includes.create_select_input',['default_value'=>0,'field_label'=>'Parent
                     Category','field_name'=>'parent_id','select_items'=>$select_items,'shown_field'=>'title'])
 
                     @include('admin.layouts.includes.create_check',['field_name'=>'is_active'])

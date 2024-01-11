@@ -1,6 +1,8 @@
 <?php
 
 // admin controllers
+
+use App\Events\OrderPlaced;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\AccountController as AdminAccountController;
 use App\Http\Controllers\admin\BooksController;
@@ -13,9 +15,10 @@ use App\Http\Controllers\admin\UsersController;
 // client controllers
 use App\Http\Controllers\client\AccountController;
 use App\Http\Controllers\client\ContactController;
+use App\Http\Controllers\client\CurrencyController;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\ShopController;
-
+use App\Http\Controllers\client\ShoppingCart;
 // others
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -93,3 +96,14 @@ function defineResourceRoutes($table_name, $model_name, $controller)
     Route::patch("/$table_name/change_active", [$controller, 'change_active'])->name("$table_name.change_active");
     Route::resource("/$table_name", $controller)->except(['deleteds', 'restore', 'permanently_delete', 'change_active']);
 }
+
+// Route::get("/add-to-cart/{id}", [ShoppingCart::class, "add"])->name("add");
+// Route::get("/remove-from-cart/{id}", [ShoppingCart::class, "remove"])->name("remove");
+// Route::get("/clear-cart", [ShoppingCart::class, "destroy"])->name("clear");
+// Route::get("/curency", [CurrencyController::class, "index"])->name("cureency");
+
+// Route::get("/event", function () {
+//     event(new OrderPlaced());
+
+//     return "Order placed successfully!";
+// });

@@ -9,6 +9,7 @@ use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class CampaignsController extends Controller
@@ -20,7 +21,11 @@ class CampaignsController extends Controller
     }
     public function index()
     {
-        $models = Model::where('is_deleted', 0)->get();
+        // $models = Model::where('is_deleted', 0)->get();
+        $models = Cache::remember($this->table_name, 60, function () {
+            return Model::where('is_deleted', 0)->get();
+        });
+
         $index_view_model = [
             'model_name' => $this->model_name,
             'table_name' => $this->table_name,

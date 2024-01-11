@@ -1,10 +1,12 @@
+@php
+$isEditor = $isEditor ?? false;
+@endphp
+
 <div class="card">
     <div class="card-body">
         <ul class="nav nav-tabs nav-tabs-solid border-0">
             @foreach($langs as $key=>$lang)
-            <li class="nav-item border {{$errors->has($field_name.'.' . $lang->code)?'border-danger':''}}"><a
-                    href="#{{$field_name.$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}"
-                    data-toggle="tab">{{$lang->code}}</a></li>
+            <li class="nav-item border {{$errors->has($field_name.'.' . $lang->code)?'border-danger':''}}"><a href="#{{$field_name.$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}" data-toggle="tab">{{$lang->code}}</a></li>
             @endforeach
         </ul>
         <div class="tab-content">
@@ -15,8 +17,7 @@
                         <fieldset>
                             <div class="form-group">
                                 <label>{{Str::headline($field_name)}}:</label>
-                                <input type="text" class="form-control" name="{{$field_name}}[{{$lang->code}}]"
-                                    value="{{ old($field_name.'.' . $lang->code) }}">
+                                <textarea class="{{$isEditor?'summernote':'form-control'}}" name="{{$field_name}}[{{$lang->code}}]">{{ old($field_name.'.' . $lang->code) }}</textarea>
                                 @error($field_name.'.' . $lang->code)
                                 <span class="text-danger ml-2">{{$message}}</span>
                                 @enderror

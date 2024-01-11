@@ -30,7 +30,8 @@ $json_field=$edit_view_model['json_field'];
             <h5 class="card-title">{{Str::headline($model_name)}} Edit</h5>
         </div>
     </div>
-    <form action="{{route('manager.'. $table_name .'.update', $model->id)}}" method="POST" class="row" enctype="multipart/form-data">
+    <form action="{{route('manager.'. $table_name .'.update', $model->id)}}" method="POST" class="row"
+        enctype="multipart/form-data">
         @csrf
         @method('PATCH')
 
@@ -43,7 +44,7 @@ $json_field=$edit_view_model['json_field'];
                 <div class="card-body">
 
                     @include('admin.layouts.includes.edit_num_input', ['field_name'=>'discount_percent',
-                    'field_value'=>$model->discount_percent, 'step'=>'0'])
+                    'field_value'=>$model->discount_percent, 'step'=>'0', 'colLbl'=>3, 'colInput'=>9])
 
                     @include('admin.layouts.includes.edit_check',['field_name'=>'is_active','field_value'=>$model->is_active])
 

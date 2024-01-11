@@ -36,7 +36,7 @@ $langs = $create_view_model['langs'];
             <div class="card">
                 <div class="card-body">
                     @include('admin.layouts.includes.create_num_input',['field_name'=>'discount_percent',
-                    'step'=>'0'])
+                    'step'=>'0', 'colLbl'=>3, 'colInput'=>9])
 
                     @include('admin.layouts.includes.create_check',['field_name'=>'is_active'])
                 </div>

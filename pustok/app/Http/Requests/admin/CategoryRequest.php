@@ -10,13 +10,13 @@ class CategoryRequest extends FormRequest
 {
     public function rules(): array
     {
-        $categoryId = $this->route('category')?->id;
+        $modelId = $this->route('category')?->id;
         return [
             'title' => ['required', 'array'],
-            'title.*' => ['max:255', function ($attribute, $value, $fail) use ($categoryId) {
+            'title.*' => ['max:255', function ($attribute, $value, $fail) use ($modelId) {
                 $slug = Str::slug($value);
                 $keyValue = Str::of($attribute)->afterLast('.');
-                $existingTitles = Category::where('id', '!=', $categoryId)->whereJsonContains('slug->' . $keyValue, $slug)->exists();
+                $existingTitles = Category::where('id', '!=', $modelId)->whereJsonContains('slug->' . $keyValue, $slug)->exists();
                 if ($existingTitles) {
                     $fail(Str::headline(Str::replace('.', ' ', $attribute)) . ' ' . __('validation.unique'));
                 }
