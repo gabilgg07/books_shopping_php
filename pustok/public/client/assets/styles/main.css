@@ -23435,6 +23435,7 @@ input[type="number"] {
     bottom: 0;
     margin: auto;
     border-radius: 100%;
+    box-shadow: 0 0 2px 1px #63ab01;
 }
 [class*="hero-slider"] .slick-dots li.slick-active {
     background: transparent;

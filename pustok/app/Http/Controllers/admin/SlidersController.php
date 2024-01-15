@@ -3,22 +3,20 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\admin\CategoryRequest;
-use App\Models\Category as Model;
+use App\Models\HeroSlider as Model;
 use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class CategoriesController extends Controller
+class SlidersController extends Controller
 {
-    protected $table_name = 'categories';
-    protected $model_name = 'category';
+    protected $table_name = 'sliders';
+    protected $model_name = 'slider';
     public function __construct(private DataService $dataService)
     {
     }
-
     public function index()
     {
         $models = Model::where('is_deleted', 0)->get();
@@ -33,28 +31,26 @@ class CategoriesController extends Controller
     public function create()
     {
         $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
-        $select_items = Model::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
         $create_view_model = [
             'model_name' => $this->model_name,
             'table_name' => $this->table_name,
             'langs' => $langs,
-            'select_items' => $select_items,
         ];
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
         $data = $request->all();
         $data['is_active'] = $request->is_active ? 1 : 0;
-        $data['slug'] = $this->dataService->sluggableArray($data, 'title');
         $data['created_by_user_id'] =  auth()->user()->id;
+        // dd($data);
         $created = Model::create($data);
 
         if ($created) {
             if ($request->file()) {
                 $fileExtension = $request->image->extension();
-                $imgName = $this->model_name . ($created->parent_id == 0 ? '_parent' : '') . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
+                $imgName = $this->model_name . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
                 $imgPath = $request->file('image')->storeAs('uploads/admin/' . $this->table_name, $imgName, 'public');
                 $created->image = '/storage/' . $imgPath;
                 $created->save();
@@ -69,9 +65,9 @@ class CategoriesController extends Controller
         }
     }
 
-    public function show(Model $category)
+    public function show(Model $slider)
     {
-        $model = $category;
+        $model = $slider;
         if ($model) {
             $show_view_model = [
                 'color_classes' => $this->dataService->colorsArray,
@@ -79,15 +75,7 @@ class CategoriesController extends Controller
                 'model' => $model,
             ];
 
-            if ($model->parent_id != 0) {
-                $parentCategory = Model::where('id', $model->parent_id)->first();
-                if ($parentCategory) {
-                    $show_view_model['parent_category'] = $parentCategory;
-                }
-            }
-
-            $show_view_model['titles'] = $model->getTranslations('title');
-            $show_view_model['slugs'] = $model->getTranslations('slug');
+            $show_view_model['text_contents'] = $model->getTranslations('text_content');
             if ($model->created_by_user_id) {
                 $created_by_user = User::where('id', $model->created_by_user_id)->first();
                 if ($created_by_user) {
@@ -114,59 +102,30 @@ class CategoriesController extends Controller
         }
     }
 
-    public function edit(Model $category)
+    public function edit(Model $slider)
     {
         $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
-        $select_items = Model::where('parent_id', 0)->where('is_deleted', 0)->where('is_active', 1)->get();
-        $model = $category;
+        $model = $slider;
         if ($model) {
             $edit_view_model = [
                 'model_name' => $this->model_name,
                 'table_name' => $this->table_name,
                 'model' => $model,
                 'langs' => $langs,
-                'select_items' => $select_items,
             ];
-            $edit_view_model['json_field'] = $model->getTranslations('title');
+            $edit_view_model['json_field'] = $model->getTranslations('text_content');
             return view('admin.' . $this->table_name . '.edit', compact('edit_view_model'));
         } else {
             abort(404);
         }
     }
 
-    public function update(CategoryRequest $request, Model $category)
+    public function update(Request $request, Model $slider)
     {
-        $model = $category;
+        $model = $slider;
         if ($model) {
             $data = $request->all();
             $data['is_active'] = $request->is_active ? 1 : 0;
-            if ($model->parent_id == 0 && !(bool)$request->is_active) {
-                $childCategories = Model::where('parent_id', $model->id)->get();
-                if (count($childCategories)) {
-                    foreach ($childCategories as $child) {
-                        $child->is_active = false;
-                        $child->updated_by_user_id =  auth()->user()->id;
-                        $child->updated_at = now();
-                        $childSaved = $child->save();
-                        if (!$childSaved) {
-                            return redirect()->back()
-                                ->with('type', 'danger')
-                                ->with('message', "Failed to change is_active field of child $this->model_name id:$child->id!");
-                        }
-                    }
-                }
-            }
-            if ($model->parent_id != 0 && (bool)$request->is_active) {
-                $parentModel = Model::where('id', $model->parent_id)->first();
-                if (!$parentModel->is_active) {
-                    $route = route('manager.' . $this->table_name . '.edit', $parentModel->id);
-                    $goHref = "<a href='$route'>Do active id $parentModel->id parent $this->model_name</a>";
-                    return redirect()->back()
-                        ->with('type', 'danger')
-                        ->with('message', "Failed to do active $this->model_name! Please, first do active parent $this->model_name: $goHref");
-                }
-            }
-            $data['slug'] = $this->dataService->sluggableArray($data, 'title');
             $data['updated_by_user_id'] =  auth()->user()->id;
             $updated = $model->update($data);
 
@@ -176,7 +135,7 @@ class CategoriesController extends Controller
                         unlink(public_path($model->image));
                     }
                     $fileExtension = $request->image->extension();
-                    $imgName = $this->model_name . ($model->parent_id == 0 ? '_parent' : '') . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
+                    $imgName = $this->model_name . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
                     $imgPath = $request->file('image')->storeAs('uploads/admin/' . $this->table_name, $imgName, 'public');
                     $model->image = '/storage/' . $imgPath;
                     $model->save();
@@ -192,43 +151,11 @@ class CategoriesController extends Controller
             abort(404);
         }
     }
-
     public function change_active(Request $request)
     {
         $id = $request->id;
         $is_active = $request->is_active === 'true' ? 1 : 0;
-        $model = Model::where('id', $id)->first();
-        $childrenIds = [];
         try {
-            if ($model->parent_id == 0 && !$is_active) {
-                $childCategories = Model::where('parent_id', $model->id)->get();
-                if (count($childCategories)) {
-                    foreach ($childCategories as $child) {
-                        $child->is_active = false;
-                        $child->updated_by_user_id =  auth()->user()->id;
-                        $child->updated_at = now();
-                        $childSaved = $child->save();
-                        if (!$childSaved) {
-                            return json_encode([
-                                'type' => 'danger',
-                                'message' => 'Failed to change is_active field of child ' . $this->model_name . ' model, id: ' . $id,
-                            ]);
-                        }
-                        $childrenIds[] = $child->id;
-                    }
-                }
-            }
-            if ($model->parent_id != 0) {
-                $parentModel = Model::where('id', $model->parent_id)->first();
-                if ($parentModel && !$parentModel->is_active) {
-                    $route = route('manager.' . $this->table_name . '.edit', $parentModel->id);
-                    $goHref = "<a href='$route'> do active parent $this->model_name, id: $parentModel->id</a>";
-                    return json_encode([
-                        'type' => 'danger',
-                        'message' => 'Failed to do active ' . $this->model_name . ' model! Please, first: ' . $goHref,
-                    ]);
-                }
-            }
             $updated = Model::where('id', $id)->update([
                 'is_active' => $is_active
             ]);
@@ -238,9 +165,6 @@ class CategoriesController extends Controller
                     'type' => 'success',
                     'message' => Str::headline($this->model_name) . ' model\'s is active field changed, id: ' . $id,
                 ];
-                if ($childrenIds && count($childrenIds)) {
-                    $data['ids'] = $childrenIds;
-                }
                 return json_encode($data);
             } else {
                 return json_encode([
@@ -253,31 +177,13 @@ class CategoriesController extends Controller
         }
     }
 
-    public function destroy(Model $category)
+    public function destroy(Model $slider)
     {
-
-        $model = $category;
+        $model = $slider;
         if ($model) {
             $model->is_deleted = 1;
             $model->deleted_by_user_id =  auth()->user()->id;
             $model->deleted_at = now();
-            if ($model->parent_id == 0) {
-                $childModels = Model::where('parent_id', $model->id)->where('is_deleted', 0)->get();
-                if (count($childModels)) {
-                    foreach ($childModels as $child) {
-
-                        $child->is_deleted = 1;
-                        $child->deleted_by_user_id =  auth()->user()->id;
-                        $child->deleted_at = now();
-                        $childSaved = $child->save();
-                        if (!$childSaved) {
-                            return redirect()->back()
-                                ->with('type', 'danger')
-                                ->with('message', "Failed to delete child $this->model_name id:$child->id !");
-                        }
-                    }
-                }
-            }
             $saved = $model->save();
             if ($saved) {
                 return redirect()->route('manager.' . $this->table_name . '.index')
@@ -303,21 +209,10 @@ class CategoriesController extends Controller
         ];
         return view('admin.' . $this->table_name . '.deleteds', compact("deleteds_view_model"));
     }
-
-    public function restore(Model $category)
+    public function restore(Model $slider)
     {
-        $model = $category;
+        $model = $slider;
         if ($model) {
-            if ($model->parent_id) {
-                $parentModel = Model::where('id', $model->parent_id)->first();
-                if ($parentModel->is_deleted) {
-                    $route = route('manager.' . $this->table_name . '.restore', $parentModel->id);
-                    $goHref = "<a href='$route'> Restore id $parentModel->id parent $this->model_name</a>";
-                    return redirect()->back()
-                        ->with('type', 'danger')
-                        ->with('message', "Failed to restore $this->model_name! Please, first restore parent $this->model_name: $goHref");
-                }
-            }
             $model->is_deleted = 0;
             $model->deleted_by_user_id =  0;
             $model->deleted_at = null;
@@ -337,24 +232,10 @@ class CategoriesController extends Controller
         }
     }
 
-    public function permanently_delete(Model $category)
+    public function permanently_delete(Model $slider)
     {
-        $model = $category;
+        $model = $slider;
         if ($model) {
-            if ($model->parent_id == 0) {
-                $childModels = Model::where('parent_id', $model->id)->get();
-                if (count($childModels)) {
-                    foreach ($childModels as $child) {
-
-                        $childDeleted = $child->delete();
-                        if (!$childDeleted) {
-                            return redirect()->back()
-                                ->with('type', 'danger')
-                                ->with('message', "Failed to permanently delete child $this->model_name id:$child->id !");
-                        }
-                    }
-                }
-            }
             $deleted = $model->delete();
             if ($deleted) {
                 return redirect()->route('manager.' . $this->table_name . '.deleteds')

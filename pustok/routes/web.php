@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\CampaignsController;
 use App\Http\Controllers\admin\CategoriesController;
 use App\Http\Controllers\admin\LangsController;
 use App\Http\Controllers\admin\LanguageLineController;
+use App\Http\Controllers\admin\SlidersController;
 use App\Http\Controllers\admin\UsersController;
 
 // client controllers
@@ -83,6 +84,7 @@ Route::group([
     defineResourceRoutes('users', 'user', UsersController::class);
     defineResourceRoutes('campaigns', 'campaign', CampaignsController::class);
     defineResourceRoutes('books', 'book', BooksController::class);
+    defineResourceRoutes('sliders', 'slider', SlidersController::class);
 });
 
 

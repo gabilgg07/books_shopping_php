@@ -17,9 +17,11 @@
                 count($colors)-1)];
                 @endphp
                 <li class="nav-item">
-                    <span class="nav-link text-{{$r_class}} {{array_key_last($field_value)!=$lang?'border-bottom-1 border-bottom-dashed':''}}">
+                    <span
+                        class="nav-link text-{{$r_class}} {{array_key_last($field_value)!=$lang?'border-bottom-1 border-bottom-dashed':''}}">
                         {{$item}}
-                        <span class="font-size-sm font-weight-normal ml-auto text-{{$r_class}}-300">{{$lang}}</span>
+                        <span class="font-size-sm text-right font-weight-normal ml-auto text-{{$r_class}}-300"
+                            style="min-width: 50px;">{{$lang}}</span>
                     </span>
                 </li>
                 @endforeach
