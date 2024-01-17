@@ -19,7 +19,7 @@
     Footer
 ===================================== -->
 
-    @include("client.layouts.partials.brands")
+    <x-brands-component />
     @include("client.layouts.partials.footer")
     @include("client.layouts.partials.foot")
 </body>

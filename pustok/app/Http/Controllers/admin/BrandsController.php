@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\HeroSlider as Model;
-use App\Models\Lang;
+use App\Models\Brand as Model;
 use App\Models\User;
 use App\Services\DataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class SlidersController extends Controller
+class BrandsController extends Controller
 {
-    protected $table_name = 'sliders';
-    protected $model_name = 'slider';
+    protected $table_name = 'brands';
+    protected $model_name = 'brand';
     public function __construct(private DataService $dataService)
     {
     }
@@ -30,11 +29,9 @@ class SlidersController extends Controller
 
     public function create()
     {
-        $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
         $create_view_model = [
             'model_name' => $this->model_name,
             'table_name' => $this->table_name,
-            'langs' => $langs,
         ];
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
@@ -42,8 +39,6 @@ class SlidersController extends Controller
     public function store(Request $request)
     {
         $validation = $request->validate([
-            'text_content' => 'required|array',
-            'text_content.*' => 'required',
             'image' => 'required|image|mimes:jpg,png,gif,jpeg,svg,webp|max:2024',
         ], [
             'image.required' => 'Image ' . __('validation.required')
@@ -80,8 +75,6 @@ class SlidersController extends Controller
                 'model_name' => $this->model_name,
                 'model' => $model,
             ];
-
-            $show_view_model['text_contents'] = $model->getTranslations('text_content');
             if ($model->created_by_user_id) {
                 $created_by_user = User::where('id', $model->created_by_user_id)->first();
                 if ($created_by_user) {
@@ -110,16 +103,13 @@ class SlidersController extends Controller
 
     public function edit(Model $slider)
     {
-        $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
         $model = $slider;
         if ($model) {
             $edit_view_model = [
                 'model_name' => $this->model_name,
                 'table_name' => $this->table_name,
                 'model' => $model,
-                'langs' => $langs,
             ];
-            $edit_view_model['json_field'] = $model->getTranslations('text_content');
             return view('admin.' . $this->table_name . '.edit', compact('edit_view_model'));
         } else {
             abort(404);
@@ -129,8 +119,6 @@ class SlidersController extends Controller
     public function update(Request $request, Model $slider)
     {
         $validation = $request->validate([
-            'text_content' => 'required|array',
-            'text_content.*' => 'required',
             'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,svg,webp|max:2024',
         ]);
         $model = $slider;

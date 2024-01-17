@@ -108,23 +108,25 @@ $user = auth()->user();
                 </li>
 
 
-                <li class="nav-item nav-item-submenu {{ request()->routeIs(['*.sliders.*']) ? 'nav-item-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->routeIs(['*.sliders.*']) ? 'active' : '' }}"><i
+                <li
+                    class="nav-item nav-item-submenu {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'nav-item-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'active' : '' }}"><i
                             class="icon-table2"></i> <span>Additional Tables</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts"
-                        {{ request()->routeIs(['*.sliders.*']) ? 'style=display:block;' : 'style=display:none;' }}">
+                        {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'style=display:block;' : 'style=display:none;' }}">
                         <li class="nav-item"><a href="{{route('manager.sliders.index')}}"
                                 class="nav-link {{ request()->routeIs('manager.sliders.*') ? 'active' : '' }}">Hero
                                 Sliders</a>
                         </li>
-                        <!-- <li class="nav-item"><a href="{{route('manager.users.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.users.*') ? 'active' : '' }}">Users</a>
+                        <li class="nav-item"><a href="{{route('manager.brands.index')}}"
+                                class="nav-link {{ request()->routeIs('manager.brands.*') ? 'active' : '' }}">Brands</a>
                         </li>
-                        <li class="nav-item"><a href="{{route('manager.campaigns.index')}}"
+                        <!-- <li class="nav-item"><a href="{{route('manager.campaigns.index')}}"
                                 class="nav-link {{ request()->routeIs('manager.campaigns.*') ? 'active' : '' }}">Campaings</a>
-                        </li>
-                        <li class="nav-item"><a href="{{route('manager.books.index')}}"
+                        </li> -->
+                        <!-- <li class="nav-item"><a href="{{route('manager.books.index')}}"
                                 class="nav-link {{ request()->routeIs('manager.books.*') ? 'active' : '' }}">Books</a>
                         </li> -->
                     </ul>

@@ -2,10 +2,11 @@
 
 // admin controllers
 
-use App\Events\OrderPlaced;
+// use App\Events\OrderPlaced;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\AccountController as AdminAccountController;
 use App\Http\Controllers\admin\BooksController;
+use App\Http\Controllers\admin\BrandsController;
 use App\Http\Controllers\admin\CampaignsController;
 use App\Http\Controllers\admin\CategoriesController;
 use App\Http\Controllers\admin\LangsController;
@@ -39,7 +40,7 @@ Route::group(["middleware" => ['web', 'auth.user.check', 'check.route'], "prefix
 Route::group(["middleware" => ['check.route'], "prefix" => LaravelLocalization::setLocale() . "", "as" => "client."], function () {
     Route::get("/", [HomeController::class, "index"])->name("home.index");
 
-    Route::get("/shop", [ShopController::class, "index"])->name("shop.index");
+    Route::get("/shop/{slug?}", [ShopController::class, "index"])->name("shop.index");
     Route::get("/shop/card", [ShopController::class, "card"])->name("shop.card");
     Route::get("/shop/wishlist", [ShopController::class, "wishlist"])->name("shop.wishlist");
     Route::get("/shop/{book?}", [ShopController::class, "details"])->name("shop.details");
@@ -85,6 +86,7 @@ Route::group([
     defineResourceRoutes('campaigns', 'campaign', CampaignsController::class);
     defineResourceRoutes('books', 'book', BooksController::class);
     defineResourceRoutes('sliders', 'slider', SlidersController::class);
+    defineResourceRoutes('brands', 'brand', BrandsController::class);
 });
 
 

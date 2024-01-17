@@ -99,7 +99,7 @@ jQuery(document).ready(function ($) {
 
         function categoryMenuExpandInMobile() {
             $(".category-menu .has-children > a").on("click", function (e) {
-                e.preventDefault();
+                // e.preventDefault();
                 $(this).siblings(".sub-menu").slideToggle("500");
             });
         }

@@ -1,3 +1,7 @@
+@php
+$models = $component_model['models'];
+@endphp
+
 <!--=================================
   Brands Slider
 ===================================== -->
@@ -7,7 +11,8 @@
         <div class="brand-slider sb-slick-slider border-top border-bottom" data-slick-setting='{
                                             "autoplay": true,
                                             "autoplaySpeed": 8000,
-                                            "slidesToShow": 6
+                                            "slidesToShow": 5,
+                                            "loop": true
                                             }' data-slick-responsive='[
                 {"breakpoint":992, "settings": {"slidesToShow": 4} },
                 {"breakpoint":768, "settings": {"slidesToShow": 3} },
@@ -15,10 +20,12 @@
                 {"breakpoint":480, "settings": {"slidesToShow": 2} },
                 {"breakpoint":320, "settings": {"slidesToShow": 1} }
             ]'>
+            @foreach ($models as $model)
             <div class="single-slide">
-                <img src="{{asset('client/assets/image/others/brand-1.jpg')}}" alt="">
+                <img src="{{asset($model->image)}}" alt="brands">
             </div>
-            <div class="single-slide">
+            @endforeach
+            <!-- <div class="single-slide">
                 <img src="{{asset('client/assets/image/others/brand-2.jpg')}}" alt="">
             </div>
             <div class="single-slide">
@@ -38,7 +45,7 @@
             </div>
             <div class="single-slide">
                 <img src="{{asset('client/assets/image/others/brand-2.jpg')}}" alt="">
-            </div>
+            </div> -->
         </div>
     </div>
 </section>

@@ -109,7 +109,7 @@
                         <div>
                             <a href="javascript:void(0)" class="category-trigger"><i class="fa fa-bars"></i>Browse
                                 categories</a>
-                            @include("client.layouts.partials.categories")
+                            <x-client-categories-component />
                         </div>
                     </nav>
                 </div>
