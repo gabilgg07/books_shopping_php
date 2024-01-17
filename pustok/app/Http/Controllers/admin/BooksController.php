@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\BookRequest;
 use App\Models\Book as Model;
+use App\Models\BookImage;
 use App\Models\Campaign;
 use App\Models\Category;
 use App\Models\Lang;
@@ -23,7 +24,9 @@ class BooksController extends Controller
 
     public function index()
     {
-        $models = Model::where('is_deleted', 0)->get();
+        $models = Model::with('bookImages')
+            ->where('is_deleted', 0)
+            ->get();
         $index_view_model = [
             'model_name' => $this->model_name,
             'table_name' => $this->table_name,

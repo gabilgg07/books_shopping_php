@@ -59,10 +59,6 @@ $models = $index_view_model['models'];
                     <td>{{$model->id}}</td>
                     <td>
                         {{$model->title}}
-                        @if ($model->parent_id==0)
-                        <span class="badge badge-light badge-striped badge-striped-left border-left-info">parent
-                            {{$model_name}}</span>
-                        @endif
                     </td>
                     <td>{{$model->slug}}</td>
                     <td class="text-center">

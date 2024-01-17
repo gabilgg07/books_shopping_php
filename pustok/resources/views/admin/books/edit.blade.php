@@ -60,7 +60,7 @@ $(window).on('load', function() {
 
                     @include('admin.layouts.includes.edit_check',['field_name'=>'is_active','field_value'=>$model->is_active])
 
-                    @include('admin.layouts.includes.image_input',['model_name'=>$model_name])
+                    @include('admin.layouts.includes.edit_input',['field_name'=>'author','field_value'=>$model->author])
 
                     @include('admin.layouts.includes.image',['field_value'=>$model->image,
                     'col_count'=>6,'class_name'=>'img_selected'])

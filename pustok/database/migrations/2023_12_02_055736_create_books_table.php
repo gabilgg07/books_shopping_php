@@ -18,11 +18,12 @@ return new class extends Migration
             $table->double('price');
             $table->double('reviews')->default(0);
             $table->unsignedInteger('count');
-            $table->string('short_desc');
-            $table->string('long_desc');
-            $table->unsignedInteger('views');
+            $table->string('author')->nullable();
+            $table->text('short_desc');
+            $table->text('long_desc');
+            $table->unsignedInteger('views')->default(0);
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('campaign_id')->default(0);
+            $table->unsignedBigInteger('campaign_id')->nullable();
             $table->timestamps();
         });
     }

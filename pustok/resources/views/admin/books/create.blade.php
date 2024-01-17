@@ -10,15 +10,15 @@ $campaigns = $create_view_model['campaigns'];
 
 @push('theme_js')
 <style>
-    @font-face {
-        font-family: summernote;
-        font-style: normal;
-        font-weight: 400;
-        src: url("{{asset('admin/global_assets/css/icons/summernote/summernote.eot')}}");
-        src: url("{{asset('admin/global_assets/css/icons/summernote/summernote-1.eot')}}") format("embedded-opentype"),
-        url("{{asset('admin/global_assets/css/icons/summernote/summernote.txt')}}") format("woff"),
-        url("{{asset('admin/global_assets/css/icons/summernote/summernote-1.txt')}}") format("truetype")
-    }
+@font-face {
+    font-family: summernote;
+    font-style: normal;
+    font-weight: 400;
+    src: url("{{asset('admin/global_assets/css/icons/summernote/summernote.eot')}}");
+    src: url("{{asset('admin/global_assets/css/icons/summernote/summernote-1.eot')}}") format("embedded-opentype"),
+    url("{{asset('admin/global_assets/css/icons/summernote/summernote.txt')}}") format("woff"),
+    url("{{asset('admin/global_assets/css/icons/summernote/summernote-1.txt')}}") format("truetype")
+}
 </style>
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\switchery.min.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\plugins\forms\styling\uniform.min.js')}}"></script>
@@ -51,8 +51,7 @@ $campaigns = $create_view_model['campaigns'];
             @include('admin.layouts.includes.create_lang_tab_area',['field_name'=>'short_desc','langs'=>$langs])
         </div>
         <div class="col-lg-12">
-            @include('admin.layouts.includes.create_lang_tab_area',['field_name'=>'long_desc','langs'=>$langs,
-            'isEditor'=>true])
+            @include('admin.layouts.includes.create_lang_tab_area',['field_name'=>'long_desc','langs'=>$langs])
         </div>
         <div class="col-lg-6">
             <div class="card">
@@ -76,6 +75,8 @@ $campaigns = $create_view_model['campaigns'];
 
                     @include('admin.layouts.includes.create_num_input',['field_name'=>'price','step'=>'0.01',
                     'colLbl'=>2, 'colInput'=>10])
+
+                    @include('admin.layouts.includes.create_input',['field_name'=>'author'])
 
                     @include('admin.layouts.includes.create_check',['field_name'=>'is_active'])
                 </div>

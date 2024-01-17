@@ -38,7 +38,7 @@ class BookRequest extends FormRequest
                 }
             }],
             'long_desc' => ['required', 'array'],
-            'long_desc.*' => ['max:255', function ($attribute, $value, $fail) use ($modelId) {
+            'long_desc.*' => [function ($attribute, $value, $fail) use ($modelId) {
                 $slug = Str::slug($value);
                 $keyValue = Str::of($attribute)->afterLast('.');
                 $existingTitles = Book::where('id', '!=', $modelId)->whereJsonContains('slug->' . $keyValue, $slug)->exists();
@@ -58,6 +58,7 @@ class BookRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'max' => __('validation.max'),
             'category_id.required' => 'Category ' . __('validation.required'),
             'count.required' => 'Caunt ' . __('validation.required'),
             'count.min' => __('validation.min_numeric') . ': :min !',

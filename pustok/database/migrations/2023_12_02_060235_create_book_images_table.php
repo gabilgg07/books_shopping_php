@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('book_images', function (Blueprint $table) {
             $table->id();
             $table->string('image');
+            $table->boolean('is_main');
             $table->unsignedBigInteger('book_id');
             $table->timestamps();
         });

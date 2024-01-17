@@ -12,5 +12,10 @@ class Book extends Model
 
 
     protected $guarded = [];
-    protected $translatable = ['title', 'short_desc', 'long_desc'];
+    protected $translatable = ['title', 'short_desc', 'long_desc', 'slug'];
+
+    public function bookImages()
+    {
+        return $this->hasMany(BookImage::class, 'book_id');
+    }
 }

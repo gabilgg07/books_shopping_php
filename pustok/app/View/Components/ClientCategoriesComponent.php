@@ -31,7 +31,6 @@ class ClientCategoriesComponent extends Component
                     'children' => []
                 ];
                 if ($category->parent_id == 0) {
-                    // $data['children'] = array_filter($categories, fn ($item) => $item->parent_id == $category->id);
                     $data['children'] = $categories->where('parent_id', $category->id);
                 }
                 $models[] = $data;
