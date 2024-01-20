@@ -1,7 +1,7 @@
 <div class="col-lg-6">
     <div class="card border-{{$color}}">
         <div class="card-header bg-{{$color}} header-elements-inline">
-            <span class="card-title font-weight-semibold">{{Str::headline($field_name)}}</span>
+            <span class="card-title font-weight-semibold">{{Str::headline($field_name)}}:</span>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>

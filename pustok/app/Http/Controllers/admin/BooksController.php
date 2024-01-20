@@ -50,9 +50,23 @@ class BooksController extends Controller
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(BookRequest $request)
+    public function store(Request $request)
     {
         $data = $request->all();
+
+        $validation = $request->validate([
+            'images' => 'required|array',
+            'images.*' => 'image|mimes:jpg,png,gif,jpeg,svg,webp|max:2024',
+            'is_main' => 'required'
+        ], [
+            'images.required' => 'Images ' . __('validation.required'),
+            'images.*.image' => 'Image ' . __('validation.image'),
+            'images.*.mimes' => __('validation.mimes', ['attribute' => 'image', 'values' => 'jpg, png, gif, jpeg, svg, webp']),
+            '*.uploaded' => __('validation.uploaded') . ' 2 Mb',
+            'is_main.required' => 'Main image ' . __('validation.required'),
+        ]);
+
+        dd($data);
         $data['is_active'] = $request->is_active ? 1 : 0;
         $data['slug'] = $this->dataService->sluggableArray($data, 'title');
         $data['created_by_user_id'] =  auth()->user()->id;
@@ -69,13 +83,47 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show(Model $book)
     {
-        //
+        $model = $book;
+        if ($model) {
+            $show_view_model = [
+                'color_classes' => $this->dataService->colorsArray,
+                'model_name' => $this->model_name,
+                'model' => $model,
+            ];
+
+            $show_view_model['titles'] = $model->getTranslations('title');
+            $show_view_model['slugs'] = $model->getTranslations('slug');
+            $show_view_model['short_descs'] = $model->getTranslations('short_desc');
+            $show_view_model['long_descs'] = $model->getTranslations('long_desc');
+            if ($model->created_by_user_id) {
+                $created_by_user = User::where('id', $model->created_by_user_id)->first();
+                if ($created_by_user) {
+                    $show_view_model['created_by_user'] = $created_by_user;
+                }
+
+                if ($model->updated_by_user_id && $model->updated_at !== $model->created_at && !$model->is_deleted) {
+                    $updated_by_user = User::where('id', $model->updated_by_user_id)->first();
+                    if ($updated_by_user) {
+                        $show_view_model['updated_by_user'] = $updated_by_user;
+                    }
+                }
+            }
+            if ($model->deleted_by_user_id) {
+                $deleted_by_user = User::where('id', $model->deleted_by_user_id)->first();
+                if ($deleted_by_user) {
+                    $show_view_model['deleted_by_user'] = $deleted_by_user;
+                }
+            }
+
+            return view('admin.' . $this->table_name . '.show', compact('show_view_model'));
+        } else {
+            abort(404);
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.

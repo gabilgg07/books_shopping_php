@@ -6,50 +6,45 @@
  *
  * ---------------------------------------------------------------------------- */
 
-
 // Setup module
 // ------------------------------
 
-var InputsBasic = function () {
-
-
+var InputsBasic = (function () {
     //
     // Setup module components
     //
 
     // Uniform
-    var _componentUniform = function() {
+    var _componentUniform = function () {
         if (!$().uniform) {
-            console.warn('Warning - uniform.min.js is not loaded.');
+            console.warn("Warning - uniform.min.js is not loaded.");
             return;
         }
 
         // File input
-		$('.form-control-uniform').uniform();
+        $(".form-control-uniform").uniform();
 
         // Custom select
-        $('.form-control-uniform-custom').uniform({
-            fileButtonClass: 'action btn bg-blue',
-            selectClass: 'uniform-select bg-pink-400 border-pink-400'
+        $(".form-control-uniform-custom").uniform({
+            fileButtonClass: "action btn bg-blue",
+            selectClass: "uniform-select bg-pink-400 border-pink-400",
         });
     };
-
 
     //
     // Return objects assigned to module
     //
 
     return {
-        init: function() {
+        init: function () {
             _componentUniform();
-        }
-    }
-}();
-
+        },
+    };
+})();
 
 // Initialize module
 // ------------------------------
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
     InputsBasic.init();
 });

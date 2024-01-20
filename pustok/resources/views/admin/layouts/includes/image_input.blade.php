@@ -1,5 +1,5 @@
 <div class="form-group row">
-    <label class="col-form-label col-lg-3">Upload {{Str::headline($model_name)}} Image</label>
+    <label class="col-form-label col-lg-3">Upload {{Str::headline($model_name)}} Image:</label>
     <div class="col-lg-9">
         <input type="file" id="image_input" class="form-control-uniform" data-fouc="" name="image">
         @error('image')

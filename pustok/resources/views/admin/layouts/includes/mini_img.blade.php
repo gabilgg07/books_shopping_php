@@ -2,7 +2,7 @@
     <div class="card border-left-3 border-left-{{$color}}-400 border-right-3 border-right-{{$color}}-400 rounded-0">
         <div class="card-header">
             <h6 class="card-title">
-                <span class="font-weight-semibold">Image</span>
+                <span class="font-weight-semibold">Image:</span>
             </h6>
         </div>
 

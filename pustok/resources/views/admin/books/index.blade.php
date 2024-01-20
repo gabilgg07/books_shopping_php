@@ -47,7 +47,8 @@ $models = $index_view_model['models'];
                 <tr>
                     <th style="width: 10px">#</th>
                     <th>Title</th>
-                    <th>Slug</th>
+                    <th>Price</th>
+                    <th>Count</th>
                     <th>Is Active</th>
                     <th>Image</th>
                     <th class="w-auto">Actions</th>
@@ -60,7 +61,10 @@ $models = $index_view_model['models'];
                     <td>
                         {{$model->title}}
                     </td>
-                    <td>{{$model->slug}}</td>
+                    <td>
+                        {{number_format($model->price, 2, '.', '')}}
+                    </td>
+                    <td>{{$model->count}}</td>
                     <td class="text-center">
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}"
@@ -68,15 +72,18 @@ $models = $index_view_model['models'];
                         </label>
                     </td>
                     <td width='200'>
-                        @if ($model->image)
-                        <img src="{{$model->image}}" alt="{{$model->slug}}" class="img-fluid w-100"
+                        @php
+                        $image = $model->bookImages->where('is_main', 1)->first();
+                        @endphp
+                        @if ($image)
+                        <img src="{{$image}}" alt="{{$model->slug}}" class="img-fluid w-100"
                             style="object-fit: cover; object-position: center; height:100px;">
                         @endif
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info mb-1"><i
                                 class="mi-info mr-2"></i> Info</a>
-                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning mb-1"><i
                                 class="icon-pencil3 mr-2"></i>
                             Edit</a>
                         <form onsubmit="return confirm('Are you sure?')" method="post"

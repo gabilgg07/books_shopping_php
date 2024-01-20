@@ -52,6 +52,9 @@ class BookRequest extends FormRequest
             'category_id' => ['required'],
             'count' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric'],
+            'images' => 'required|array',
+            'images.*' => 'image|mimes:jpg,png,gif,jpeg,svg,webp|max:2024',
+            'is_main' => 'required'
         ];
     }
 
@@ -63,7 +66,10 @@ class BookRequest extends FormRequest
             'count.required' => 'Caunt ' . __('validation.required'),
             'count.min' => __('validation.min_numeric') . ': :min !',
             'price.required' => 'Price ' . __('validation.required'),
-            'image.uploaded' => __('validation.uploaded') . ' 2 Mb',
+            'images.required' => 'Images ' . __('validation.required'),
+            '*.image' => 'Image ' . __('validation.image'),
+            '*.uploaded' => __('validation.uploaded') . ' 2 Mb',
+            'is_main.required' => 'Main image ' . __('validation.required'),
         ];
     }
 }
