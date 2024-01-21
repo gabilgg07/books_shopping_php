@@ -7,13 +7,13 @@ $isEditor = $isEditor ?? false;
         <ul class="nav nav-tabs nav-tabs-solid border-0">
             @foreach($langs as $key=>$lang)
             <li class="nav-item border {{$errors->has($field_name.'.' . $lang->code)?'border-danger':''}}"><a
-                    href="#{{$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}"
+                    href="#{{$field_name.$lang->code}}" class="nav-link {{$key === 0 ? 'active' : ''}}"
                     data-toggle="tab">{{$lang->code}}</a></li>
             @endforeach
         </ul>
         <div class="tab-content">
             @foreach($langs as $key=>$lang)
-            <div class="tab-pane fade {{$key === 0 ? 'show active' : ''}}" id="{{$lang->code}}">
+            <div class="tab-pane fade {{$key === 0 ? 'show active' : ''}}" id="{{$field_name.$lang->code}}">
                 <div class="card">
                     <div class="card-body">
                         <fieldset>

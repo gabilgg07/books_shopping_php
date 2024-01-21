@@ -111,7 +111,7 @@ $(window).on('load', function() {
         <div class="card-header header-elements-inline">
             <h5 class="card-title">{{Str::headline($table_name)}} Create Form</h5>
         </div>
-        @if ($errors->any())
+        <!-- @if ($errors->any())
         <div class="card-body">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -119,7 +119,7 @@ $(window).on('load', function() {
                 @endforeach
             </ul>
         </div>
-        @endif
+        @endif -->
     </div>
 
     <form action="{{route('manager.'.$table_name.'.store')}}" method="POST" class="row create_form"
@@ -171,6 +171,12 @@ $(window).on('load', function() {
                             <input type="file" id="images_input" class="form-control-uniform-custom" data-fouc=""
                                 name="images[]" multiple>
                             @error('images')
+                            <label class="validation-invalid-label">{{$message}}</label>
+                            @enderror
+                            @error('images.*')
+                            <label class="validation-invalid-label">{{$message}}</label>
+                            @enderror
+                            @error('validation.mimes')
                             <label class="validation-invalid-label">{{$message}}</label>
                             @enderror
                             @error('is_main')

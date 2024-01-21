@@ -26,4 +26,45 @@ class ShoppingCart extends Controller
         Cart::remove($id);
         return redirect()->back();
     }
+
+
+
+    // public function index($id = null)
+    // {
+    //     if (auth()->user()) {
+    //         $wishlist = auth()->user()->wishlist;
+
+    //         $products = [];
+
+    //         if ($wishlist && count($wishlist) > 0) {
+    //             if ($id !== null) {
+    //                 $addedProduct = $wishlist->where('product_id', $id)->first();
+    //                 if (!$addedProduct) {
+    //                     $data = [
+    //                         'product_id' => $id,
+    //                         'user_id' => auth()->user()->id,
+    //                     ];
+
+    //                     $created = WishItem::create($data);
+
+    //                     if (!$created) {
+    //                         return redirect()->back()->with('error', 'Failed to add product to wishlist');
+    //                     }
+
+    //                     $wishlist->add($created);
+    //                 } else {
+    //                     return redirect()->back()->with('error', 'Product is already in wishlist');
+    //                 }
+    //             }
+
+    //             foreach ($wishlist as $key => $wishitem) {
+    //                 $products[] = AdminProducts::findOrFail($wishitem->product_id);
+    //             }
+    //         }
+
+    //         return view('front.wishlist', compact('products'));
+    //     } else {
+    //         return redirect()->route('auth.signin');
+    //     }
+    // }
 }

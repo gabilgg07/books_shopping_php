@@ -50,29 +50,37 @@ class BooksController extends Controller
         return view('admin.' . $this->table_name . '.create', compact('create_view_model'));
     }
 
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        $data = $request->all();
-
-        $validation = $request->validate([
-            'images' => 'required|array',
-            'images.*' => 'image|mimes:jpg,png,gif,jpeg,svg,webp|max:2024',
-            'is_main' => 'required'
-        ], [
-            'images.required' => 'Images ' . __('validation.required'),
-            'images.*.image' => 'Image ' . __('validation.image'),
-            'images.*.mimes' => __('validation.mimes', ['attribute' => 'image', 'values' => 'jpg, png, gif, jpeg, svg, webp']),
-            '*.uploaded' => __('validation.uploaded') . ' 2 Mb',
-            'is_main.required' => 'Main image ' . __('validation.required'),
-        ]);
-
-        dd($data);
+        $data = $request->except(['is_main', 'images']);
         $data['is_active'] = $request->is_active ? 1 : 0;
         $data['slug'] = $this->dataService->sluggableArray($data, 'title');
         $data['created_by_user_id'] =  auth()->user()->id;
+
         $created = Model::create($data);
 
         if ($created) {
+            if (count($request->images)) {
+                foreach ($request->images as $key => $image) {
+                    $dataImg = [
+                        'book_id' => $created->id
+                    ];
+                    if ($image->getClientOriginalName() . '_' . filesize($image) === $request->is_main) {
+                        $dataImg['is_main'] = 1;
+                    }
+                    $fileExtension = $image->extension();
+                    $imgName = $this->model_name . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
+                    $imgPath = $image->storeAs('uploads/admin/' . $this->table_name, $imgName, 'public');
+                    $dataImg['image'] = '/storage/' . $imgPath;
+                    $dataImg['created_by_user_id'] =  auth()->user()->id;
+                    $createdImg = BookImage::create($dataImg);
+                    if (!$createdImg) {
+                        return redirect()->back()
+                            ->with('type', 'danger')
+                            ->with('message', 'Failed to store ' . $image->getClientOriginalName() . ' image of' . $this->model_name . '!');
+                    }
+                }
+            }
             return redirect()->route('manager.' . $this->table_name . '.index')
                 ->with('type', 'success')
                 ->with('message', Str::headline($this->model_name) . ' has been stored.');
@@ -87,13 +95,18 @@ class BooksController extends Controller
     public function show(Model $book)
     {
         $model = $book;
+        $images = BookImage::where('book_id', $model->id)->get();
         if ($model) {
             $show_view_model = [
                 'color_classes' => $this->dataService->colorsArray,
                 'model_name' => $this->model_name,
                 'model' => $model,
+                'images' => $images,
             ];
-
+            $category = Category::where('id', $model->category_id)->first();
+            $show_view_model['category'] = $category ?? null;
+            $campaign = Campaign::where('id', $model->campaign_id)->first();
+            $show_view_model['campaign'] = $campaign ?? null;
             $show_view_model['titles'] = $model->getTranslations('title');
             $show_view_model['slugs'] = $model->getTranslations('slug');
             $show_view_model['short_descs'] = $model->getTranslations('short_desc');
@@ -124,21 +137,36 @@ class BooksController extends Controller
         }
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Model $book)
     {
-        //
+        $langs = Lang::where('is_deleted', 0)->where('is_active', 1)->get();
+        $categories = Category::where('is_deleted', 0)->where('is_active', 1)->get();
+        $campaigns = Campaign::where('is_deleted', 0)->where('is_active', 1)->get();
+        $model = $book;
+        if ($model) {
+            $edit_view_model = [
+                'model_name' => $this->model_name,
+                'table_name' => $this->table_name,
+                'model' => $model,
+                'langs' => $langs,
+                'categories' => $categories,
+                'campaigns' => $campaigns,
+            ];
+            $edit_view_model['json_title'] = $model->getTranslations('title');
+            $edit_view_model['json_short_descs'] = $model->getTranslations('short_desc');
+            $edit_view_model['json_long_descs'] = $model->getTranslations('long_desc');
+            $edit_view_model['images'] = BookImage::where('book_id', $model->id)->get();
+            return view('admin.' . $this->table_name . '.edit', compact('edit_view_model'));
+        } else {
+            abort(404);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(BookRequest $request, Model $book)
     {
-        //
+        $data = $request->all();
+        dump(ctype_digit($request->is_main));
+        dd($data);
     }
 
     /**

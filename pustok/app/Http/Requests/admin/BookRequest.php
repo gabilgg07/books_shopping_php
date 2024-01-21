@@ -52,7 +52,7 @@ class BookRequest extends FormRequest
             'category_id' => ['required'],
             'count' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric'],
-            'images' => 'required|array',
+            'images' => ($modelId ? 'nullable' : 'required') . '|array',
             'images.*' => 'image|mimes:jpg,png,gif,jpeg,svg,webp|max:2024',
             'is_main' => 'required'
         ];
@@ -67,7 +67,8 @@ class BookRequest extends FormRequest
             'count.min' => __('validation.min_numeric') . ': :min !',
             'price.required' => 'Price ' . __('validation.required'),
             'images.required' => 'Images ' . __('validation.required'),
-            '*.image' => 'Image ' . __('validation.image'),
+            'image' => __('validation.image', ['attribute' => 'image', 'values' => 'jpg, png, gif, jpeg, svg, webp']),
+            // 'mimes' => __('validation.mimes', ['attribute' => 'image', 'values' => 'jpg, png, gif, jpeg, svg, webp']),
             '*.uploaded' => __('validation.uploaded') . ' 2 Mb',
             'is_main.required' => 'Main image ' . __('validation.required'),
         ];

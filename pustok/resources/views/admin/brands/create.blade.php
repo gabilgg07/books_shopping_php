@@ -14,13 +14,15 @@ $table_name = $create_view_model['table_name'];
 <script src="{{asset('admin/global_assets\js\demo_pages\form_inputs.js')}}"></script>
 <script>
 $(window).on('load', function() {
-    $("#image_input").change(function(event) {
-        var tmppath = URL.createObjectURL(event.target.files[0]);
-        $("#image").attr(
-            "src",
-            URL.createObjectURL(event.target.files[0])
-        );
-        $("#image").removeClass('d-none');
+    $("#image_input").change(function(e) {
+        if (e.target.files.length) {
+            var tmppath = URL.createObjectURL(e.target.files[0]);
+            $("#image").attr(
+                "src",
+                URL.createObjectURL(e.target.files[0])
+            );
+            $("#image").removeClass('d-none');
+        }
     });
 });
 </script>

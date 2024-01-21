@@ -1,3 +1,6 @@
+@php
+$default_value=$default_value ?? '';
+@endphp
 <div class="form-group">
     <label for="{{$field_name}}">Select {{Str::headline($field_label)}}:</label>
     <select class="custom-select form-control-border" id="{{$field_name}}" name="{{$field_name}}"

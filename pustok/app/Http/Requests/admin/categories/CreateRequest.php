@@ -31,7 +31,8 @@ class CreateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'image.image' => 'Image ' . __('validation.image'),
+            // 'image.image' => 'Image ' . __('validation.image'),
+            'image' => __('validation.image', ['attribute' => 'image', 'values' => 'jpg, png, gif, jpeg, svg, webp']),
             'image.uploaded' => __('validation.uploaded') . ' 2 Mb',
         ];
     }

@@ -66,9 +66,9 @@ class BrandsController extends Controller
         }
     }
 
-    public function show(Model $slider)
+    public function show(Model $brand)
     {
-        $model = $slider;
+        $model = $brand;
         if ($model) {
             $show_view_model = [
                 'color_classes' => $this->dataService->colorsArray,
@@ -101,9 +101,9 @@ class BrandsController extends Controller
         }
     }
 
-    public function edit(Model $slider)
+    public function edit(Model $brand)
     {
-        $model = $slider;
+        $model = $brand;
         if ($model) {
             $edit_view_model = [
                 'model_name' => $this->model_name,
@@ -116,12 +116,12 @@ class BrandsController extends Controller
         }
     }
 
-    public function update(Request $request, Model $slider)
+    public function update(Request $request, Model $brand)
     {
         $validation = $request->validate([
             'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,svg,webp|max:2024',
         ]);
-        $model = $slider;
+        $model = $brand;
         if ($model) {
             $data = $request->all();
             $data['is_active'] = $request->is_active ? 1 : 0;
@@ -176,9 +176,9 @@ class BrandsController extends Controller
         }
     }
 
-    public function destroy(Model $slider)
+    public function destroy(Model $brand)
     {
-        $model = $slider;
+        $model = $brand;
         if ($model) {
             $model->is_deleted = 1;
             $model->deleted_by_user_id =  auth()->user()->id;
@@ -208,9 +208,9 @@ class BrandsController extends Controller
         ];
         return view('admin.' . $this->table_name . '.deleteds', compact("deleteds_view_model"));
     }
-    public function restore(Model $slider)
+    public function restore(Model $brand)
     {
-        $model = $slider;
+        $model = $brand;
         if ($model) {
             $model->is_deleted = 0;
             $model->deleted_by_user_id =  0;
@@ -231,9 +231,9 @@ class BrandsController extends Controller
         }
     }
 
-    public function permanently_delete(Model $slider)
+    public function permanently_delete(Model $brand)
     {
-        $model = $slider;
+        $model = $brand;
         if ($model) {
             $deleted = $model->delete();
             if ($deleted) {

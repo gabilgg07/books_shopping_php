@@ -76,7 +76,7 @@ $models = $index_view_model['models'];
                         $image = $model->bookImages->where('is_main', 1)->first();
                         @endphp
                         @if ($image)
-                        <img src="{{$image}}" alt="{{$model->slug}}" class="img-fluid w-100"
+                        <img src="{{$image->image}}" alt="{{$model->slug}}" class="img-fluid w-100"
                             style="object-fit: cover; object-position: center; height:100px;">
                         @endif
                     </td>

@@ -27,7 +27,8 @@ $color_classes = $show_view_model['color_classes'];
                                     Deleted !!!
                                 </span>
                                 @else
-                                <span class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
+                                <span
+                                    class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
                                     {{$model->is_active?"Active":"Don't Active"}}
                                 </span>
                                 @endif
@@ -55,7 +56,7 @@ $color_classes = $show_view_model['color_classes'];
                             <div class="row">
                                 @include('admin.layouts.includes.mini_text',['field_name'=>'first_name','field_value'=>$model->first_name,
                                 'color'=> $color_classes[rand(0,count($color_classes)-1)],
-                                'upper'=>true])
+                                'upper'=>false])
 
                                 @include('admin.layouts.includes.mini_text',['field_name'=>'last_name','field_value'=>$model->last_name,
                                 'color'=> $color_classes[rand(0,count($color_classes)-1)],
