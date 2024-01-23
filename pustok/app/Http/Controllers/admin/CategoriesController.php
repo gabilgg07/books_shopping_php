@@ -255,11 +255,10 @@ class CategoriesController extends Controller
 
     public function destroy(Model $category)
     {
-
         $model = $category;
         if ($model) {
             $model->is_deleted = 1;
-            $model->deleted_by_user_id =  auth()->user()->id;
+            $model->deleted_by_user_id = auth()->user()->id;
             $model->deleted_at = now();
             if ($model->parent_id == 0) {
                 $childModels = Model::where('parent_id', $model->id)->where('is_deleted', 0)->get();
@@ -345,7 +344,9 @@ class CategoriesController extends Controller
                 $childModels = Model::where('parent_id', $model->id)->get();
                 if (count($childModels)) {
                     foreach ($childModels as $child) {
-
+                        if ($child->image && file_exists(public_path($child->image))) {
+                            unlink(public_path($child->image));
+                        }
                         $childDeleted = $child->delete();
                         if (!$childDeleted) {
                             return redirect()->back()
@@ -354,6 +355,9 @@ class CategoriesController extends Controller
                         }
                     }
                 }
+            }
+            if ($model->image && file_exists(public_path($model->image))) {
+                unlink(public_path($model->image));
             }
             $deleted = $model->delete();
             if ($deleted) {

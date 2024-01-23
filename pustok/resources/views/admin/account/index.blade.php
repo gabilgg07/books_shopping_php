@@ -107,7 +107,8 @@ $(window).on('load', function() {
                                         @error('image')
                                         <label class="validation-invalid-label">{{$message}}</label>
                                         @enderror
-                                        <span class="form-text text-muted">Accepted formats: gif, png, jpg, jpeg. Max
+                                        <span class="form-text text-muted">Accepted formats: jpg, png, gif, jpeg, svg,
+                                            webp. Max
                                             file
                                             size 2Mb</span>
                                     </div>

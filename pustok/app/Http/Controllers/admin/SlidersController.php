@@ -247,6 +247,9 @@ class SlidersController extends Controller
     {
         $model = $slider;
         if ($model) {
+            if ($model->image && file_exists(public_path($model->image))) {
+                unlink(public_path($model->image));
+            }
             $deleted = $model->delete();
             if ($deleted) {
                 return redirect()->route('manager.' . $this->table_name . '.deleteds')

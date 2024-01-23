@@ -179,7 +179,9 @@ class BooksController extends Controller
                     foreach ($deletedIds as $imgId) {
                         $deletedImage = BookImage::where('id', $imgId)->first();
                         if ($deletedImage) {
-                            unlink(public_path($deletedImage->image));
+                            if ($deletedImage->image && file_exists(public_path($deletedImage->image))) {
+                                unlink(public_path($deletedImage->image));
+                            }
                             $isDeleted = $deletedImage->delete();
                             if (!$isDeleted) {
                                 return redirect()->back()->with('type', 'danger')->with('message', 'Failed to delete ' . $this->model_name . '\'s image id:' . $imgId . '!');
@@ -188,7 +190,6 @@ class BooksController extends Controller
                     }
                 }
                 $oldMainBook = BookImage::where('book_id', $model->id)->where('is_main', 1)->first();
-                // dd($oldMainBook);
                 if (ctype_digit($request->is_main)) {
 
                     if ($oldMainBook) {
@@ -242,12 +243,116 @@ class BooksController extends Controller
         }
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function change_active(Request $request)
     {
-        //
+        $id = $request->id;
+        $is_active = $request->is_active === 'true' ? 1 : 0;
+        $model = Model::where('id', $id)->first();
+        try {
+            $updated = Model::where('id', $id)->update([
+                'is_active' => $is_active
+            ]);
+
+            if ($updated) {
+                $data = [
+                    'type' => 'success',
+                    'message' => Str::headline($this->model_name) . ' model\'s is active field changed, id: ' . $id,
+                ];
+                return json_encode($data);
+            } else {
+                return json_encode([
+                    'type' => 'danger',
+                    'message' => 'Failed to change is active field of ' . $this->model_name . ' model, id: ' . $id,
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return 'error: ' . $th;
+        }
+    }
+
+
+    public function destroy(Model $book)
+    {
+
+        $model = $book;
+        if ($model) {
+            $model->is_deleted = 1;
+            $model->deleted_by_user_id = auth()->user()->id;
+            $model->deleted_at = now();
+            $saved = $model->save();
+            if ($saved) {
+                return redirect()->route('manager.' . $this->table_name . '.index')
+                    ->with('type', 'success')
+                    ->with('message', Str::headline($this->model_name) . ' has been deleted.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to delete ' . $this->model_name . '!');
+            }
+        } else {
+            abort(404);
+        }
+    }
+
+    public function deleteds()
+    {
+        $models = Model::where('is_deleted', 1)->with('bookImages')
+            ->get();
+        $deleteds_view_model = [
+            'model_name' => $this->model_name,
+            'table_name' => $this->table_name,
+            'models' => $models,
+        ];
+        return view('admin.' . $this->table_name . '.deleteds', compact("deleteds_view_model"));
+    }
+
+    public function restore(Model $book)
+    {
+        $model = $book;
+        if ($model) {
+            $model->is_deleted = 0;
+            $model->deleted_by_user_id =  0;
+            $model->deleted_at = null;
+            $updated = $model->update();
+
+            if ($updated) {
+                return redirect()->route('manager.' . $this->table_name . '.deleteds')
+                    ->with('type', 'success')
+                    ->with('message', Str::headline($this->model_name) . ' has been restored.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to restore ' . $this->model_name . '!');
+            }
+        } else {
+            abort(404);
+        }
+    }
+
+    public function permanently_delete(Model $book)
+    {
+        $model = $book;
+        if ($model) {
+            $images = BookImage::where('book_id', $model->id)->get();
+            if ($images) {
+                foreach ($images as $key => $image) {
+                    if ($image->image && file_exists(public_path($image->image))) {
+                        unlink(public_path($image->image));
+                    }
+                }
+            }
+            $deleted = $model->delete();
+            if ($deleted) {
+                return redirect()->route('manager.' . $this->table_name . '.deleteds')
+                    ->with('type', 'success')
+                    ->with('message', Str::headline($this->model_name) . ' has been permanently deleted!');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', 'Failed to permanently deleted ' . $this->model_name . '!');
+            }
+        } else {
+            abort(404);
+        }
     }
 }

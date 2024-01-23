@@ -104,6 +104,7 @@ function defineResourceRoutes($table_name, $model_name, $controller)
 // Route::get("/add-to-cart/{id}", [ShoppingCart::class, "add"])->name("add");
 // Route::get("/remove-from-cart/{id}", [ShoppingCart::class, "remove"])->name("remove");
 // Route::get("/clear-cart", [ShoppingCart::class, "destroy"])->name("clear");
+
 // Route::get("/curency", [CurrencyController::class, "index"])->name("cureency");
 
 // Route::get("/event", function () {

@@ -90,7 +90,7 @@ $models = $index_view_model['models'];
                             action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" class="btn btn-outline-danger"><i class="mi-delete mr-2"></i>
+                            <button type="submit" class="btn btn-outline-danger"><i class="mi-delete mr-2 mb-1"></i>
                                 Delete</button>
                         </form>
                     </td>
