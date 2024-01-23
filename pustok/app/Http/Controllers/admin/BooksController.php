@@ -164,10 +164,84 @@ class BooksController extends Controller
 
     public function update(BookRequest $request, Model $book)
     {
-        $data = $request->all();
-        dump(ctype_digit($request->is_main));
-        dd($data);
+        $model = $book;
+        if ($model) {
+            $data = $request->except(['is_main', 'images', 'deleted_images']);
+            $data['is_active'] = $request->is_active ? 1 : 0;
+
+            $data['slug'] = $this->dataService->sluggableArray($data, 'title');
+            $data['updated_by_user_id'] =  auth()->user()->id;
+            $updated = $model->update($data);
+
+            if ($updated) {
+                if ($request->deleted_images) {
+                    $deletedIds = Str::of($request->deleted_images)->explode(',');
+                    foreach ($deletedIds as $imgId) {
+                        $deletedImage = BookImage::where('id', $imgId)->first();
+                        if ($deletedImage) {
+                            unlink(public_path($deletedImage->image));
+                            $isDeleted = $deletedImage->delete();
+                            if (!$isDeleted) {
+                                return redirect()->back()->with('type', 'danger')->with('message', 'Failed to delete ' . $this->model_name . '\'s image id:' . $imgId . '!');
+                            }
+                        }
+                    }
+                }
+                $oldMainBook = BookImage::where('book_id', $model->id)->where('is_main', 1)->first();
+                // dd($oldMainBook);
+                if (ctype_digit($request->is_main)) {
+
+                    if ($oldMainBook) {
+                        if (!($oldMainBook->id == $request->is_main)) {
+                            $mainImg = BookImage::where('id', $request->is_main)->first();
+                            $mainImg->is_main = 1;
+                            $mainImg->save();
+                            $oldMainBook->is_main = 0;
+                            $oldMainBook->save();
+                        }
+                    } else {
+                        $mainImg = BookImage::where('id', $request->is_main)->first();
+                        $mainImg->is_main = 1;
+                        $mainImg->save();
+                    }
+                }
+                if ($request->images && count($request->images)) {
+                    foreach ($request->images as $image) {
+                        $dataImg = [
+                            'book_id' => $model->id
+                        ];
+                        if ($image->getClientOriginalName() . '_' . filesize($image) === $request->is_main) {
+                            $dataImg['is_main'] = 1;
+                            if ($oldMainBook) {
+                                $oldMainBook->is_main = 0;
+                                $oldMainBook->save();
+                            }
+                        }
+                        $fileExtension = $image->extension();
+                        $imgName = $this->model_name . '_' . time() . sprintf("%03s", rand(0, 999)) . '.' . $fileExtension;
+                        $imgPath = $image->storeAs('uploads/admin/' . $this->table_name, $imgName, 'public');
+                        $dataImg['image'] = '/storage/' . $imgPath;
+                        $dataImg['created_by_user_id'] =  auth()->user()->id;
+                        $createdImg = BookImage::create($dataImg);
+                        if (!$createdImg) {
+                            return redirect()->back()
+                                ->with('type', 'danger')
+                                ->with('message', 'Failed to store ' . $image->getClientOriginalName() . ' image of' . $this->model_name . '!');
+                        }
+                    }
+                }
+                return redirect()->route('manager.' . $this->table_name . '.index')
+                    ->with('type', 'success')
+                    ->with('message', Str::headline($this->model_name) . ' has been updated.');
+            } else {
+                return redirect()->back()
+                    ->with('type', 'danger')->with('message', 'Failed to update ' . $this->model_name . '!');
+            }
+        } else {
+            abort(404);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

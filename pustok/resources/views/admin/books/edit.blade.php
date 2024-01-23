@@ -137,10 +137,10 @@ $(window).on('load', function() {
             @include('admin.layouts.includes.edit_lang_tab',['field_name'=>'title','langs'=>$langs,'field_value'=>$json_title])
         </div>
         <div class="col-lg-6">
-            @include('admin.layouts.includes.edit_lang_tab',['field_name'=>'short_descs','langs'=>$langs,'field_value'=>$json_short_descs])
+            @include('admin.layouts.includes.edit_lang_tab',['field_name'=>'short_desc','langs'=>$langs,'field_value'=>$json_short_descs])
         </div>
         <div class="col-lg-12">
-            @include('admin.layouts.includes.edit_lang_tab',['field_name'=>'long_descs','langs'=>$langs,'field_value'=>$json_long_descs])
+            @include('admin.layouts.includes.edit_lang_tab',['field_name'=>'long_desc','langs'=>$langs,'field_value'=>$json_long_descs])
         </div>
         <div class="col-lg-6">
             <div class="card">
