@@ -2,14 +2,18 @@
     <h2 class="sr-only">Category Gallery Section</h2>
     <div class="container">
         <div class="category-gallery-block">
-            <a href="#" class="single-block hr-large">
-                <img src="{{asset('client/assets/image/others/cat-gal-large.png')}}" alt="">
+            <a href="{{route('client.shop.index', ['slug'=>$categories['single']->slug])}}"
+                class="single-block hr-large">
+                <img src="{{asset($categories['single']->image)}}" alt="{{$categories['single']->slug}}">
             </a>
             <div class=" single-block inner-block-wrapper">
-                <a href="#" class="single-image mid-image">
-                    <img src="{{asset('client/assets/image/others/cat-gal-mid.png')}}" alt="">
+                @foreach ($categories['galery'] as $key=>$category)
+                <a href="{{route('client.shop.index', ['slug'=>$category->slug])}}"
+                    class="single-image {{$key===0||$key===3?'mid':'small' }}-image">
+                    <img src="{{asset($category->image)}}" alt="{{$category->slug}}">
                 </a>
-                <a href=" #" class="single-image small-image">
+                @endforeach
+                <!-- <a href=" #" class="single-image small-image">
                     <img src="{{asset('client/assets/image/others/cat-gal-small.png')}}" alt="">
                 </a>
                 <a href=" #" class="single-image small-image">
@@ -17,7 +21,7 @@
                 </a>
                 <a href="#" class="single-image mid-image">
                     <img src="{{asset('client/assets/image/others/cat-gal-mid-2.png')}}" alt="">
-                </a>
+                </a> -->
             </div>
         </div>
     </div>

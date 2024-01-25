@@ -1,5 +1,6 @@
 @php
 $hero_sliders = $home_index_vm['hero_sliders'];
+$galery_categoriers = $home_index_vm['galery_categoriers'];
 @endphp
 
 @extends("client.layouts.master")
@@ -16,7 +17,7 @@ $hero_sliders = $home_index_vm['hero_sliders'];
 <!--=================================
         Home Category Gallery
     ===================================== -->
-@include("client.home.includes.galery")
+@include("client.home.includes.galery", ['categories'=>$galery_categoriers])
 <!--=================================
         Home Two Column Section
     ===================================== -->

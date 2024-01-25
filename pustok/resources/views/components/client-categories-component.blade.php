@@ -11,8 +11,8 @@
         @endif
         </li>
         @else
-        <li class="cat-item hidden-menu-item {{count($model['children'])?'has-children':''}}">
-            <a href="{{route('client.shop.index', $model->slug)}}">{{$item['model']->title}}</a>
+        <li class="cat-item hidden-menu-item {{count($item['children'])?'has-children':''}}">
+            <a href="{{route('client.shop.index', $item['model']->slug)}}">{{$item['model']->title}}</a>
             @if (count($item['children']))
             <ul class="sub-menu">
                 @foreach ($item['children'] as $child)
@@ -25,8 +25,11 @@
         @endforeach
 
         @if (count($models)>8)
-        <li class="cat-item"><a href="#" class="js-expand-hidden-menu">More
-                Categories</a></li>
+        <li class="cat-item">
+            <a href="#" class="js-expand-hidden-menu">
+                More Categories
+            </a>
+        </li>
         @endif
 </ul>
 

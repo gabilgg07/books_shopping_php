@@ -24,7 +24,7 @@ class BooksController extends Controller
 
     public function index()
     {
-        $models = Model::with('bookImages')
+        $models = Model::with(['bookImages', 'category'])
             ->where('is_deleted', 0)
             ->get();
         $index_view_model = [

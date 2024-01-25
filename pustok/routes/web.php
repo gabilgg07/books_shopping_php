@@ -58,8 +58,8 @@ Route::group(["middleware" => ['check.route'], "prefix" => LaravelLocalization::
 
 // Admin Out of Auth
 Route::group(["middleware" => ["auth.admin.check", 'check.route'], "prefix" => LaravelLocalization::setLocale() . "/manager", "as" => "manager."], function () {
-    Route::get("/register", [AdminController::class, "register"])->name("register");
-    Route::post("/signup", [AdminController::class, "signup"])->name("signup");
+    // Route::get("/register", [AdminController::class, "register"])->name("register");
+    // Route::post("/signup", [AdminController::class, "signup"])->name("signup");
     Route::get("/login", [AdminController::class, "login"])->name("login");
     Route::post("/signin", [AdminController::class, "signin"])->name("signin");
 });

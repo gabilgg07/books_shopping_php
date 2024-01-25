@@ -75,9 +75,9 @@
                                 </div>
                             </div>
 
-                            <div class="text-center mb-2">
-                                <a href="{{route('manager.register')}}">I have not account</a>
-                            </div>
+                            <!-- <div class="text-center mb-2">
+                                <a href="route('manager.register')">I have not account</a>
+                            </div> -->
 
                             @if ($errors->any())
                             <div class="d-flex justify-content-center">

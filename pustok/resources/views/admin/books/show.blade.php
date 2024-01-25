@@ -102,20 +102,22 @@ $campaign = $show_view_model['campaign'];
 
 
                     @if (count($images))
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="row images">
-                                @foreach ($images as $image)
-                                <div class="col-lg-4 mb-2">
-                                    <div class="img_box {{$image->is_main? 'main_img':''}}">
-                                        <img src="{{$image->image}}" alt="" class="book_image">
-                                        @if ($image->is_main)
-                                        <span class="main_icon">Main</span>
-                                        @endif
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row images">
+                                    @foreach ($images as $image)
+                                    <div class="col-lg-4 mb-2">
+                                        <div class="img_box {{$image->is_main? 'main_img':''}}">
+                                            <img src="{{$image->image}}" alt="" class="book_image">
+                                            @if ($image->is_main)
+                                            <span class="main_icon">Main</span>
+                                            @endif
 
+                                        </div>
                                     </div>
+                                    @endforeach
                                 </div>
-                                @endforeach
                             </div>
                         </div>
                     </div>

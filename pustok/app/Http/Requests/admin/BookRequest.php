@@ -26,7 +26,7 @@ class BookRequest extends FormRequest
                 }
             }],
             'short_desc' => ['required', 'array'],
-            'short_desc.*' => ['max:255', function ($attribute, $value, $fail) use ($modelId) {
+            'short_desc.*' => [function ($attribute, $value, $fail) use ($modelId) {
                 $slug = Str::slug($value);
                 $keyValue = Str::of($attribute)->afterLast('.');
                 $existingTitles = Book::where('id', '!=', $modelId)->whereJsonContains('slug->' . $keyValue, $slug)->exists();

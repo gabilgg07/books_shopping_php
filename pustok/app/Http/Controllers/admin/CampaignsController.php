@@ -21,10 +21,10 @@ class CampaignsController extends Controller
     }
     public function index()
     {
-        // $models = Model::where('is_deleted', 0)->get();
-        $models = Cache::remember($this->table_name, 60, function () {
-            return Model::where('is_deleted', 0)->get();
-        });
+        $models = Model::where('is_deleted', 0)->get();
+        // $models = Cache::remember($this->table_name, 60, function () {
+        //     return Model::where('is_deleted', 0)->get();
+        // });
 
         $index_view_model = [
             'model_name' => $this->model_name,

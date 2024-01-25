@@ -42,36 +42,36 @@ class AdminController extends Controller
         }
     }
 
-    public function register()
-    {
-        return view("admin.auth.register");
-    }
+    // public function register()
+    // {
+    //     return view("admin.auth.register");
+    // }
 
-    public function signup(RegisterRequest $request)
-    {
-        $this->validate($request, [
-            "first_name" => "required|min:3",
-            "last_name" => "required|min:3",
-            "email" => ["required", "email", Rule::unique('users', 'email')],
-            "password" => "required",
-        ]);
-        $data = $request->all();
-        unset($data['repeat_password']);
-        $data['is_admin'] = 1;
+    // public function signup(RegisterRequest $request)
+    // {
+    //     $this->validate($request, [
+    //         "first_name" => "required|min:3",
+    //         "last_name" => "required|min:3",
+    //         "email" => ["required", "email", Rule::unique('users', 'email')],
+    //         "password" => "required",
+    //     ]);
+    //     $data = $request->all();
+    //     unset($data['repeat_password']);
+    //     $data['is_admin'] = 1;
 
-        $created = User::create($data);
-        Auth::attempt(['email' => $created->email, 'password' => $request->password]);
-        $request->session()->regenerate();
-        if ($created) {
-            return redirect()->route("manager.dashboard")
-                ->with('type', 'success')
-                ->with('message', 'Wellcome to The Pustok Admin Panel');
-        } else {
-            return redirect()->back()
-                ->with('type', 'danger')
-                ->with('message', 'Something went wrong');
-        }
-    }
+    //     $created = User::create($data);
+    //     Auth::attempt(['email' => $created->email, 'password' => $request->password]);
+    //     $request->session()->regenerate();
+    //     if ($created) {
+    //         return redirect()->route("manager.dashboard")
+    //             ->with('type', 'success')
+    //             ->with('message', 'Wellcome to The Pustok Admin Panel');
+    //     } else {
+    //         return redirect()->back()
+    //             ->with('type', 'danger')
+    //             ->with('message', 'Something went wrong');
+    //     }
+    // }
 
     public function logout()
     {
