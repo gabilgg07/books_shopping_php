@@ -1,3 +1,8 @@
+@php
+$main_img = $book->bookImages->where('is_main', 1)->first()->image;
+$images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
+@endphp
+
 @extends("client.layouts.master")
 
 @section("content")
@@ -21,6 +26,7 @@
             <div class="col-lg-5 mb--30">
                 <!-- Product Details Slider Big Image-->
                 <div class="product-details-slider sb-slick-slider arrow-type-two" data-slick-setting='{
+                    "infinite":true,
               "slidesToShow": 1,
               "arrows": false,
               "fade": true,
@@ -29,73 +35,76 @@
               "asNavFor": ".product-slider-nav"
               }'>
                     <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-1.jpg')}}" alt="" />
+                        <img src="{{asset($main_img)}}" alt="{{$book->slug}}-1" />
                     </div>
+                    @foreach ($images as $key=>$image)
                     <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-2.jpg')}}" alt="" />
+                        <img src="{{asset($image)}}" alt="{{$book->slug}}-{{$key+2}}" />
                     </div>
-                    <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-3.jpg')}}" alt="" />
-                    </div>
-                    <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-4.jpg')}}" alt="" />
-                    </div>
-                    <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-5.jpg')}}" alt="" />
-                    </div>
+                    @endforeach
                 </div>
                 <!-- Product Details Slider Nav -->
+                @if (count($images))
                 <div class="mt--30 product-slider-nav sb-slick-slider arrow-type-two" data-slick-setting='{
             "infinite":true,
               "autoplay": true,
               "autoplaySpeed": 8000,
-              "slidesToShow": 4,
+              "slidesToShow": {{count($images)-1}},
               "arrows": true,
               "prevArrow":{"buttonClass": "slick-prev","iconClass":"fa fa-chevron-left"},
               "nextArrow":{"buttonClass": "slick-next","iconClass":"fa fa-chevron-right"},
               "asNavFor": ".product-details-slider",
               "focusOnSelect": true
               }'>
+
                     <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-1.jpg')}}" alt="" />
+                        <img src="{{asset($main_img)}}" alt="{{$book->slug}}-1" />
                     </div>
+                    @foreach ($images as $key=>$image)
                     <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-2.jpg')}}" alt="" />
+                        <img src="{{asset($image)}}" alt="{{$book->slug}}-{{$key+2}}" />
                     </div>
-                    <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-3.jpg')}}" alt="" />
-                    </div>
-                    <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-4.jpg')}}" alt="" />
-                    </div>
-                    <div class="single-slide">
-                        <img src="{{asset('client/assets/image/products/product-details-5.jpg')}}" alt="" />
-                    </div>
+                    @endforeach
                 </div>
+                @endif
             </div>
             <div class="col-lg-7">
                 <div class="product-details-info pl-lg--30">
-                    <p class="tag-block">
+                    <!-- <p class="tag-block">
                         Tags: <a href="#">Movado</a>, <a href="#">Omega</a>
-                    </p>
+                    </p> -->
                     <h3 class="product-title">
-                        Beats EP Wired On-Ear Headphone-Black
+                        {{$book->title}}
                     </h3>
                     <ul class="list-unstyled">
-                        <li>Ex Tax: <span class="list-value"> £60.24</span></li>
+                        <!-- <li>Ex Tax: <span class="list-value"> £60.24</span></li> -->
                         <li>
-                            Brands:
-                            <a href="#" class="list-value font-weight-bold"> Canon</a>
+                            Category:
+                            <a href="{{route('client.shop.index', $book->category->slug)}}" class="list-value font-weight-bold"> {{$book->category->title}}</a>
                         </li>
-                        <li>Product Code: <span class="list-value"> model1</span></li>
-                        <li>Reward Points: <span class="list-value"> 200</span></li>
+                        @if ($book->campaign)
                         <li>
-                            Availability: <span class="list-value"> In Stock</span>
+                            Campaign:
+                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}" class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
+                        </li>
+                        @endif
+                        <!-- <li>Product Code: <span class="list-value"> model1</span></li> -->
+                        <!-- <li>Reward Points: <span class="list-value"> 200</span></li> -->
+                        <li>
+                            Availability: @if ($book->count)
+                            <span class="list-value"> In Stock</span>
+                            @else
+                            <span class="list-value"> Out Stock</span>
+                            @endif
                         </li>
                     </ul>
                     <div class="price-block">
-                        <span class="price-new">£73.79</span>
-                        <del class="price-old">£91.86</del>
+                        @if ($book->campaign)
+                        <span class="price-new">£{{$book->price-($book->price*$book->campaign->discount_percent/100)}}</span>
+                        <del class="price-old">£{{$book->price}}</del>
+                        @else
+                        <span class="price-new">£{{$book->price}}</span>
+                        @endif
                     </div>
                     <div class="rating-widget">
                         <div class="rating-block">
@@ -136,14 +145,12 @@
         <div class="sb-custom-tab review-tab section-padding">
             <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
-                        aria-controls="tab-1" aria-selected="true">
+                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
                         DESCRIPTION
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
-                        aria-selected="true">
+                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">
                         REVIEWS (1)
                     </a>
                 </li>
@@ -213,8 +220,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="message">Comment</label>
-                                            <textarea name="message" id="message" cols="30" rows="10"
-                                                class="form-control"></textarea>
+                                            <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -272,14 +278,14 @@
                         <div class="product-header">
                             <a href="" class="author"> Lpple </a>
                             <h3>
-                                <a href="{{route('client.shop.details')}}/1">Revolutionize Your BOOK With</a>
+                                <a href="{{route('client.shop.details',1)}}">Revolutionize Your BOOK With</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
                                 <img src="{{asset('client/assets/image/products/product-10.jpg')}}" alt="" />
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
+                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
                                         <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="" />
                                     </a>
                                     <div class="hover-btns">
@@ -305,14 +311,14 @@
                         <div class="product-header">
                             <a href="" class="author"> Jpple </a>
                             <h3>
-                                <a href="{{route('client.shop.details')}}/1">Turn Your BOOK Into High Machine</a>
+                                <a href="{{route('client.shop.details', 1)}}">Turn Your BOOK Into High Machine</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
                                 <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="" />
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
+                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
                                         <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="" />
                                     </a>
                                     <div class="hover-btns">
@@ -338,14 +344,14 @@
                         <div class="product-header">
                             <a href="" class="author"> Wpple </a>
                             <h3>
-                                <a href="{{route('client.shop.details')}}/1">3 Ways Create Better BOOK With</a>
+                                <a href="{{route('client.shop.details', 1)}}">3 Ways Create Better BOOK With</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
                                 <img src="{{asset('client/assets/image/products/product-3.jpg')}}" alt="" />
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
+                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
                                         <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="" />
                                     </a>
                                     <div class="hover-btns">
@@ -371,14 +377,14 @@
                         <div class="product-header">
                             <a href="" class="author"> Epple </a>
                             <h3>
-                                <a href="{{route('client.shop.details')}}/1">What You Can Learn From Bill Gates</a>
+                                <a href="{{route('client.shop.details', 1)}}">What You Can Learn From Bill Gates</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
                                 <img src="{{asset('client/assets/image/products/product-5.jpg')}}" alt="" />
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
+                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
                                         <img src="{{asset('client/assets/image/products/product-4.jpg')}}" alt="" />
                                     </a>
                                     <div class="hover-btns">
@@ -404,14 +410,14 @@
                         <div class="product-header">
                             <a href="" class="author"> Hpple </a>
                             <h3>
-                                <a href="{{route('client.shop.details')}}/1">a Half Very Simple Things You To</a>
+                                <a href="{{route('client.shop.details', 1)}}">a Half Very Simple Things You To</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
                                 <img src="{{asset('client/assets/image/products/product-6.jpg')}}" alt="" />
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details')}}/1" class="hover-image">
+                                    <a href="{{route('client.shop.details',1)}}" class="hover-image">
                                         <img src="{{asset('client/assets/image/products/product-4.jpg')}}" alt="" />
                                     </a>
                                     <div class="hover-btns">

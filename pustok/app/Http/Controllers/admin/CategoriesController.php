@@ -140,24 +140,52 @@ class CategoriesController extends Controller
         if ($model) {
             $data = $request->all();
             $data['is_active'] = $request->is_active ? 1 : 0;
-            if ($model->parent_id == 0 && !(bool)$request->is_active) {
-                $childCategories = Model::where('parent_id', $model->id)->get();
-                if (count($childCategories)) {
-                    foreach ($childCategories as $child) {
-                        $child->is_active = false;
-                        $child->updated_by_user_id =  auth()->user()->id;
-                        $child->updated_at = now();
-                        $childSaved = $child->save();
-                        if (!$childSaved) {
+            if (!(bool)$request->is_active) {
+                if ($model->parent_id == 0) {
+                    $childCategories = $model->childCategories;
+                    // $childCategories = Model::where('parent_id', $model->id)->get();
+                    if ($childCategories->count()) {
+                        foreach ($childCategories as $child) {
+                            $child->is_active = false;
+                            $child->updated_by_user_id =  auth()->user()->id;
+                            $child->updated_at = now();
+                            $childSaved = $child->save();
+                            if (!$childSaved) {
+                                return redirect()->back()
+                                    ->with('type', 'danger')
+                                    ->with('message', "Failed to change is_active field of child $this->model_name id:$child->id!");
+                            } else {
+                                $books = $child->books;
+                                foreach ($books as $book) {
+                                    $book->is_active = false;
+                                    $book->updated_by_user_id =  auth()->user()->id;
+                                    $bookSaved = $book->save();
+                                    if (!$bookSaved) {
+                                        return redirect()->back()
+                                            ->with('type', 'danger')
+                                            ->with('message', "Failed to change is_active field of child $this->model_name id:$child->id's book id:$book->id !");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $books = $model->books;
+                    foreach ($books as $book) {
+                        $book->is_active = false;
+                        $book->updated_by_user_id =  auth()->user()->id;
+                        $bookSaved = $book->save();
+                        if (!$bookSaved) {
                             return redirect()->back()
                                 ->with('type', 'danger')
-                                ->with('message', "Failed to change is_active field of child $this->model_name id:$child->id!");
+                                ->with('message', "Failed to change is_active field of child $this->model_name id:$model->id's book id:$book->id !");
                         }
                     }
                 }
             }
             if ($model->parent_id != 0 && (bool)$request->is_active) {
-                $parentModel = Model::where('id', $model->parent_id)->first();
+                $parentModel = $model->parentCategory;
+                // $parentModel = Model::where('id', $model->parent_id)->first();
                 if (!$parentModel->is_active) {
                     $route = route('manager.' . $this->table_name . '.edit', $parentModel->id);
                     $goHref = "<a href='$route'>Do active id $parentModel->id parent $this->model_name</a>";

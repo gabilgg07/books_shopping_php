@@ -4,12 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\CampaignRequest;
+use App\Models\Book;
 use App\Models\Campaign as Model;
 use App\Models\Lang;
 use App\Models\User;
 use App\Services\DataService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class CampaignsController extends Controller
@@ -126,10 +127,20 @@ class CampaignsController extends Controller
         if ($model) {
             $data = $request->all();
             $data['is_active'] = $request->is_active ? 1 : 0;
-            $data['updated_by_user_id'] =  auth()->user()->id;
+            $data['updated_by_user_id'] = auth()->user()->id;
             $updated = $model->update($data);
 
             if ($updated) {
+
+                if (!$data['is_active']) {
+                    $books = Book::where('campaign_id', $campaign->id)->get();
+                    foreach ($books as $book) {
+                        $book->campaign_id = null;
+                        $book->updated_by_user_id = auth()->user()->id;
+                        $book->save();
+                    }
+                }
+
                 return redirect()->route('manager.' . $this->table_name . '.index')
                     ->with('type', 'success')
                     ->with('message', Str::headline($this->model_name) . ' has been updated.');
@@ -148,10 +159,21 @@ class CampaignsController extends Controller
         $is_active = $request->is_active === 'true' ? 1 : 0;
         try {
             $updated = Model::where('id', $id)->update([
-                'is_active' => $is_active
+                'is_active' => $is_active,
+                'updated_by_user_id' => auth()->user()->id,
             ]);
 
             if ($updated) {
+                if (!$is_active) {
+
+                    $books = Book::where('campaign_id', $id)->get();
+                    foreach ($books as $book) {
+                        $book->campaign_id = null;
+                        $book->updated_by_user_id = auth()->user()->id;
+                        $book->save();
+                    }
+                }
+
                 $data = [
                     'type' => 'success',
                     'message' => Str::headline($this->model_name) . ' model\'s is active field changed, id: ' . $id,
@@ -164,7 +186,10 @@ class CampaignsController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            return 'error: ' . $th;
+            return json_encode([
+                'type' => 'danger',
+                'message' => 'Failed to change is active field of ' . $this->model_name . ' model, id: ' . $id,
+            ]);
         }
     }
 
@@ -209,6 +234,7 @@ class CampaignsController extends Controller
             $model->is_deleted = 0;
             $model->deleted_by_user_id =  0;
             $model->deleted_at = null;
+            $model->updated_by_user_id = auth()->user()->id;
             $updated = $model->update();
 
             if ($updated) {
@@ -230,6 +256,14 @@ class CampaignsController extends Controller
     {
         $model = $campaign;
         if ($model) {
+
+            if (!$model->is_active) {
+                $books = Book::where('campaign_id', $model->id)->get();
+                foreach ($books as $book) {
+                    $book->campaign_id = null;
+                    $book->save();
+                }
+            }
             $deleted = $model->delete();
             if ($deleted) {
                 return redirect()->route('manager.' . $this->table_name . '.deleteds')

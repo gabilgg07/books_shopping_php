@@ -13,6 +13,9 @@ class ShopController extends Controller
     public function index($slug = null)
     {
         $books = Book::where('is_deleted', 0)->where('is_active', 1);
+        if (isset($_REQUEST['campaign_id'])) {
+            $books = $books->where('campaign_id', $_REQUEST['campaign_id']);
+        }
         if (trim($slug)) {
             $category = Category::where('slug->' . LaravelLocalization::getCurrentLocale(), $slug)->where('is_deleted', 0)->where('is_active', 1)->first();
             if ($category) {
@@ -30,9 +33,15 @@ class ShopController extends Controller
         $books = $books->paginate(8);
         return view("client.shop.index", compact('books'));
     }
-    public function details($id = 0)
+    public function details(Book $book)
     {
-        return view("client.shop.details");
+        if ($book && $book->is_deleted === 0 && $book->is_active === 1) {
+
+            return view("client.shop.details", compact('book'));
+        } else {
+            // return redirect()->back()->with('msgType', 'error')->with('msg','Not Found');
+            return abort(404);
+        }
     }
     public function card()
     {

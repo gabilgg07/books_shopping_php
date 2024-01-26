@@ -17,3 +17,28 @@
     background-color: #80808026;
     color: #c3c3c3;
 }
+
+.slick-slide > div {
+    margin: 0 5px;
+}
+.product-details-slider .single-slide img {
+    width: auto;
+    margin: 0 auto;
+    height: 400px;
+    object-fit: cover;
+}
+.product-slider-nav .single-slide {
+    margin: 0;
+}
+
+.product-slider-nav .slick-slide > div {
+    height: 165px;
+}
+.product-slider-nav .slick-slide > div .single-slide {
+    height: 100%;
+}
+.product-slider-nav .slick-slide > div .single-slide img {
+    height: 100%;
+    object-fit: cover;
+    margin: 0 auto;
+}

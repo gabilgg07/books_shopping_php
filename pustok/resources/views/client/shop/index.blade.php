@@ -30,9 +30,18 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-md-4 col-sm-6  mt--10 mt-sm--0">
+                    @php
+                    $to = 0;
+                    if($books->total()>$books->perPage() && ($books->currentPage() !== $books->lastPage())){
+                    $to = $books->currentPage()*$books->perPage();
+                    }else{
+                    $to = $books->total();
+                    }
+                    @endphp
                     <span class="toolbar-status">
                         Showing {{($books->currentPage()-1)*$books->perPage()+1}} to
-                        {{$books->currentPage()*$books->perPage()}} of {{$books->total()}} ({{$books->lastPage()}}
+                        {{$to}} of
+                        {{$books->total()}} ({{$books->lastPage()}}
                         Pages)
                     </span>
                 </div>

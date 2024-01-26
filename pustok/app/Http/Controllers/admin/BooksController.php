@@ -169,6 +169,14 @@ class BooksController extends Controller
             $data = $request->except(['is_main', 'images', 'deleted_images']);
             $data['is_active'] = $request->is_active ? 1 : 0;
 
+            if ($data['is_active'] && (!$model->category->is_active || $model->category->is_deleted)) {
+                $route = route('manager.categories.edit', $model->category->id);
+                $goHref = "<a href='$route'>Do active id: " . $model->category->id . " category </a>";
+                return redirect()->back()
+                    ->with('type', 'danger')
+                    ->with('message', "Failed to do active $this->model_name! Please, first do active category: $goHref");
+            }
+
             $data['slug'] = $this->dataService->sluggableArray($data, 'title');
             $data['updated_by_user_id'] =  auth()->user()->id;
             $updated = $model->update($data);
@@ -248,12 +256,22 @@ class BooksController extends Controller
         $id = $request->id;
         $is_active = $request->is_active === 'true' ? 1 : 0;
         $model = Model::where('id', $id)->first();
+        if ($is_active && (!$model->category->is_active || $model->category->is_deleted)) {
+            $route = route('manager.categories.edit', $model->category->id);
+            $goHref = "<a href='$route'>Do active id:" . $model->category->id . " category </a>";
+
+            return json_encode([
+                'type' => 'danger',
+                'message' => "Failed to do active $this->model_name! Please, first do active category: $goHref",
+            ]);
+        }
         try {
             $updated = Model::where('id', $id)->update([
                 'is_active' => $is_active
             ]);
 
             if ($updated) {
+
                 $data = [
                     'type' => 'success',
                     'message' => Str::headline($this->model_name) . ' model\'s is active field changed, id: ' . $id,

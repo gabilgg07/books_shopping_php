@@ -22,4 +22,8 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class, 'campaign_id');
+    }
 }
