@@ -5,4 +5,5 @@
 <!-- Use Minified Plugins Version For Fast Page Load -->
 <link rel="stylesheet" type="text/css" media="screen" href="{{asset('client/assets/styles/plugins.css')}}" />
 <link rel="stylesheet" type="text/css" media="screen" href="{{asset('client/assets/styles/main.css')}}" />
+<link rel="stylesheet" type="text/css" media="screen" href="{{asset('client/assets/styles/custom.css')}}" />
 <link rel="shortcut icon" type="assets/image/x-icon" href="{{asset('client/assets/image/favicon.ico')}}">

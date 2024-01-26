@@ -12,4 +12,14 @@ class Category extends Model
 
     protected $guarded = [];
     protected $translatable = ['title', 'slug'];
+
+    public function childCategories()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function parentCategory()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 }

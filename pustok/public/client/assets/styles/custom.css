@@ -1,0 +1,19 @@
+.card-image {
+    height: 400px;
+}
+
+.card-image img {
+    height: 100%;
+    object-fit: cover;
+}
+.hover-contents a {
+    height: 100%;
+}
+.pagination-block {
+    width: 100%;
+}
+.pagination-block .pagination-btns li.disabled a {
+    pointer-events: none;
+    background-color: #80808026;
+    color: #c3c3c3;
+}
