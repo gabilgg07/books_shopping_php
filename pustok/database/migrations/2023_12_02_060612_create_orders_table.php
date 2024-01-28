@@ -17,14 +17,14 @@ return new class extends Migration
             $table->double('shipping_cost')->default(0);
             $table->double('total_price');
             $table->unsignedBigInteger('user_id');
-            $table->string('company_name')->nullable();
             $table->string('country');
             $table->string('city');
             $table->string('address');
             $table->string('state');
             $table->string('zip_code');
-            $table->unsignedBigInteger('order_number');
-            $table->string('order_notes')->nullable();
+            $table->string('order_number');
+            $table->text('order_notes')->nullable();
+            $table->boolean('is_accepted')->nullable();
             $table->timestamps();
         });
     }

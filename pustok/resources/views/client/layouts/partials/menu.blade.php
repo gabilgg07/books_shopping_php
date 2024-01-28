@@ -20,12 +20,10 @@
                     <div class="mobile-header-btns header-top-widget">
                         <ul class="header-links">
                             <li class="sin-link">
-                                <a href="{{route('client.shop.card')}}" class="cart-link link-icon"><i
-                                        class="ion-bag"></i></a>
+                                <a href="{{route('client.cart')}}" class="cart-link link-icon"><i class="ion-bag"></i></a>
                             </li>
                             <li class="sin-link">
-                                <a href="javascript:" class="link-icon hamburgur-icon off-canvas-btn"><i
-                                        class="ion-navicon"></i></a>
+                                <a href="javascript:" class="link-icon hamburgur-icon off-canvas-btn"><i class="ion-navicon"></i></a>
                             </li>
                         </ul>
                     </div>

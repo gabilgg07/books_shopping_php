@@ -33,9 +33,11 @@
 
 .product-slider-nav .slick-slide > div {
     height: 165px;
+    padding: 10px 2px;
 }
 .product-slider-nav .slick-slide > div .single-slide {
     height: 100%;
+    box-shadow: 0 0 5px 1px #80808091;
 }
 .product-slider-nav .slick-slide > div .single-slide img {
     height: 100%;

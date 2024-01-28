@@ -110,13 +110,4 @@ class ShopController extends Controller
 
         return view('client.layouts.includes.details_modal', compact('book'));
     }
-
-    public function card()
-    {
-        return view("client.shop.card");
-    }
-    public function wishlist()
-    {
-        return view("client.shop.wishlist");
-    }
 }

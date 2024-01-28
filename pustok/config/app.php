@@ -170,6 +170,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Spatie\TranslationLoader\TranslationServiceProvider::class,
+        App\Providers\ViewServiceProvider::class,
+        App\Providers\GlobalVariableServiceProvider::class,
     ])->toArray(),
 
     /*

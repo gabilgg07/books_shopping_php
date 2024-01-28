@@ -1,3 +1,7 @@
+@php
+$count = 0;
+@endphp
+
 <div class="site-header header-4 mb--20 d-none d-lg-block">
 
     <div class="header-middle pt--10 pb--10">
@@ -19,11 +23,9 @@
                         <div class="cart-widget">
                             <div class="login-block">
                                 @if ($user && !$user->is_admin)
-                                <a href="{{route('client.account.index')}}"
-                                    class="font-weight-bold">{{$user->first_name." ".$user->last_name}}</a>
+                                <a href="{{route('client.account.index')}}" class="font-weight-bold">{{$user->first_name." ".$user->last_name}}</a>
                                 <br>
-                                <span>or</span><a onclick="return confirm('Are you sure?')"
-                                    href="{{route('client.account.logout')}}">Logout</a>
+                                <span>or</span><a onclick="return confirm('Are you sure?')" href="{{route('client.account.logout')}}">Logout</a>
                                 @else
                                 <a href="{{route('auth.signin')}}" class="font-weight-bold">Login</a> <br>
                                 <span>or</span><a href="{{route('auth.signup')}}">Register</a>
@@ -32,8 +34,7 @@
                             <div class="langs-block">
                                 <p class="lang">
                                     @if ($currentLang->image)
-                                    <img src="{{$currentLang->image}}" class="img-flag mr-2"
-                                        alt="{{$currentLang->code.'-'.$currentLang->country}}">
+                                    <img src="{{$currentLang->image}}" class="img-flag mr-2" alt="{{$currentLang->code.'-'.$currentLang->country}}">
                                     @endif
                                     {{ Str::upper($currentLang->code) }} <i class="ml-1 fas fa-angle-down "></i>
                                 </p>
@@ -41,11 +42,9 @@
                                     @foreach($langs as $lang)
                                     @if ($currentLang->code !== $lang->code)
                                     <li class="lang-item">
-                                        <a rel="alternate" hreflang="{{ $lang->code }}"
-                                            href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}">
+                                        <a rel="alternate" hreflang="{{ $lang->code }}" href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}">
                                             @if ($lang->image)
-                                            <img src="{{$lang->image}}" class="img-flag mr-2"
-                                                alt="{{$lang->code.'-'.$lang->country}}">
+                                            <img src="{{$lang->image}}" class="img-flag mr-2" alt="{{$lang->code.'-'.$lang->country}}">
                                             @endif
                                             {{ Str::upper($lang->code) }}
                                         </a>
@@ -63,33 +62,43 @@
                                         Shopping Cart
                                     </span>
                                     <span class="price">
-                                        £{{Cart::subtotal()}}
+                                        {{__('symbol.currency')}}{{number_format($currPrice*Cart::subtotal(), 2, '.','')}}
                                         <i class="fas fa-chevron-down"></i>
                                     </span>
                                 </div>
                                 <div class="cart-dropdown-block">
                                     <div class=" single-cart-block ">
-                                        @foreach (Cart::content() as $cart)
+                                        @foreach (Cart::content() as $key=>$cart)
+
+                                        @php
+                                        $titles = (array)json_decode($cart->name);
+                                        if($titles && count($titles)){
+                                        $title = $titles[LaravelLocalization::getCurrentLocale()];
+                                        }
+                                        $count++;
+                                        if($count>=4){
+                                        break;
+                                        }
+                                        @endphp
                                         <div class="cart-product">
-                                            <a href="{{route('client.shop.details')}}/1" class="image">
+                                            <a href="{{route('client.shop.details',$cart->id)}}" class="image">
                                                 <img src="{{asset($cart->options['image'])}}" alt="">
                                             </a>
                                             <div class="content">
-                                                <h3 class="title"><a href="{{route('client.shop.details')}}/1">
-                                                        {{$cart->name}}</a>
+                                                <h3 class="title"><a href="{{route('client.shop.details',$cart->id)}}">
+                                                        {{$title ?? $cart->name}}</a>
                                                 </h3>
                                                 <p class="price"><span class="qty">{{$cart->qty}} ×</span>
-                                                    £{{$cart->price}}</p>
-                                                <a href="{{route('remove',$cart->rowId)}}" class="cross-btn"><i
-                                                        class="fas fa-times"></i></a>
+                                                    {{__('symbol.currency')}}{{number_format($currPrice*$cart->price, 2, '.', '')}}
+                                                </p>
+                                                <a href="{{route('client.cart.remove',$cart->rowId)}}" class="cross-btn"><i class="fas fa-times"></i></a>
                                             </div>
                                         </div>
                                         @endforeach
                                     </div>
                                     <div class=" single-cart-block ">
                                         <div class="btn-block">
-                                            <a href="{{route('client.shop.card')}}" class="btn">View Cart <i
-                                                    class="fas fa-chevron-right"></i></a>
+                                            <a href="{{route('client.cart')}}" class="btn">View Cart <i class="fas fa-chevron-right"></i></a>
 
                                         </div>
                                     </div>

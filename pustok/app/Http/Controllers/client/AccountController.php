@@ -4,12 +4,18 @@ namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\client\account\RegisterRequest;
+use App\Http\Requests\client\OrderRequest;
+use App\Models\Book;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
+    // static $counter = 0;
     public function index()
     {
         return view("client.account.index");
@@ -65,4 +71,71 @@ class AccountController extends Controller
         //
         return view("client.account.checkout");
     }
+
+
+    public function placeOrder(OrderRequest $request)
+    {
+        $user = User::find(auth()->user()->id);
+        if ($user) {
+            if ((!$user->phone) || $user->phone != $request->phone) {
+                $user->phone = $request->phone;
+                $user->save();
+            }
+        }
+        $data = $request->except(['_token', 'phone']);
+        $data['user_id'] = $user->id;
+        $data['total_count'] = Cart::content()->count();
+        $data['total_price'] = Cart::initial();
+        $count = Order::orderBy('order_number', 'desc')->first()
+            ? Order::orderBy('order_number', 'desc')->first()->order_number + 1 : 1;
+        $order_number = str_pad($count, 4, '0', STR_PAD_LEFT);
+        $data['order_number'] = $order_number;
+        $order = Order::create($data);
+
+        if (!$order) {
+            return redirect()->back()->with('msgType', 'error')->with('message', 'Failed to create order!');
+        }
+
+        foreach (Cart::content() as $key => $cart) {
+            $book = Book::find($cart->id);
+            if ($book) {
+                if ($book->count - $cart->qty >= 0) {
+                    $dataItem = [
+                        'book_id' => $book->id,
+                        'order_id' => $order->id,
+                        'qty' => $cart->qty,
+                        'price' => $book->price,
+                        'total_price' => $cart->price * $cart->qty,
+                        'created_by_user_id' => $user->id,
+                    ];
+                    if ($book->campaign) {
+                        $dataItem['discount'] = $book->campaign->discount_percent;
+                        $dataItem['discount_price'] = $cart->price;
+                    }
+
+                    $orderItem = OrderItem::create($dataItem);
+                    if ($orderItem) {
+                        $book->count -= $cart->qty;
+                        $book->updated_by_user_id = $user->id;
+                        $book->save();
+                    }
+                } else {
+                    return redirect()->back()->with('msgType', 'error')->with('message', 'Failed to create order! Because book id: ' . $book->id . ' count is not enough');
+                }
+            } else {
+                return redirect()->back()->with('msgType', 'error')->with('message', 'Failed to create order! Because book id: ' . $book->id . ' not found');
+            }
+        }
+
+        Cart::destroy();
+
+        return view("client.account.order_complete", compact('order'));
+    }
+
+
+    // public function orderComplete()
+    // {
+    //     //
+    //     return view("client.account.checkout");
+    // }
 }

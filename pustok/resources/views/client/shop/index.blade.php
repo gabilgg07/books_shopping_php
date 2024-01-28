@@ -64,7 +64,8 @@ $queries = $queries.$query.'='.$value;
                             @endif
                             @endforeach
                             @endif
-                            <select class="form-control nice-select sort-select mr-0" name="sort_by" onchange="submitForm()">
+                            <select class="form-control nice-select sort-select mr-0" name="sort_by"
+                                onchange="submitForm()">
                                 <option value="" selected="selected">Default Sorting</option>
                                 <option value="az">Sort By: Name (A - Z)</option>
                                 <option value="za">Sort By: Name (Z - A)</option>
@@ -88,29 +89,32 @@ $queries = $queries.$query.'='.$value;
                             <a href="" class="author">
                                 {{$book->author}}
                             </a>
-                            <h3><a href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
+                            <h3><a
+                                    href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{ asset($book->bookImages->where('is_main',1)->first()->image) }}" alt="{{$book->slug}}">
+                                <img src="{{ asset($book->mainImage()->image) }}" alt="{{$book->slug}}">
                                 <div class="hover-contents">
                                     <a href="{{ route('client.shop.details', $book->id) }}" class="hover-image">
                                         @php
-                                        $imgHover = $book->bookImages->where('is_main',0)->first() !== null ?
-                                        $book->bookImages->where('is_main',0)->first()->image :
-                                        $book->bookImages->where('is_main',1)->first()->image;
+                                        $imgHover = $book->images()->first() !== null ?
+                                        $book->images()->first()->image :
+                                        $book->mainImage()->image;
                                         @endphp
                                         <img src="{{ asset($imgHover) }}" alt="{{$book->slug}} 2">
                                     </a>
                                     <div class="hover-btns">
-                                        <a href="" class="single-btn">
+                                        <a href="{{route('client.cart.add', $book->id)}}" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
                                         <a href="" class="single-btn">
                                             <i class="fas fa-heart"></i>
                                         </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" data-url="{{route('client.shop.getDetails', $book->id)}}" class="single-btn detail_modal">
+                                        <a href="#" data-toggle="modal" data-target="#quickModal"
+                                            data-url="{{route('client.shop.getDetails', $book->id)}}"
+                                            class="single-btn detail_modal">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </div>
@@ -119,11 +123,14 @@ $queries = $queries.$query.'='.$value;
                             <div class="price-block">
                                 @if ($book->campaign)
 
-                                <span class="price">£{{number_format($book->price-($book->price*$book->campaign->discount_percent/100), 2, '.', '')}}</span>
-                                <del class="price-old">£{{number_format($book->price, 2, '.', '')}}</del>
+                                <span
+                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                                <del
+                                    class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
                                 <span class="price-discount">{{$book->campaign->discount_percent}}%</span>
                                 @else
-                                <span class="price">£{{number_format($book->price, 2, '.', '')}}</span>
+                                <span
+                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
                                 @endif
                             </div>
                         </div>
@@ -136,7 +143,8 @@ $queries = $queries.$query.'='.$value;
 
         {!! $books->withQueryString()->links('pagination::bootstrap-5') !!}
         <!-- Modal -->
-        <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog" aria-labelledby="quickModal" aria-hidden="true">
+        <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog"
+            aria-labelledby="quickModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
 
             </div>
@@ -147,48 +155,48 @@ $queries = $queries.$query.'='.$value;
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('.detail_modal').on('click', function(e) {
-            e.preventDefault();
-            const modalUrl = $(this).data('url');
-            $('.product-details-slider').slick('unslick');
-            $('.product-slider-nav').slick('unslick');
+$(document).ready(function() {
+    $('.detail_modal').on('click', function(e) {
+        e.preventDefault();
+        const modalUrl = $(this).data('url');
+        $('.product-details-slider').slick('unslick');
+        $('.product-slider-nav').slick('unslick');
 
-            $.get(modalUrl, function(data, status) {
+        $.get(modalUrl, function(data, status) {
 
-                if (status !== 'success') {
-                    console.error('Error fetching book details:', data.message);
-                    return;
-                }
+            if (status !== 'success') {
+                console.error('Error fetching book details:', data.message);
+                return;
+            }
 
-                $('#quickModal .modal-dialog').html(data);
-                $('.product-details-slider').slick({
-                    slidesToShow: 1,
-                    arrows: false,
-                    fade: true,
-                    swipe: true,
-                    asNavFor: ".product-slider-nav"
-                });
-
-                $('.product-slider-nav').slick({
-                    infinite: true,
-                    autoplay: true,
-                    autoplaySpeed: 8000,
-                    slidesToShow: 4,
-                    arrows: true,
-                    prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
-                    nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
-                    asNavFor: ".product-details-slider",
-                    focusOnSelect: true
-                });
-
-                $('#quickModal').show();
+            $('#quickModal .modal-dialog').html(data);
+            $('.product-details-slider').slick({
+                slidesToShow: 1,
+                arrows: false,
+                fade: true,
+                swipe: true,
+                asNavFor: ".product-slider-nav"
             });
+
+            $('.product-slider-nav').slick({
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 8000,
+                slidesToShow: 4,
+                arrows: true,
+                prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
+                nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
+                asNavFor: ".product-details-slider",
+                focusOnSelect: true
+            });
+
+            $('#quickModal').show();
         });
     });
+});
 
-    function submitForm() {
-        document.getElementById("sortForm").submit();
-    }
+function submitForm() {
+    document.getElementById("sortForm").submit();
+}
 </script>
 @endpush

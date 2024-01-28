@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('book_id');
             $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('count');
+            $table->unsignedBigInteger('qty');
+            $table->double('price');
+            $table->unsignedInteger('discount')->nullable();
+            $table->double('discount_price')->nullable();
+            $table->double('total_price');
             $table->timestamps();
         });
     }

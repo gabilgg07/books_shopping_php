@@ -1,12 +1,6 @@
-@php
-$main_img = $book->bookImages->where('is_main', 1)->first()->image;
-$images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
-@endphp
-
 @extends("client.layouts.master")
 
 @section("content")
-
 <section class="breadcrumb-section">
     <div class="container">
         <div class="breadcrumb-contents">
@@ -25,7 +19,7 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
             <div class="col-lg-5 mb--30">
                 <!-- Product Details Slider Big Image-->
                 <div class="product-details-slider sb-slick-slider arrow-type-two" data-slick-setting='{
-                    "infinite":{{count($images)?'true':'false'}},
+                    "infinite":{{count($book->images())?'true':'false'}},
               "slidesToShow": 1,
               "arrows": false,
               "fade": true,
@@ -34,34 +28,33 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
               "asNavFor": ".product-slider-nav"
               }'>
                     <div class="single-slide">
-                        <img src="{{asset($main_img)}}" alt="{{$book->slug}}-1" />
+                        <img src="{{asset($book->mainImage()->image)}}" alt="{{$book->slug}}-1" />
                     </div>
-                    @foreach ($images as $key=>$image)
+                    @foreach ($book->images() as $key=>$img)
                     <div class="single-slide">
-                        <img src="{{asset($image)}}" alt="{{$book->slug}}-{{$key+2}}" />
+                        <img src="{{asset($img->image)}}" alt="{{$book->slug}}-{{$key+2}}" />
                     </div>
                     @endforeach
                 </div>
                 <!-- Product Details Slider Nav -->
-                @if (count($images))
+                @if (count($book->images()))
                 <div class="mt--30 product-slider-nav sb-slick-slider arrow-type-two" data-slick-setting='{
             "infinite":true,
               "autoplay": true,
               "autoplaySpeed": 8000,
-              "slidesToShow": {{count($images)-1}},
+              "slidesToShow": {{count($book->images())-1<5?count($book->images())-1:4}},
               "arrows": true,
               "prevArrow":{"buttonClass": "slick-prev","iconClass":"fa fa-chevron-left"},
               "nextArrow":{"buttonClass": "slick-next","iconClass":"fa fa-chevron-right"},
               "asNavFor": ".product-details-slider",
               "focusOnSelect": true
               }'>
-
                     <div class="single-slide">
-                        <img src="{{asset($main_img)}}" alt="{{$book->slug}}-1" />
+                        <img src="{{asset($book->mainImage()->image)}}" alt="{{$book->slug}}-1" />
                     </div>
-                    @foreach ($images as $key=>$image)
+                    @foreach ($book->images() as $key=>$img)
                     <div class="single-slide">
-                        <img src="{{asset($image)}}" alt="{{$book->slug}}-{{$key+2}}" />
+                        <img src="{{asset($img->image)}}" alt="{{$book->slug}}-{{$key+2}}" />
                     </div>
                     @endforeach
                 </div>
@@ -76,7 +69,7 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                         {{$book->title}}
                     </h3>
                     <ul class="list-unstyled">
-                        <!-- <li>Ex Tax: <span class="list-value"> £60.24</span></li> -->
+                        <!-- <li>Ex Tax: <span class="list-value"> {{__('symbol.currency')}}60.24</span></li> -->
                         <li>
                             Category:
                             <a href="{{route('client.shop.index', $book->category->slug)}}" class="list-value font-weight-bold"> {{$book->category->title}}</a>
@@ -99,10 +92,10 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                     </ul>
                     <div class="price-block">
                         @if ($book->campaign)
-                        <span class="price-new">£{{number_format($book->price-($book->price*$book->campaign->discount_percent/100), 2, '.', '')}}</span>
-                        <del class="price-old">£{{number_format($book->price, 2, '.', '')}}</del>
+                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                        <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</del>
                         @else
-                        <span class="price-new">£{{number_format($book->price, 2, '.', '')}}</span>
+                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</span>
                         @endif
                     </div>
                     <div class="rating-widget">
@@ -286,8 +279,8 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                                 </div>
                             </div>
                             <div class="price-block">
-                                <span class="price">£51.20</span>
-                                <del class="price-old">£51.20</del>
+                                <span class="price">{{__('symbol.currency')}}51.20</span>
+                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
                                 <span class="price-discount">20%</span>
                             </div>
                         </div>
@@ -319,8 +312,8 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                                 </div>
                             </div>
                             <div class="price-block">
-                                <span class="price">£51.20</span>
-                                <del class="price-old">£51.20</del>
+                                <span class="price">{{__('symbol.currency')}}51.20</span>
+                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
                                 <span class="price-discount">20%</span>
                             </div>
                         </div>
@@ -352,8 +345,8 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                                 </div>
                             </div>
                             <div class="price-block">
-                                <span class="price">£51.20</span>
-                                <del class="price-old">£51.20</del>
+                                <span class="price">{{__('symbol.currency')}}51.20</span>
+                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
                                 <span class="price-discount">20%</span>
                             </div>
                         </div>
@@ -385,8 +378,8 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                                 </div>
                             </div>
                             <div class="price-block">
-                                <span class="price">£51.20</span>
-                                <del class="price-old">£51.20</del>
+                                <span class="price">{{__('symbol.currency')}}51.20</span>
+                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
                                 <span class="price-discount">20%</span>
                             </div>
                         </div>
@@ -418,8 +411,8 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                                 </div>
                             </div>
                             <div class="price-block">
-                                <span class="price">£51.20</span>
-                                <del class="price-old">£51.20</del>
+                                <span class="price">{{__('symbol.currency')}}51.20</span>
+                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
                                 <span class="price-discount">20%</span>
                             </div>
                         </div>

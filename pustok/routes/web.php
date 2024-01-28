@@ -16,17 +16,21 @@ use App\Http\Controllers\admin\UsersController;
 
 // client controllers
 use App\Http\Controllers\client\AccountController;
+use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\ContactController;
 use App\Http\Controllers\client\CurrencyController;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\ShopController;
 use App\Http\Controllers\client\ShoppingCart;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 // others
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-// Client 
+// LaravelLocalization::getCurrentLocale()
 
+// Client 
 // Client Out of Auth
 Route::group(["middleware" => ['web', 'auth.user.check', 'check.route'], "prefix" => LaravelLocalization::setLocale() . "", "as" => "auth."], function () {
     Route::get("/signup", [AccountController::class, "signup"])->name("signup");
@@ -38,20 +42,30 @@ Route::group(["middleware" => ['web', 'auth.user.check', 'check.route'], "prefix
 
 // Client Logined
 Route::group(["middleware" => ['check.route'], "prefix" => LaravelLocalization::setLocale() . "", "as" => "client."], function () {
+
+    // HOME
     Route::get("/", [HomeController::class, "index"])->name("home.index");
 
+    // SHOP
     Route::get("/shop/{slug?}", [ShopController::class, "index"])->name("shop.index");
-    Route::get("/shop/card", [ShopController::class, "card"])->name("shop.card");
-    Route::get("/shop/wishlist", [ShopController::class, "wishlist"])->name("shop.wishlist");
     Route::get("/shop/details/{book}", [ShopController::class, "details"])->name("shop.details");
     Route::get("/shop/get-details/{book}", [ShopController::class, "getDetails"])->name("shop.getDetails");
-
     Route::get("/contact", ContactController::class)->name("contact");
 
+    // CART
+    Route::get("/cart", [CartController::class, "index"])->name("cart");
+    Route::get("/cart/{rowId}/remove", [CartController::class, "removeFromCart"])->name("cart.remove");
+    Route::get("/cart/{book}", [CartController::class, "addToCart"])->name("cart.add");
+    Route::post("/cart/update", [CartController::class, "updateCart"])->name("cart.update");
+    Route::post("/cart/update-from-modal", [CartController::class, "updateCartFromModal"])->name("cart.update.modal");
+
+    // AUTH
     Route::group(["middleware" => "auth.user", "prefix" => "/account", "as" => "account."], function () {
         Route::get("", [AccountController::class, "index"])->name("index");
         Route::get("/logout", [AccountController::class, "logout"])->name("logout");
         Route::get("/checkout", [AccountController::class, "checkout"])->name("checkout");
+        Route::post("/place-order", [AccountController::class, "placeOrder"])->name("placeOrder");
+        // Route::get("/order-complete", [AccountController::class, "orderComplete"])->name("orderComplete");
     });
 });
 
@@ -106,10 +120,21 @@ function defineResourceRoutes($table_name, $model_name, $controller)
 // Route::get("/remove-from-cart/{id}", [ShoppingCart::class, "remove"])->name("remove");
 // Route::get("/clear-cart", [ShoppingCart::class, "destroy"])->name("clear");
 
-// Route::get("/curency", [CurrencyController::class, "index"])->name("cureency");
+Route::get("/currency", [CurrencyController::class, "index"])->name("currency");
 
 // Route::get("/event", function () {
 //     event(new OrderPlaced());
 
 //     return "Order placed successfully!";
 // });
+
+$jsonData = Cache::get('currency_data');
+
+// If not in the cache, fetch data from the API and store it in the cache
+if (!$jsonData) {
+    $response = Http::get('https://api.fastforex.io/fetch-multi?from=USD&to=EUR,GBP,AZN,RUB,TRY&api_key=68ce4283fe-ed772e671a-s7yiza');
+    $jsonData = $response->json();
+
+    // Cache the data for a day
+    Cache::put('currency_data', $jsonData, now()->addDay());
+}

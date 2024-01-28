@@ -17,7 +17,7 @@ class AuthUser
                 return redirect()->route('manager.dashboard');
             }
         } else {
-            return redirect()->route('auth.login');
+            return redirect()->route('auth.signin');
         }
     }
 }

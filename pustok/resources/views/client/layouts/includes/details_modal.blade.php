@@ -58,12 +58,14 @@
                     <ul class="list-unstyled">
                         <li>
                             Category:
-                            <a href="{{route('client.shop.index', $book->category->slug)}}" class="list-value font-weight-bold"> {{$book->category->title}}</a>
+                            <a href="{{route('client.shop.index', $book->category->slug)}}"
+                                class="list-value font-weight-bold"> {{$book->category->title}}</a>
                         </li>
                         @if ($book->campaign)
                         <li>
                             Campaign:
-                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}" class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
+                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}"
+                                class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
                         </li>
                         @endif
                         <li>
@@ -76,10 +78,13 @@
                     </ul>
                     <div class="price-block">
                         @if ($book->campaign)
-                        <span class="price-new">£{{number_format($book->price-($book->price*$book->campaign->discount_percent/100), 2, '.', '')}}</span>
-                        <del class="price-old">£{{number_format($book->price, 2, '.', '')}}</del>
+                        <span
+                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                        <del
+                            class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
                         @else
-                        <span class="price-new">£{{number_format($book->price, 2, '.', '')}}</span>
+                        <span
+                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
                         @endif
                     </div>
                     <div class="rating-widget">
@@ -102,18 +107,21 @@
                         </p>
                     </article>
                     <div class="add-to-cart-row">
-                        <div class="count-input-block">
-                            <span class="widget-label">Qty</span>
-                            <input type="number" class="form-control text-center" value="1">
-                        </div>
-                        <div class="add-cart-btn">
-                            <a href="" class="btn btn-outlined--primary"><span class="plus-icon">+</span>Add
-                                to Cart</a>
-                        </div>
+                        <form action="{{route('client.cart.update.modal')}}" class="row" method="post">
+                            @csrf
+                            <div class="count-input-block">
+                                <span class="widget-label">Qty</span>
+                                <input type="number" name="qty" class="form-control text-center" value="1">
+                                <input type="hidden" name="book_id" value="{{$book->id}}">
+                            </div>
+                            <div class="add-cart-btn">
+                                <button class="btn btn-outlined--primary"><span class="plus-icon">+</span>Add
+                                    to Cart</button>
+                            </div>
+                        </form>
                     </div>
                     <div class="compare-wishlist-row">
                         <a href="" class="add-link"><i class="fas fa-heart"></i>Add to Wish List</a>
-                        <a href="" class="add-link"><i class="fas fa-random"></i>Add to Compare</a>
                     </div>
                 </div>
             </div>
