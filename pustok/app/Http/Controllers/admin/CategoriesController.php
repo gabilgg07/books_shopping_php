@@ -228,21 +228,48 @@ class CategoriesController extends Controller
         $model = Model::where('id', $id)->first();
         $childrenIds = [];
         try {
-            if ($model->parent_id == 0 && !$is_active) {
-                $childCategories = Model::where('parent_id', $model->id)->get();
-                if (count($childCategories)) {
-                    foreach ($childCategories as $child) {
-                        $child->is_active = false;
-                        $child->updated_by_user_id =  auth()->user()->id;
-                        $child->updated_at = now();
-                        $childSaved = $child->save();
-                        if (!$childSaved) {
+            if (!$is_active) {
+                if ($model->parent_id == 0) {
+                    $childCategories = Model::where('parent_id', $model->id)->get();
+                    if (count($childCategories)) {
+                        foreach ($childCategories as $child) {
+                            $child->is_active = false;
+                            $child->updated_by_user_id =  auth()->user()->id;
+                            $childSaved = $child->save();
+                            if (!$childSaved) {
+                                return json_encode([
+                                    'type' => 'danger',
+                                    'message' => 'Failed to change is_active field of child ' . $this->model_name . ' model, id: ' . $id,
+                                ]);
+                            } else {
+                                $books = $child->books;
+                                foreach ($books as $book) {
+                                    $book->is_active = false;
+                                    $book->updated_by_user_id =  auth()->user()->id;
+                                    $bookSaved = $book->save();
+                                    if (!$bookSaved) {
+                                        return json_encode([
+                                            'type' => 'danger',
+                                            'message' => "Failed to change is_active field of child $this->model_name id:$child->id's book id:$book->id !",
+                                        ]);
+                                    }
+                                }
+                            }
+                            $childrenIds[] = $child->id;
+                        }
+                    }
+                } else {
+                    $books = $model->books;
+                    foreach ($books as $book) {
+                        $book->is_active = false;
+                        $book->updated_by_user_id =  auth()->user()->id;
+                        $bookSaved = $book->save();
+                        if (!$bookSaved) {
                             return json_encode([
                                 'type' => 'danger',
-                                'message' => 'Failed to change is_active field of child ' . $this->model_name . ' model, id: ' . $id,
+                                'message' => "Failed to change is_active field of child $this->model_name id:$model->id's book id:$book->id !",
                             ]);
                         }
-                        $childrenIds[] = $child->id;
                     }
                 }
             }
@@ -258,7 +285,8 @@ class CategoriesController extends Controller
                 }
             }
             $updated = Model::where('id', $id)->update([
-                'is_active' => $is_active
+                'is_active' => $is_active,
+                'updated_by_user_id' => auth()->user()->id,
             ]);
 
             if ($updated) {
@@ -290,9 +318,8 @@ class CategoriesController extends Controller
             $model->deleted_at = now();
             if ($model->parent_id == 0) {
                 $childModels = Model::where('parent_id', $model->id)->where('is_deleted', 0)->get();
-                if (count($childModels)) {
+                if ($childModels && $childModels->count()) {
                     foreach ($childModels as $child) {
-
                         $child->is_deleted = 1;
                         $child->deleted_by_user_id =  auth()->user()->id;
                         $child->deleted_at = now();
@@ -348,6 +375,7 @@ class CategoriesController extends Controller
             $model->is_deleted = 0;
             $model->deleted_by_user_id =  0;
             $model->deleted_at = null;
+            $model->updated_by_user_id = auth()->user()->id;
             $updated = $model->update();
 
             if ($updated) {
@@ -369,18 +397,45 @@ class CategoriesController extends Controller
         $model = $category;
         if ($model) {
             if ($model->parent_id == 0) {
-                $childModels = Model::where('parent_id', $model->id)->get();
-                if (count($childModels)) {
+                $childModels = $model->childCategories;
+                if ($childModels && $childModels->count()) {
                     foreach ($childModels as $child) {
-                        if ($child->image && file_exists(public_path($child->image))) {
-                            unlink(public_path($child->image));
+                        // if ($child->image && file_exists(public_path($child->image))) {
+                        //     unlink(public_path($child->image));
+                        // }
+                        // $childDeleted = $child->delete();
+                        // if (!$childDeleted) {
+                        //     return redirect()->back()
+                        //         ->with('type', 'danger')
+                        //         ->with('message', "Failed to permanently delete child $this->model_name id:$child->id !");
+                        // }
+                        $child->is_deleted = 1;
+                        $child->is_active = 0;
+                        $child->deleted_at = now();
+                        $child->deleted_by_user_id = auth()->user()->id;
+                        $child->save();
+
+                        $books = $child->books;
+                        if ($books && $books->count()) {
+                            foreach ($books as $book) {
+                                $book->is_deleted = 1;
+                                $book->is_active = 0;
+                                $book->deleted_at = now();
+                                $book->deleted_by_user_id = auth()->user()->id;
+                                $book->save();
+                            }
                         }
-                        $childDeleted = $child->delete();
-                        if (!$childDeleted) {
-                            return redirect()->back()
-                                ->with('type', 'danger')
-                                ->with('message', "Failed to permanently delete child $this->model_name id:$child->id !");
-                        }
+                    }
+                }
+            } else {
+                $books = $model->books;
+                if ($books && $books->count()) {
+                    foreach ($books as $book) {
+                        $book->is_deleted = 1;
+                        $book->is_active = 0;
+                        $book->deleted_at = now();
+                        $book->deleted_by_user_id = auth()->user()->id;
+                        $book->save();
                     }
                 }
             }

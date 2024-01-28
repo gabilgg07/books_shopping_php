@@ -8,7 +8,6 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
 @section("content")
 
 <section class="breadcrumb-section">
-    <h2 class="sr-only">Site Breadcrumb</h2>
     <div class="container">
         <div class="breadcrumb-contents">
             <nav aria-label="breadcrumb">
@@ -26,7 +25,7 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
             <div class="col-lg-5 mb--30">
                 <!-- Product Details Slider Big Image-->
                 <div class="product-details-slider sb-slick-slider arrow-type-two" data-slick-setting='{
-                    "infinite":true,
+                    "infinite":{{count($images)?'true':'false'}},
               "slidesToShow": 1,
               "arrows": false,
               "fade": true,
@@ -100,31 +99,29 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                     </ul>
                     <div class="price-block">
                         @if ($book->campaign)
-                        <span class="price-new">£{{$book->price-($book->price*$book->campaign->discount_percent/100)}}</span>
-                        <del class="price-old">£{{$book->price}}</del>
+                        <span class="price-new">£{{number_format($book->price-($book->price*$book->campaign->discount_percent/100), 2, '.', '')}}</span>
+                        <del class="price-old">£{{number_format($book->price, 2, '.', '')}}</del>
                         @else
-                        <span class="price-new">£{{$book->price}}</span>
+                        <span class="price-new">£{{number_format($book->price, 2, '.', '')}}</span>
                         @endif
                     </div>
                     <div class="rating-widget">
                         <div class="rating-block">
-                            <span class="fas fa-star star_on"></span>
-                            <span class="fas fa-star star_on"></span>
-                            <span class="fas fa-star star_on"></span>
-                            <span class="fas fa-star star_on"></span>
-                            <span class="fas fa-star"></span>
+                            @for ($i = 0; $i< 5; $i++) @if ($i < (int)round($book->reviews->avg('rate')))
+                                <span class="fas fa-star star_on"></span>
+                                @else
+                                <span class="fas fa-star"></span>
+                                @endif
+                                @endfor
                         </div>
                         <div class="review-widget">
-                            <a href="">(1 Reviews)</a> <span>|</span>
+                            <a href="">({{(int)round($book->reviews->avg('rate'))}} Reviews)</a> <span>|</span>
                             <a href="">Write a review</a>
                         </div>
                     </div>
                     <article class="product-details-article">
-                        <h4 class="sr-only">Product Summery</h4>
                         <p>
-                            Long printed dress with thin adjustable straps. V-neckline
-                            and wiring under the Dust with ruffles at the bottom of the
-                            dress.
+                            {{$book->short_desc}}
                         </p>
                     </article>
                     <div class="add-to-cart-row">
@@ -151,25 +148,15 @@ $images = $book->bookImages->where('is_main', 0)?->pluck('image')->toArray();
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">
-                        REVIEWS (1)
+                        REVIEWS ({{$book->reviews->count()}})
                     </a>
                 </li>
             </ul>
             <div class="tab-content space-db--20" id="myTabContent">
                 <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab1">
                     <article class="review-article">
-                        <h1 class="sr-only">Tab Article</h1>
                         <p>
-                            Fashion has been creating well-designed collections since
-                            2010. The brand offers feminine designs delivering stylish
-                            separates and statement dresses which have since evolved
-                            into a full ready-to-wear collection in which every item is
-                            a vital part of a woman's wardrobe. The result? Cool, easy,
-                            chic looks with youthful elegance and unmistakable signature
-                            style. All the beautiful pieces are made in Italy and
-                            manufactured with the greatest attention. Now Fashion
-                            extends to a range of accessories including shoes, hats,
-                            belts and more!
+                            {{$book->long_desc}}
                         </p>
                     </article>
                 </div>

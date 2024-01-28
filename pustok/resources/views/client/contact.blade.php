@@ -37,7 +37,8 @@
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Address:</span> 1234 - Bandit Tringi lAliquam <br> Vitae. New York</p>
+                                <p><span>Address:</span> Bakı ş. Nəsimi r-nu., Azadlıq pr. <br />
+                                    192E 2-ci blok, 2-ci mərt. mən.60</p>
                             </div>
                         </div>
                         <div class="address">
@@ -45,7 +46,7 @@
                                 <i class="far fa-envelope"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Email: </span> support@example.com </p>
+                                <p><span>Email: </span> hello@adas.az </p>
                             </div>
                         </div>
                         <div class="address">
@@ -53,7 +54,7 @@
                                 <i class="fas fa-mobile-alt"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Phone:</span> (800) 0123 456 789 </p>
+                                <p><span>Phone:</span> (+994) 55 306 54 34 </p>
                             </div>
                         </div>
                     </div>
@@ -90,8 +91,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-btn">
-                                    <button type="submit" value="submit" id="submit" class="btn btn-black"
-                                        name="submit">send</button>
+                                    <button type="submit" value="submit" id="submit" class="btn btn-black" name="submit">send</button>
                                 </div>
                                 <div class="form__output"></div>
                             </div>

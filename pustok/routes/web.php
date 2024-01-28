@@ -44,6 +44,7 @@ Route::group(["middleware" => ['check.route'], "prefix" => LaravelLocalization::
     Route::get("/shop/card", [ShopController::class, "card"])->name("shop.card");
     Route::get("/shop/wishlist", [ShopController::class, "wishlist"])->name("shop.wishlist");
     Route::get("/shop/details/{book}", [ShopController::class, "details"])->name("shop.details");
+    Route::get("/shop/get-details/{book}", [ShopController::class, "getDetails"])->name("shop.getDetails");
 
     Route::get("/contact", ContactController::class)->name("contact");
 

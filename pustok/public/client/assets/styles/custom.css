@@ -42,3 +42,11 @@
     object-fit: cover;
     margin: 0 auto;
 }
+.pagination-block .pagination-btns .single-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.product-details-modal .product-details-slider .single-slide img {
+    width: auto;
+}

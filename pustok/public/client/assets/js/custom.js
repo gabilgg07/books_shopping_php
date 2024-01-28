@@ -247,6 +247,7 @@ jQuery(document).ready(function ($) {
                 responsive: $responsiveArray,
             });
         });
+
         /*---------------------------
         	--> Dropdown Slide Item
         ----------------------------*/
@@ -562,15 +563,15 @@ jQuery(document).ready(function ($) {
     // Initialize and add the map
     if ($("#google-map").length) {
         function initMap() {
-            // The location of Uluru
-            var uluru = { lat: 21.0277214, lng: 105.8342015 };
-            // The map, centered at Uluru
+            // The location of ADAS
+            var adas = { lat: 40.3978632378059, lng: 49.83923165272643 };
+            // The map, centered at ADAS
             var map = new google.maps.Map(
                 document.getElementById("google-map"),
-                { zoom: 12, center: uluru }
+                { zoom: 18, center: adas }
             );
-            // The marker, positioned at Uluru
-            var marker = new google.maps.Marker({ position: uluru, map: map });
+            // The marker, positioned at ADAS
+            var marker = new google.maps.Marker({ position: adas, map: map });
         }
         initMap();
     }

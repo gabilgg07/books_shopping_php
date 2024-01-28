@@ -261,6 +261,7 @@ class CampaignsController extends Controller
                 $books = Book::where('campaign_id', $model->id)->get();
                 foreach ($books as $book) {
                     $book->campaign_id = null;
+                    $book->updated_by_user_id = auth()->user()->id;
                     $book->save();
                 }
             }

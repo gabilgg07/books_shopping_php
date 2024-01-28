@@ -1,3 +1,12 @@
+@php
+if(count(request()->query())){
+$queries ='';
+foreach(request()->query() as $query=>$value){
+$queries = $queries.$query.'='.$value;
+}
+
+}
+@endphp
 @extends('client.layouts.master')
 
 @section('content')
@@ -15,7 +24,6 @@
     </div>
 </section>
 <main class="inner-page-sec-padding-bottom">
-
     <div class="container">
         <div class="shop-toolbar mb--30">
             <div class="row align-items-center justify-content-between">
@@ -48,25 +56,24 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mt--10 mt-md--0 ">
                     <div class="sorting-selection">
                         <span>Sort By:</span>
-                        <select class="form-control nice-select sort-select mr-0">
-                            <option value="" selected="selected">Default Sorting</option>
-                            <option value="">Sort
-                                By:Name (A - Z)</option>
-                            <option value="">Sort
-                                By:Name (Z - A)</option>
-                            <option value="">Sort
-                                By:Price (Low &gt; High)</option>
-                            <option value="">Sort
-                                By:Price (High &gt; Low)</option>
-                            <option value="">Sort
-                                By:Rating (Highest)</option>
-                            <option value="">Sort
-                                By:Rating (Lowest)</option>
-                            <option value="">Sort
-                                By:Model (A - Z)</option>
-                            <option value="">Sort
-                                By:Model (Z - A)</option>
-                        </select>
+                        <form action="{{ url()->current() }}" method="GET" id="sortForm">
+                            @if (count(request()->query()))
+                            @foreach (request()->query() as $query=>$value)
+                            @if ($query !== 'sort_by')
+                            <input type="hidden" name="{{$query}}" value="{{$value}}" />
+                            @endif
+                            @endforeach
+                            @endif
+                            <select class="form-control nice-select sort-select mr-0" name="sort_by" onchange="submitForm()">
+                                <option value="" selected="selected">Default Sorting</option>
+                                <option value="az">Sort By: Name (A - Z)</option>
+                                <option value="za">Sort By: Name (Z - A)</option>
+                                <option value="p_lh">Sort By: Price (Low &gt; High)</option>
+                                <option value="p_hl">Sort By:Price (High &gt; Low)</option>
+                                <option value="r_hl">Sort By:Rating (Highest)</option>
+                                <option value="r_lh">Sort By:Rating (Lowest)</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -100,16 +107,24 @@
                                         <a href="" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
+                                        <a href="" class="single-btn">
+                                            <i class="fas fa-heart"></i>
+                                        </a>
+                                        <a href="#" data-toggle="modal" data-target="#quickModal" data-url="{{route('client.shop.getDetails', $book->id)}}" class="single-btn detail_modal">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <div class="price-block">
-                                <span class="price">£{{$book->price}}</span>
-                                <!-- <del class="price-old">£51.20</del>
-                                <span class="price-discount">20%</span> -->
+                                @if ($book->campaign)
+
+                                <span class="price">£{{number_format($book->price-($book->price*$book->campaign->discount_percent/100), 2, '.', '')}}</span>
+                                <del class="price-old">£{{number_format($book->price, 2, '.', '')}}</del>
+                                <span class="price-discount">{{$book->campaign->discount_percent}}%</span>
+                                @else
+                                <span class="price">£{{number_format($book->price, 2, '.', '')}}</span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -120,9 +135,60 @@
         <!-- Pagination Block -->
 
         {!! $books->withQueryString()->links('pagination::bootstrap-5') !!}
-        <!-- @include('client.layouts.includes.pagination') -->
         <!-- Modal -->
-        @include('client.layouts.includes.details_modal')
+        <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog" aria-labelledby="quickModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+
+            </div>
+        </div>
     </div>
 </main>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('.detail_modal').on('click', function(e) {
+            e.preventDefault();
+            const modalUrl = $(this).data('url');
+            $('.product-details-slider').slick('unslick');
+            $('.product-slider-nav').slick('unslick');
+
+            $.get(modalUrl, function(data, status) {
+
+                if (status !== 'success') {
+                    console.error('Error fetching book details:', data.message);
+                    return;
+                }
+
+                $('#quickModal .modal-dialog').html(data);
+                $('.product-details-slider').slick({
+                    slidesToShow: 1,
+                    arrows: false,
+                    fade: true,
+                    swipe: true,
+                    asNavFor: ".product-slider-nav"
+                });
+
+                $('.product-slider-nav').slick({
+                    infinite: true,
+                    autoplay: true,
+                    autoplaySpeed: 8000,
+                    slidesToShow: 4,
+                    arrows: true,
+                    prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
+                    nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
+                    asNavFor: ".product-details-slider",
+                    focusOnSelect: true
+                });
+
+                $('#quickModal').show();
+            });
+        });
+    });
+
+    function submitForm() {
+        document.getElementById("sortForm").submit();
+    }
+</script>
+@endpush
