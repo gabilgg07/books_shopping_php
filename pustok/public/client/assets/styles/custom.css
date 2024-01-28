@@ -52,3 +52,26 @@
 .product-details-modal .product-details-slider .single-slide img {
     width: auto;
 }
+.product-card .card-image {
+    box-shadow: 0 0 5px 2px #808080bf;
+}
+
+@media (min-width: 992px) {
+    .home-4-left-sidebar.product-list-slider .product-card .card-image {
+        width: 150px;
+        height: 200px;
+        margin-right: 10px;
+        padding-right: 0px;
+    }
+}
+
+.home-left-side .card-image img {
+    width: 100%;
+}
+.sb-custom-tab .tab-content > .tab-pane {
+    overflow: hidden;
+}
+/* .sb-custom-tab .tab-content > .tab-pane.show,
+.sb-custom-tab .tab-content > .tab-pane.active {
+    position: relative;
+} */

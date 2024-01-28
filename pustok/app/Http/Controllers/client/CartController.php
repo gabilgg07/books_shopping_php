@@ -100,7 +100,31 @@ class CartController extends Controller
                     break;
                 }
             }
-            Cart::update($rowId, $qty);
+            if ($rowId) {
+                Cart::update($rowId, $qty);
+            } else {
+                $book = Book::find($id);
+                if (!$book) {
+                    return abort(404);
+                }
+
+                $price = $book->campaign ? $book->price - ($book->price * $book->campaign->discount_percent / 100) : $book->price;
+                $user_id = auth()->user() ? auth()->user()->id : null;
+
+                $name = json_encode($book->getTranslations('title'));
+
+                Cart::add([
+                    'id' => $book->id,
+                    'name' => $name,
+                    'qty' => $qty,
+                    'price' => $price,
+                    'weight' => 0,
+                    'options' => [
+                        'image' => $book->mainImage()->image,
+                        'user_id' => $user_id,
+                    ]
+                ]);
+            }
 
             return redirect()->back()->with('msgType', 'success')->with('message', 'Cart successfully updated');
         }

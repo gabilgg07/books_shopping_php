@@ -72,12 +72,14 @@
                         <!-- <li>Ex Tax: <span class="list-value"> {{__('symbol.currency')}}60.24</span></li> -->
                         <li>
                             Category:
-                            <a href="{{route('client.shop.index', $book->category->slug)}}" class="list-value font-weight-bold"> {{$book->category->title}}</a>
+                            <a href="{{route('client.shop.index', $book->category->slug)}}"
+                                class="list-value font-weight-bold"> {{$book->category->title}}</a>
                         </li>
                         @if ($book->campaign)
                         <li>
                             Campaign:
-                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}" class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
+                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}"
+                                class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
                         </li>
                         @endif
                         <!-- <li>Product Code: <span class="list-value"> model1</span></li> -->
@@ -92,10 +94,13 @@
                     </ul>
                     <div class="price-block">
                         @if ($book->campaign)
-                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                        <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</del>
+                        <span
+                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                        <del
+                            class="price-old">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</del>
                         @else
-                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</span>
+                        <span
+                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</span>
                         @endif
                     </div>
                     <div class="rating-widget">
@@ -118,13 +123,18 @@
                         </p>
                     </article>
                     <div class="add-to-cart-row">
-                        <div class="count-input-block">
-                            <span class="widget-label">Qty</span>
-                            <input type="number" class="form-control text-center" value="1" />
-                        </div>
-                        <div class="add-cart-btn">
-                            <a href="" class="btn btn-outlined--primary"><span class="plus-icon">+</span>Add to Cart</a>
-                        </div>
+                        <form action="{{route('client.cart.update.modal')}}" class="row" method="post">
+                            @csrf
+                            <div class="count-input-block">
+                                <span class="widget-label">Qty</span>
+                                <input type="number" name="qty" class="form-control text-center" value="1">
+                                <input type="hidden" name="book_id" value="{{$book->id}}">
+                            </div>
+                            <div class="add-cart-btn">
+                                <button class="btn btn-outlined--primary"><span class="plus-icon">+</span>Add
+                                    to Cart</button>
+                            </div>
+                        </form>
                     </div>
                     <div class="compare-wishlist-row">
                         <a href="" class="add-link"><i class="fas fa-heart"></i>Add to Wish List</a>
@@ -135,12 +145,14 @@
         <div class="sb-custom-tab review-tab section-padding">
             <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
+                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
+                        aria-controls="tab-1" aria-selected="true">
                         DESCRIPTION
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">
+                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
+                        aria-selected="true">
                         REVIEWS ({{$book->reviews->count()}})
                     </a>
                 </li>
@@ -200,7 +212,8 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="message">Comment</label>
-                                            <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+                                            <textarea name="message" id="message" cols="30" rows="10"
+                                                class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -253,175 +266,113 @@
                 {"breakpoint":768, "settings": {"slidesToShow": 2} },
                 {"breakpoint":480, "settings": {"slidesToShow": 1} }
             ]'>
+                @foreach ($relatedBooks as $item)
                 <div class="single-slide">
                     <div class="product-card">
                         <div class="product-header">
-                            <a href="" class="author"> Lpple </a>
+                            <a href="" class="author"> {{$item->author}} </a>
                             <h3>
-                                <a href="{{route('client.shop.details',1)}}">Revolutionize Your BOOK With</a>
+                                <a
+                                    href="{{ route('client.shop.details', $item->id) }}">{{Str::limit($item->title,22)}}</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-10.jpg')}}" alt="" />
+                                <img src="{{ asset($item->mainImage()->image) }}" alt="{{$item->slug}} 1" />
                                 <div class="hover-contents">
-                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="" />
+                                    <a href="{{ route('client.shop.details', $item->id) }}" class="hover-image">
+                                        @php
+                                        $imgHover = $item->images()->first() !== null ?
+                                        $item->images()->first()->image :
+                                        $item->mainImage()->image;
+                                        @endphp
+                                        <img src="{{ asset($imgHover) }}" alt="{{$item->slug}} 2" />
                                     </a>
                                     <div class="hover-btns">
-                                        <a href="cart.html" class="single-btn">
+                                        <a href="{{route('client.cart.add', $item->id)}}" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
+                                        <a href="" class="single-btn">
+                                            <i class="fas fa-heart"></i>
+                                        </a>
+                                        <a href="#" data-toggle="modal" data-target="#quickModal"
+                                            data-url="{{route('client.shop.getDetails', $item->id)}}"
+                                            class="single-btn detail_modal">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <div class="price-block">
-                                <span class="price">{{__('symbol.currency')}}51.20</span>
-                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
-                                <span class="price-discount">20%</span>
+                                @if ($item->campaign)
+
+                                <span
+                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($item->price-($item->price*$item->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                                <del
+                                    class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</del>
+                                <span class="price-discount">{{$item->campaign->discount_percent}}%</span>
+                                @else
+                                <span
+                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</span>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="single-slide">
-                    <div class="product-card">
-                        <div class="product-header">
-                            <a href="" class="author"> Jpple </a>
-                            <h3>
-                                <a href="{{route('client.shop.details', 1)}}">Turn Your BOOK Into High Machine</a>
-                            </h3>
-                        </div>
-                        <div class="product-card--body">
-                            <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="" />
-                                <div class="hover-contents">
-                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-1.jpg')}}" alt="" />
-                                    </a>
-                                    <div class="hover-btns">
-                                        <a href="cart.html" class="single-btn">
-                                            <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="price-block">
-                                <span class="price">{{__('symbol.currency')}}51.20</span>
-                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
-                                <span class="price-discount">20%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-slide">
-                    <div class="product-card">
-                        <div class="product-header">
-                            <a href="" class="author"> Wpple </a>
-                            <h3>
-                                <a href="{{route('client.shop.details', 1)}}">3 Ways Create Better BOOK With</a>
-                            </h3>
-                        </div>
-                        <div class="product-card--body">
-                            <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-3.jpg')}}" alt="" />
-                                <div class="hover-contents">
-                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-2.jpg')}}" alt="" />
-                                    </a>
-                                    <div class="hover-btns">
-                                        <a href="cart.html" class="single-btn">
-                                            <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="price-block">
-                                <span class="price">{{__('symbol.currency')}}51.20</span>
-                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
-                                <span class="price-discount">20%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-slide">
-                    <div class="product-card">
-                        <div class="product-header">
-                            <a href="" class="author"> Epple </a>
-                            <h3>
-                                <a href="{{route('client.shop.details', 1)}}">What You Can Learn From Bill Gates</a>
-                            </h3>
-                        </div>
-                        <div class="product-card--body">
-                            <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-5.jpg')}}" alt="" />
-                                <div class="hover-contents">
-                                    <a href="{{route('client.shop.details', 1)}}" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-4.jpg')}}" alt="" />
-                                    </a>
-                                    <div class="hover-btns">
-                                        <a href="cart.html" class="single-btn">
-                                            <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="price-block">
-                                <span class="price">{{__('symbol.currency')}}51.20</span>
-                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
-                                <span class="price-discount">20%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-slide">
-                    <div class="product-card">
-                        <div class="product-header">
-                            <a href="" class="author"> Hpple </a>
-                            <h3>
-                                <a href="{{route('client.shop.details', 1)}}">a Half Very Simple Things You To</a>
-                            </h3>
-                        </div>
-                        <div class="product-card--body">
-                            <div class="card-image">
-                                <img src="{{asset('client/assets/image/products/product-6.jpg')}}" alt="" />
-                                <div class="hover-contents">
-                                    <a href="{{route('client.shop.details',1)}}" class="hover-image">
-                                        <img src="{{asset('client/assets/image/products/product-4.jpg')}}" alt="" />
-                                    </a>
-                                    <div class="hover-btns">
-                                        <a href="cart.html" class="single-btn">
-                                            <i class="fas fa-shopping-basket"></i>
-                                        </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="price-block">
-                                <span class="price">{{__('symbol.currency')}}51.20</span>
-                                <del class="price-old">{{__('symbol.currency')}}51.20</del>
-                                <span class="price-discount">20%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
     <!-- Modal -->
-    @include("client.layouts.includes.details_modal")
+    <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog" aria-labelledby="quickModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+
+        </div>
+    </div>
 </main>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    $('.detail_modal').on('click', function(e) {
+        e.preventDefault();
+        const modalUrl = $(this).data('url');
+        $('.product-details-slider').slick('unslick');
+        $('.product-slider-nav').slick('unslick');
+
+        $.get(modalUrl, function(data, status) {
+
+            if (status !== 'success') {
+                console.error('Error fetching book details:', data.message);
+                return;
+            }
+
+            $('#quickModal .modal-dialog').html(data);
+            $('.product-details-slider').slick({
+                slidesToShow: 1,
+                arrows: false,
+                fade: true,
+                swipe: true,
+                asNavFor: ".product-slider-nav"
+            });
+
+            $('.product-slider-nav').slick({
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 8000,
+                slidesToShow: 4,
+                arrows: true,
+                prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
+                nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
+                asNavFor: ".product-details-slider",
+                focusOnSelect: true
+            });
+
+            $('#quickModal').show();
+        });
+    });
+});
+</script>
+@endpush

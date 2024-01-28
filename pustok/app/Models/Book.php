@@ -42,4 +42,8 @@ class Book extends Model
     {
         return $this->hasMany(Review::class, 'book_id');
     }
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'book_id');
+    }
 }

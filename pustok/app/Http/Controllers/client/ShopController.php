@@ -21,7 +21,9 @@ class ShopController extends Controller
             if ($category) {
                 if ($category->parent_id === 0) {
                     $childCategoryIds = $category->childCategories->pluck('id')->toArray();
+
                     $books = $books->whereIn('category_id', $childCategoryIds);
+                    $books = $books->orWhere('category_id', $category->id);
                 } else {
                     $books = $books->where('category_id', $category->id)->with('bookImages');
                 }
@@ -62,42 +64,22 @@ class ShopController extends Controller
     public function details(Book $book)
     {
         if ($book && $book->is_deleted === 0 && $book->is_active === 1) {
-            return view("client.shop.details", compact('book'));
+            $book->views = $book->views + 1;
+            $book->save();
+            $relatedBooks = Book::orWhere('category_id', $book->category_id);
+            if ($book->campaign_id) {
+                $relatedBooks = $relatedBooks->orWhere('campaign_id', $book->campaign_id);
+            }
+            $relatedBooks = $relatedBooks->get();
+            if ($relatedBooks->count() < 5) {
+                $relatedBooks = Book::orderBy('created_at', 'desc')->take(8)->get();
+            }
+
+            return view("client.shop.details", compact('book', 'relatedBooks'));
         } else {
             return abort(404);
         }
     }
-
-    // public function getDetails(Book $book)
-    // {
-    //     if (!$book) {
-    //         return json_encode([
-    //             'type' => 'danger',
-    //             'message' => "Book not found!",
-    //         ]);
-    //     }
-
-    //     try {
-    //         $data = [
-    //             'book' => $book,
-    //             'category' => $book->category,
-    //             'campaign' => $book->campaign,
-    //             'mainImage' => $book->mainImage(),
-    //             'images' => $book->images(),
-    //         ];
-    //     } catch (\Throwable $th) {
-    //         return json_encode([
-    //             'type' => 'danger',
-    //             'message' => $th->getMessage(),
-    //         ]);
-    //     }
-
-    //     return json_encode([
-    //         'type' => 'success',
-    //         'data' => $data,
-    //     ]);
-    // }
-
 
     public function getDetails(Book $book)
     {
@@ -107,6 +89,8 @@ class ShopController extends Controller
                 'message' => "Book not found!",
             ]);
         }
+        $book->views = $book->views + 1;
+        $book->save();
 
         return view('client.layouts.includes.details_modal', compact('book'));
     }

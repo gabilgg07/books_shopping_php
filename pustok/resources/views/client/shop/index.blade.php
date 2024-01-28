@@ -95,7 +95,7 @@ $queries = $queries.$query.'='.$value;
                         </div>
                         <div class="product-card--body">
                             <div class="card-image">
-                                <img src="{{ asset($book->mainImage()->image) }}" alt="{{$book->slug}}">
+                                <img src="{{ asset($book->mainImage()->image) }}" alt="{{$book->slug}} 1">
                                 <div class="hover-contents">
                                     <a href="{{ route('client.shop.details', $book->id) }}" class="hover-image">
                                         @php
@@ -122,7 +122,6 @@ $queries = $queries.$query.'='.$value;
                             </div>
                             <div class="price-block">
                                 @if ($book->campaign)
-
                                 <span
                                     class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
                                 <del
