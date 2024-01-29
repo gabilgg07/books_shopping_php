@@ -5,7 +5,10 @@ namespace App\Http\Controllers\client;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ShopController extends Controller
@@ -93,5 +96,52 @@ class ShopController extends Controller
         $book->save();
 
         return view('client.layouts.includes.details_modal', compact('book'));
+    }
+
+
+    public function addReview(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'rate' => 'required',
+            'book_id' => 'required',
+            'star' => 'required',
+            'message' => 'nullable|min:3',
+        ], [
+            'rate.required' => 'Rate ' . __('validation.required'),
+            'book_id.required' => 'Book Id ' . __('validation.required'),
+            'star.required' => 'Star ' . __('validation.required'),
+            'min' => 'Message ' . __('validation.min'),
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::find(auth()->user()->id);
+        if ($user) {
+            $entity = $user->reviews->where('book_id', $request->book_id)->first();
+            if ($entity) {
+                return redirect()->back()->with('msgType', 'error')->with('message', 'You alredy have review for this book!');
+            }
+        }
+
+        if ($request->star) {
+            $data = [
+                'book_id' => $request->book_id,
+                'user_id' => auth()->user()->id,
+                'rate' => $request->rate,
+                'comment' => $request->message,
+            ];
+            $review = Review::create($data);
+            if (!$review) {
+                return redirect()->back()->with('msgType', 'error')->with('message', 'Failed to add review!');
+            }
+
+            return redirect()->back()->with('msgType', 'success')->with('message', 'Review succesfully added!');
+        }
+
+
+
+        return redirect()->back();
     }
 }

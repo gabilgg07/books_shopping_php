@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('book_id');
             $table->unsignedBigInteger('user_id');
             $table->double('rate')->default(0);
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->datetimes();
         });
     }

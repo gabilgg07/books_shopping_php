@@ -72,14 +72,12 @@
                         <!-- <li>Ex Tax: <span class="list-value"> {{__('symbol.currency')}}60.24</span></li> -->
                         <li>
                             Category:
-                            <a href="{{route('client.shop.index', $book->category->slug)}}"
-                                class="list-value font-weight-bold"> {{$book->category->title}}</a>
+                            <a href="{{route('client.shop.index', $book->category->slug)}}" class="list-value font-weight-bold"> {{$book->category->title}}</a>
                         </li>
                         @if ($book->campaign)
                         <li>
                             Campaign:
-                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}"
-                                class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
+                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}" class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
                         </li>
                         @endif
                         <!-- <li>Product Code: <span class="list-value"> model1</span></li> -->
@@ -94,13 +92,10 @@
                     </ul>
                     <div class="price-block">
                         @if ($book->campaign)
-                        <span
-                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                        <del
-                            class="price-old">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</del>
+                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                        <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</del>
                         @else
-                        <span
-                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</span>
+                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</span>
                         @endif
                     </div>
                     <div class="rating-widget">
@@ -145,14 +140,12 @@
         <div class="sb-custom-tab review-tab section-padding">
             <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
-                        aria-controls="tab-1" aria-selected="true">
+                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
                         DESCRIPTION
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
-                        aria-selected="true">
+                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">
                         REVIEWS ({{$book->reviews->count()}})
                     </a>
                 </li>
@@ -170,6 +163,32 @@
                         <h2 class="title-lg mb--20">
                             1 REVIEW FOR AUCTOR GRAVIDA ENIM
                         </h2>
+                        @foreach ($book->reviews as $review)
+                        <div class="review-comment mb--20">
+                            <div class="avatar">
+                                <img src="{{asset($review->user->image?$review->user->image:'client/assets/image/user_default_photo.png')}}" alt="" />
+                            </div>
+                            <div class="text">
+                                <div class="rating-block mb--15">
+                                    @for ($i = 0; $i< 5; $i++) @if ($i < $review->rate)
+                                        <span class="ion-android-star-outline star_on"></span>
+                                        @else
+                                        <span class="ion-android-star-outline"></span>
+                                        @endif
+                                        @endfor
+                                </div>
+                                <h6 class="author">
+                                    {{$review->user->first_name}} {{$review->user->last_name}}–
+                                    <span class="font-weight-400">{{$review->created_at->format('F d, Y')}}</span>
+                                </h6>
+                                @if ($review->message)
+                                <p>
+                                    {{$review->message}}
+                                </p>
+                                @endif
+                            </div>
+                        </div>
+                        @endforeach
                         <div class="review-comment mb--20">
                             <div class="avatar">
                                 <img src="{{asset('client/assets/image/icon/author-logo.png')}}" alt="" />
@@ -193,37 +212,49 @@
                             </div>
                         </div>
                         <h2 class="title-lg mb--20 pt--15">ADD A REVIEW</h2>
-                        <div class="rating-row pt-2">
-                            <p class="d-block">Your Rating</p>
-                            <span class="rating-widget-block">
-                                <input type="radio" name="star" id="star1" />
-                                <label for="star1"></label>
-                                <input type="radio" name="star" id="star2" />
-                                <label for="star2"></label>
-                                <input type="radio" name="star" id="star3" />
-                                <label for="star3"></label>
-                                <input type="radio" name="star" id="star4" />
-                                <label for="star4"></label>
-                                <input type="radio" name="star" id="star5" />
-                                <label for="star5"></label>
-                            </span>
-                            <form action="./" class="mt--15 site-form">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="message">Comment</label>
-                                            <textarea name="message" id="message" cols="30" rows="10"
-                                                class="form-control"></textarea>
+                        <form action="{{route('client.shop.addReview')}}" method="post">
+                            @csrf
+                            <div class="rating-row pt-2">
+                                <p class="d-block">Your Rating</p>
+                                @error('rate')
+                                <span class="text-danger">{{$message}}</span>
+                                <br />
+                                @enderror
+                                <input type="hidden" name="rate" class="rate_input">
+                                <input type="hidden" name="book_id" value="{{$book->id}}">
+                                <span class="rating-widget-block">
+                                    <input type="radio" name="star" data-rate="5" id="star1" />
+                                    <label for="star1"></label>
+                                    <input type="radio" name="star" data-rate="4" id="star2" />
+                                    <label for="star2"></label>
+                                    <input type="radio" name="star" data-rate="3" id="star3" />
+                                    <label for="star3"></label>
+                                    <input type="radio" name="star" data-rate="2" id="star4" />
+                                    <label for="star4"></label>
+                                    <input type="radio" name="star" data-rate="1" id="star5" />
+                                    <label for="star5"></label>
+                                </span>
+                                @error('star')
+                                <br />
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                                <div class="mt--15 site-form">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="message">Comment</label>
+                                                <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="submit-btn">
-                                            <a href="#" class="btn btn-black">Post Comment</a>
+                                        <div class="col-lg-4">
+                                            <div class="submit-btn">
+                                                <button class="btn btn-black post_btn">Post Comment</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -272,8 +303,7 @@
                         <div class="product-header">
                             <a href="" class="author"> {{$item->author}} </a>
                             <h3>
-                                <a
-                                    href="{{ route('client.shop.details', $item->id) }}">{{Str::limit($item->title,22)}}</a>
+                                <a href="{{ route('client.shop.details', $item->id) }}">{{Str::limit($item->title,22)}}</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
@@ -295,9 +325,7 @@
                                         <a href="" class="single-btn">
                                             <i class="fas fa-heart"></i>
                                         </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal"
-                                            data-url="{{route('client.shop.getDetails', $item->id)}}"
-                                            class="single-btn detail_modal">
+                                        <a href="#" data-toggle="modal" data-target="#quickModal" data-url="{{route('client.shop.getDetails', $item->id)}}" class="single-btn detail_modal">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </div>
@@ -306,14 +334,11 @@
                             <div class="price-block">
                                 @if ($item->campaign)
 
-                                <span
-                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($item->price-($item->price*$item->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                                <del
-                                    class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</del>
+                                <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($item->price-($item->price*$item->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                                <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</del>
                                 <span class="price-discount">{{$item->campaign->discount_percent}}%</span>
                                 @else
-                                <span
-                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</span>
+                                <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</span>
                                 @endif
                             </div>
                         </div>
@@ -324,8 +349,7 @@
         </div>
     </section>
     <!-- Modal -->
-    <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog" aria-labelledby="quickModal"
-        aria-hidden="true">
+    <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog" aria-labelledby="quickModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
 
         </div>
@@ -335,44 +359,48 @@
 
 @push('scripts')
 <script>
-$(document).ready(function() {
-    $('.detail_modal').on('click', function(e) {
-        e.preventDefault();
-        const modalUrl = $(this).data('url');
-        $('.product-details-slider').slick('unslick');
-        $('.product-slider-nav').slick('unslick');
+    $(document).ready(function() {
+        $('.detail_modal').on('click', function(e) {
+            e.preventDefault();
+            const modalUrl = $(this).data('url');
+            $('.product-details-slider').slick('unslick');
+            $('.product-slider-nav').slick('unslick');
 
-        $.get(modalUrl, function(data, status) {
+            $.get(modalUrl, function(data, status) {
 
-            if (status !== 'success') {
-                console.error('Error fetching book details:', data.message);
-                return;
-            }
+                if (status !== 'success') {
+                    console.error('Error fetching book details:', data.message);
+                    return;
+                }
 
-            $('#quickModal .modal-dialog').html(data);
-            $('.product-details-slider').slick({
-                slidesToShow: 1,
-                arrows: false,
-                fade: true,
-                swipe: true,
-                asNavFor: ".product-slider-nav"
+                $('#quickModal .modal-dialog').html(data);
+                $('.product-details-slider').slick({
+                    slidesToShow: 1,
+                    arrows: false,
+                    fade: true,
+                    swipe: true,
+                    asNavFor: ".product-slider-nav"
+                });
+
+                $('.product-slider-nav').slick({
+                    infinite: true,
+                    autoplay: true,
+                    autoplaySpeed: 8000,
+                    slidesToShow: 4,
+                    arrows: true,
+                    prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
+                    nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
+                    asNavFor: ".product-details-slider",
+                    focusOnSelect: true
+                });
+
+                $('#quickModal').show();
             });
+        });
 
-            $('.product-slider-nav').slick({
-                infinite: true,
-                autoplay: true,
-                autoplaySpeed: 8000,
-                slidesToShow: 4,
-                arrows: true,
-                prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
-                nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
-                asNavFor: ".product-details-slider",
-                focusOnSelect: true
-            });
-
-            $('#quickModal').show();
+        $('.rating-widget-block input').on('click', function(e) {
+            $('.rate_input').val($(this).data('rate'));
         });
     });
-});
 </script>
 @endpush

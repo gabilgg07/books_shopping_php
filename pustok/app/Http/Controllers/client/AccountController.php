@@ -12,13 +12,20 @@ use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
     // static $counter = 0;
     public function index()
     {
-        return view("client.account.index");
+        $user = User::find(auth()->user()->id);
+        if (!$user) {
+            return abort(404);
+        }
+
+        return view("client.account.index", compact('user'));
     }
 
     public function signup()
@@ -68,7 +75,6 @@ class AccountController extends Controller
 
     public function checkout()
     {
-        //
         return view("client.account.checkout");
     }
 
@@ -133,9 +139,29 @@ class AccountController extends Controller
     }
 
 
-    // public function orderComplete()
-    // {
-    //     //
-    //     return view("client.account.checkout");
-    // }
+    public function updatePassword(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return redirect()->back()->with('error', 'Old password is incorrect');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'new_password' => 'required|string|min:3|confirmed',
+            'first_name' => 'required|min:3',
+            'last_name' => 'required|min:3',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password updated successfully');
+    }
 }

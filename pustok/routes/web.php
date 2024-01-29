@@ -60,12 +60,16 @@ Route::group(["middleware" => ['check.route'], "prefix" => LaravelLocalization::
     Route::post("/cart/update-from-modal", [CartController::class, "updateCartFromModal"])->name("cart.update.modal");
 
     // AUTH
-    Route::group(["middleware" => "auth.user", "prefix" => "/account", "as" => "account."], function () {
-        Route::get("", [AccountController::class, "index"])->name("index");
-        Route::get("/logout", [AccountController::class, "logout"])->name("logout");
-        Route::get("/checkout", [AccountController::class, "checkout"])->name("checkout");
-        Route::post("/place-order", [AccountController::class, "placeOrder"])->name("placeOrder");
-        // Route::get("/order-complete", [AccountController::class, "orderComplete"])->name("orderComplete");
+    Route::group(["middleware" => "auth.user"], function () {
+        Route::group(["prefix" => "/account", "as" => "account."], function () {
+            Route::get("", [AccountController::class, "index"])->name("index");
+            Route::get("/logout", [AccountController::class, "logout"])->name("logout");
+            Route::get("/checkout", [AccountController::class, "checkout"])->name("checkout");
+            Route::post("/place-order", [AccountController::class, "placeOrder"])->name("placeOrder");
+            Route::post("/update-password", [AccountController::class, "updatePassword"])->name("updatePassword");
+        });
+
+        Route::post("/shop/add-review", [ShopController::class, "addReview"])->name("shop.addReview");
     });
 });
 
