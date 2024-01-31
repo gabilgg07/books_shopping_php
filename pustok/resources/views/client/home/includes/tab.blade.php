@@ -3,19 +3,22 @@
         <div class="sb-custom-tab text-lg-left text-center">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="shop-tab" data-toggle="tab" href="#shop" role="tab" aria-controls="shop" aria-selected="true">
+                    <a class="nav-link active" id="shop-tab" data-toggle="tab" href="#shop" role="tab"
+                        aria-controls="shop" aria-selected="true">
                         Featured Products
                     </a>
                     <span class="arrow-icon"></span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="men-tab" data-toggle="tab" href="#men" role="tab" aria-controls="men" aria-selected="true">
+                    <a class="nav-link" id="men-tab" data-toggle="tab" href="#men" role="tab" aria-controls="men"
+                        aria-selected="true">
                         New Arrivals
                     </a>
                     <span class="arrow-icon"></span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="woman-tab" data-toggle="tab" href="#woman" role="tab" aria-controls="woman" aria-selected="false">
+                    <a class="nav-link" id="woman-tab" data-toggle="tab" href="#woman" role="tab" aria-controls="woman"
+                        aria-selected="false">
                         Most view products
                     </a>
                     <span class="arrow-icon"></span>
@@ -23,7 +26,8 @@
             </ul>
             <div class="tab-content space-db--30" id="myTabContent">
                 <div class="tab-pane active" id="shop" role="tabpanel" aria-labelledby="shop-tab">
-                    <div class="product-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
+                    <div class="product-slider multiple-row slider-border-multiple-row  sb-slick-slider"
+                        data-slick-setting='{
                         "autoplay": true,
                         "autoplaySpeed": 8000,
                         "slidesToShow": 3,
@@ -42,7 +46,8 @@
                                     <a href="" class="author">
                                         {{$book->author}}
                                     </a>
-                                    <h3><a href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
+                                    <h3><a
+                                            href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
                                     </h3>
                                 </div>
                                 <div class="product-card--body">
@@ -61,10 +66,10 @@
                                                 <a href="{{route('client.cart.add', $book->id)}}" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="" class="single-btn">
-                                                    <i class="fas fa-heart"></i>
-                                                </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal" data-url="{{route('client.shop.getDetails', $book->id)}}" class="single-btn detail_modal">
+
+                                                <a href="#" data-toggle="modal" data-target="#quickModal"
+                                                    data-url="{{route('client.shop.getDetails', $book->id)}}"
+                                                    class="single-btn detail_modal">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -72,11 +77,14 @@
                                     </div>
                                     <div class="price-block">
                                         @if ($book->campaign)
-                                        <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                                        <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
+                                        <span
+                                            class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                                        <del
+                                            class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
                                         <span class="price-discount">{{$book->campaign->discount_percent}}%</span>
                                         @else
-                                        <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
+                                        <span
+                                            class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -86,7 +94,8 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="men" role="tabpanel" aria-labelledby="men-tab">
-                    <div class="product-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
+                    <div class="product-slider multiple-row slider-border-multiple-row  sb-slick-slider"
+                        data-slick-setting='{
                                     "autoplay": true,
                                     "autoplaySpeed": 8000,
                                     "slidesToShow": 3,
@@ -105,7 +114,8 @@
                                     <a href="" class="author">
                                         {{$book->author}}
                                     </a>
-                                    <h3><a href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
+                                    <h3><a
+                                            href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
                                     </h3>
                                 </div>
                                 <div class="product-card--body">
@@ -124,10 +134,10 @@
                                                 <a href="{{route('client.cart.add', $book->id)}}" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="" class="single-btn">
-                                                    <i class="fas fa-heart"></i>
-                                                </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal" data-url="{{route('client.shop.getDetails', $book->id)}}" class="single-btn detail_modal">
+
+                                                <a href="#" data-toggle="modal" data-target="#quickModal"
+                                                    data-url="{{route('client.shop.getDetails', $book->id)}}"
+                                                    class="single-btn detail_modal">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -135,11 +145,14 @@
                                     </div>
                                     <div class="price-block">
                                         @if ($book->campaign)
-                                        <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                                        <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
+                                        <span
+                                            class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                                        <del
+                                            class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
                                         <span class="price-discount">{{$book->campaign->discount_percent}}%</span>
                                         @else
-                                        <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
+                                        <span
+                                            class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -149,7 +162,8 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="woman" role="tabpanel" aria-labelledby="woman-tab">
-                    <div class="product-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
+                    <div class="product-slider multiple-row slider-border-multiple-row  sb-slick-slider"
+                        data-slick-setting='{
                                     "autoplay": true,
                                     "autoplaySpeed": 8000,
                                     "slidesToShow": 3,
@@ -169,7 +183,8 @@
                                     <a href="" class="author">
                                         {{$book->author}}
                                     </a>
-                                    <h3><a href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
+                                    <h3><a
+                                            href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
                                     </h3>
                                 </div>
                                 <div class="product-card--body">
@@ -188,10 +203,10 @@
                                                 <a href="{{route('client.cart.add', $book->id)}}" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
-                                                <a href="" class="single-btn">
-                                                    <i class="fas fa-heart"></i>
-                                                </a>
-                                                <a href="#" data-toggle="modal" data-target="#quickModal" data-url="{{route('client.shop.getDetails', $book->id)}}" class="single-btn detail_modal">
+
+                                                <a href="#" data-toggle="modal" data-target="#quickModal"
+                                                    data-url="{{route('client.shop.getDetails', $book->id)}}"
+                                                    class="single-btn detail_modal">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -199,11 +214,14 @@
                                     </div>
                                     <div class="price-block">
                                         @if ($book->campaign)
-                                        <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                                        <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
+                                        <span
+                                            class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                                        <del
+                                            class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
                                         <span class="price-discount">{{$book->campaign->discount_percent}}%</span>
                                         @else
-                                        <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
+                                        <span
+                                            class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
                                         @endif
                                     </div>
                                 </div>

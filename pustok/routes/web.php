@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\CampaignsController;
 use App\Http\Controllers\admin\CategoriesController;
 use App\Http\Controllers\admin\LangsController;
 use App\Http\Controllers\admin\LanguageLineController;
+use App\Http\Controllers\admin\OrdersController;
 use App\Http\Controllers\admin\SlidersController;
 use App\Http\Controllers\admin\UsersController;
 
@@ -84,29 +85,79 @@ Route::group(["middleware" => ["auth.admin.check", 'check.route'], "prefix" => L
 });
 
 // Admin Logined
-Route::group([
-    "middleware" => ['web', 'auth.admin', 'check.route'],
-    "prefix" => LaravelLocalization::setLocale() . "/manager",
-    "as" => "manager."
-], function () {
-    Route::get("", [AdminController::class, "index"])->name("dashboard");
-    Route::get("/logout", [AdminController::class, "logout"])->name("logout");
 
-    Route::prefix('/account')->group(function () {
-        Route::get("/", [AdminAccountController::class, "index"])->name("account.index");
-        Route::patch("/update", [AdminAccountController::class, "update"])->name("account.update");
-        Route::patch("/change-password", [AdminAccountController::class, "changePassword"])->name("account.changePassword");
+Route::middleware(['web', 'auth.admin', 'check.route'])
+    ->prefix(LaravelLocalization::setLocale() . "/manager")
+    ->as("manager.")
+    ->group(function () {
+        Route::get("", [AdminController::class, "index"])->name("dashboard");
+        Route::get("/logout", [AdminController::class, "logout"])->name("logout");
+
+        Route::prefix('/orders')->as('orders.')->group(function () {
+            Route::get("/index", [OrdersController::class, "index"])->name("index");
+            Route::get("/accept/{order}", [OrdersController::class, "accept"])->name("accept");
+            Route::get("/reject/{order}", [OrdersController::class, "reject"])->name("reject");
+            Route::get("/details/{order}", [OrdersController::class, "details"])->name("details");
+            Route::delete("/destroy/{order}", [OrdersController::class, "destroy"])->name("destroy");
+            Route::get("/deleteds", [OrdersController::class, 'deleteds'])->name("deleteds");
+            Route::delete("/restore/{order}", [OrdersController::class, "restore"])->name("restore");
+            Route::delete("/permanently_delete/{order}", [OrdersController::class, 'permanently_delete'])->name("orders.permanently_delete");
+        });
+
+        Route::prefix('/account')->group(function () {
+            Route::get("/", [AdminAccountController::class, "index"])->name("account.index");
+            Route::patch("/update", [AdminAccountController::class, "update"])->name("account.update");
+            Route::patch("/change-password", [AdminAccountController::class, "changePassword"])->name("account.changePassword");
+        });
+
+        defineResourceRoutes('langs', 'lang', LangsController::class);
+        defineResourceRoutes('language_line', 'language_line', LanguageLineController::class);
+        defineResourceRoutes('categories', 'category', CategoriesController::class);
+        defineResourceRoutes('users', 'user', UsersController::class);
+        defineResourceRoutes('campaigns', 'campaign', CampaignsController::class);
+        defineResourceRoutes('books', 'book', BooksController::class);
+        defineResourceRoutes('sliders', 'slider', SlidersController::class);
+        defineResourceRoutes('brands', 'brand', BrandsController::class);
     });
 
-    defineResourceRoutes('langs', 'lang', LangsController::class);
-    defineResourceRoutes('language_line', 'language_line', LanguageLineController::class);
-    defineResourceRoutes('categories', 'category', CategoriesController::class);
-    defineResourceRoutes('users', 'user', UsersController::class);
-    defineResourceRoutes('campaigns', 'campaign', CampaignsController::class);
-    defineResourceRoutes('books', 'book', BooksController::class);
-    defineResourceRoutes('sliders', 'slider', SlidersController::class);
-    defineResourceRoutes('brands', 'brand', BrandsController::class);
-});
+
+
+
+
+// Route::group([
+//     "middleware" => ['web', 'auth.admin', 'check.route'],
+//     "prefix" => LaravelLocalization::setLocale() . "/manager",
+//     "as" => "manager."
+// ], function () {
+//     Route::get("", [AdminController::class, "index"])->name("dashboard");
+//     Route::get("/logout", [AdminController::class, "logout"])->name("logout");
+
+//     Route::group(['prefix'=>'/orders', 'as'=>'orders.', 'controller'=> OrdersController::class], function(){
+
+//         Route::get("/index", ["index"])->name("index");
+//         Route::get("/accept/{order}", ["accept"])->name("accept");
+//         Route::get("/reject/{order}", ["reject"])->name("reject");
+//         Route::get("/details/{order}", ["details"])->name("details");
+//         Route::get("/destroy/{order}", ["destroy"])->name("destroy");
+//         Route::get("/deleteds", ['deleteds'])->name("deleteds");
+//     });
+
+
+//     Route::prefix('/account')->group(function () {
+//         Route::get("/", [AdminAccountController::class, "index"])->name("account.index");
+//         Route::patch("/update", [AdminAccountController::class, "update"])->name("account.update");
+//         Route::patch("/change-password", [AdminAccountController::class, "changePassword"])->name("account.changePassword");
+//     });
+
+//     defineResourceRoutes('langs', 'lang', LangsController::class);
+//     defineResourceRoutes('language_line', 'language_line', LanguageLineController::class);
+//     defineResourceRoutes('categories', 'category', CategoriesController::class);
+//     defineResourceRoutes('users', 'user', UsersController::class);
+//     defineResourceRoutes('campaigns', 'campaign', CampaignsController::class);
+//     defineResourceRoutes('books', 'book', BooksController::class);
+//     defineResourceRoutes('sliders', 'slider', SlidersController::class);
+//     defineResourceRoutes('brands', 'brand', BrandsController::class);
+// });
 
 
 

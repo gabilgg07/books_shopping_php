@@ -24,16 +24,16 @@ class HomeController extends Controller
             ->take(12)
             ->get();
 
-        if (Review::all()->count()) {
-            $featureds = Book::where('is_deleted', 0)->where('is_active', 1)->leftJoin('reviews', 'books.id', '=', 'reviews.book_id')
-                ->selectRaw('books.*, AVG(reviews.rate) as average_rate')
-                ->groupBy('books.id')
-                ->orderByDesc('average_rate')
-                ->take(10)
-                ->get();
-        } else {
-            $featureds = Book::where('is_deleted', 0)->where('is_active', 1)->orderByDesc('price')->take(12)->get();
-        }
+        // if (Review::all()->count()) {
+        //     $featureds = Book::where('is_deleted', 0)->where('is_active', 1)->leftJoin('reviews', 'books.id', '=', 'reviews.book_id')
+        //         ->selectRaw('books.*, AVG(reviews.rate) as average_rate')
+        //         ->groupBy('books.id')
+        //         ->orderByDesc('average_rate')
+        //         ->take(10)
+        //         ->get();
+        // } else {
+        // }
+        $featureds = Book::where('is_deleted', 0)->where('is_active', 1)->orderByDesc('price')->take(12)->get();
 
         $new_arrivals = Book::where('is_deleted', 0)->where('is_active', 1)->orderByDesc('created_at')->take(12)->get();
 

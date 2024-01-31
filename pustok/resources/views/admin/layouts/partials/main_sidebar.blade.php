@@ -112,7 +112,12 @@ $user = auth()->user();
                     class="nav-item nav-item-submenu {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'nav-item-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'active' : '' }}"><i
-                            class="icon-table2"></i> <span>Additional Tables</span></a>
+                            class="icon-table2"></i> <span>Additional Tables</span>
+                        @if (count($pendingOrders))
+                        <span
+                            class="badge bg-orange-400 align-self-center ml-auto text-dark">{{count($pendingOrders)}}</span>
+                        @endif
+                    </a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts"
                         {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'style=display:block;' : 'style=display:none;' }}">
@@ -123,9 +128,14 @@ $user = auth()->user();
                         <li class="nav-item"><a href="{{route('manager.brands.index')}}"
                                 class="nav-link {{ request()->routeIs('manager.brands.*') ? 'active' : '' }}">Brands</a>
                         </li>
-                        <!-- <li class="nav-item"><a href="{{route('manager.campaigns.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.campaigns.*') ? 'active' : '' }}">Campaings</a>
-                        </li> -->
+                        <li class="nav-item"><a href="{{route('manager.orders.index')}}"
+                                class="nav-link {{ request()->routeIs('manager.orders.*') ? 'active' : '' }}">Orders
+                                @if (count($pendingOrders))
+                                <span
+                                    class="badge bg-orange-400 align-self-center ml-auto text-dark">{{count($pendingOrders)}}</span>
+                                @endif
+                            </a>
+                        </li>
                         <!-- <li class="nav-item"><a href="{{route('manager.books.index')}}"
                                 class="nav-link {{ request()->routeIs('manager.books.*') ? 'active' : '' }}">Books</a>
                         </li> -->

@@ -14,16 +14,16 @@ $model=$edit_view_model['model'];
 <script src="{{asset('admin/global_assets\js\demo_pages\form_checkboxes_radios.js')}}"></script>
 <script src="{{asset('admin/global_assets\js\demo_pages\form_inputs.js')}}"></script>
 <script>
-    $(window).on('load', function() {
-        $("#image_input").change(function(event) {
-            var tmppath = URL.createObjectURL(event.target.files[0]);
-            $("#image").attr(
-                "src",
-                URL.createObjectURL(event.target.files[0])
-            );
-            $("#image").removeClass('d-none');
-        });
+$(window).on('load', function() {
+    $("#image_input").change(function(event) {
+        var tmppath = URL.createObjectURL(event.target.files[0]);
+        $("#image").attr(
+            "src",
+            URL.createObjectURL(event.target.files[0])
+        );
+        $("#image").removeClass('d-none');
     });
+});
 </script>
 @endpush
 
@@ -38,11 +38,19 @@ $model=$edit_view_model['model'];
         <div class="card-header header-elements-inline">
             <h5 class="card-title">{{Str::headline($model_name)}} Edit</h5>
         </div>
-        <form method="post" action="{{route('manager.'. $table_name .'.update', $model->id)}}" enctype="multipart/form-data">
+        <form method="post" action="{{route('manager.'. $table_name .'.update', $model->id)}}"
+            enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="card-body row">
                 <div class="col-lg-6">
+                    @if ($errors->any())
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li class="badge badge-danger">{{$error}}</li>
+                        @endforeach
+                    </ul>
+                    @endif
                     <div class="card">
                         <div class="card-body">
                             @include('admin.layouts.includes.edit_input',['field_name'=>'first_name','field_value'=>$model->first_name])

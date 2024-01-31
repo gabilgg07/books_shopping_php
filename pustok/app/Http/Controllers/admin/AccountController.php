@@ -91,7 +91,5 @@ class AccountController extends Controller
             DB::rollBack();
             return redirect()->route('manager.account.index')->with('type', 'danger')->with('message', 'Something went wrong!');
         }
-
-        dd($request->all());
     }
 }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\View\Composers\CurrencyComposer;
 use App\View\Composers\LangComposer;
+use App\View\Composers\OrdersComposer;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,5 +23,7 @@ class ViewServiceProvider extends ServiceProvider
         Facades\View::composer(['client.layouts.partials.nav', 'client.home.index', 'client.shop.details'], LangComposer::class);
 
         Facades\View::composer('*', CurrencyComposer::class);
+
+        Facades\View::composer('admin.layouts.partials.main_sidebar', OrdersComposer::class);
     }
 }

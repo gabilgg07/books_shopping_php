@@ -20,7 +20,8 @@ class UserRequest extends FormRequest
             ],
             'repeat_password' => !$modelId ? 'required|same:new_password' : 'same:new_password',
             'phone' => ['nullable', 'regex:/(^\+?[0-9]{1,3}-?[0-9]{6,14}$)|(^(0)[0-9]{9}$)/'],
-            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,svg,webp|max:4096|min:1024',
+            'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,svg,webp|max:4096',
+            // 'image' => 'nullable|image|mimes:jpg,png,gif,jpeg,svg,webp|max:4096|min:1024', 
         ];
     }
     public function messages(): array
@@ -31,6 +32,8 @@ class UserRequest extends FormRequest
             'last_name.required' => 'Last Name ' . __('validation.required'),
 
             '*.min' => __('validation.min_string') . ': :min !',
+            // 'first_name.min' => __('validation.min_string') . ': :min !',
+            // 'last_name.min' => __('validation.min_string') . ': :min !',
 
             'email.required' => 'Email ' . __('validation.required'),
             'email.unique' => 'Email ' . __('validation.unique'),
@@ -42,8 +45,9 @@ class UserRequest extends FormRequest
             'phone.regex' => __('validation.phone'),
 
             // 'image.image' => 'Image ' . __('validation.image'),
-            'image' => __('validation.image', ['attribute' => 'image', 'values' => 'jpg, png, gif, jpeg, svg, webp']),
-            'image.uploaded' => __('validation.uploaded') . ' 2 Mb',
+            // 'image' => __('validation.image', ['attribute' => 'image', 'values' => 'jpg, png, gif, jpeg, svg, webp']),
+            'image.uploaded' => __('validation.uploaded') . ' 4 Mb',
+            // 'image.min' => 'olcusu en az :min olmalidir!',
         ];
     }
 }

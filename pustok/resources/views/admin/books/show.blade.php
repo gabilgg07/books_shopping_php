@@ -31,8 +31,7 @@ $campaign = $show_view_model['campaign'];
                                 Deleted !!!
                             </span>
                             @else
-                            <span
-                                class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
+                            <span class="details_status text-{{$model->is_active?'success is_active':'warning not_is_active'}} mr-5 border-3">
                                 {{$model->is_active?"Active":"Don't Active"}}
                             </span>
                             @endif
@@ -67,7 +66,7 @@ $campaign = $show_view_model['campaign'];
                     'color'=>$color_classes[rand(0,count($color_classes)-1)]])
 
                     @include('admin.layouts.includes.mini_text', ['field_name'=>'reviews',
-                    'field_value'=>number_format($model->reviews, 2, '.', ''),
+                    'field_value'=>number_format($model->reviews->avg('rate'), 2, '.', ''),
                     'color'=>$color_classes[rand(0,count($color_classes)-1)]])
 
                     @include('admin.layouts.includes.mini_text', ['field_name'=>'author', 'col'=>6,

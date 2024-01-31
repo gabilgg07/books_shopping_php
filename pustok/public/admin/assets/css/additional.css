@@ -175,3 +175,10 @@
     box-shadow: 0 0 5px 1px #000000b8;
     background-color: #0039804d;
 }
+
+.datatable-scroll,
+.datatable-scroll-lg,
+.datatable-scroll-sm {
+    width: 100%;
+    overflow-x: scroll;
+}

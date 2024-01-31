@@ -5,11 +5,11 @@
 <!-- Shop -->
 <!-- <li class="menu-item {{ request()->routeIs('client.shop.index') || request()->routeIs('client.shop.details') ? 'active' : '' }}"> -->
 <li class="menu-item {{ request()->routeIs('client.shop.*') ? 'active' : '' }}">
-    <a href="{{route('client.shop.index')}}">Shop </a>
+    <a href="{{route('client.shop.index')}}">{{__('menu.shop')}} </a>
 
 </li>
 
 
 <li class="menu-item {{ request()->routeIs('client.contact') ? 'active' : '' }}">
-    <a href="{{route('client.contact')}}">Contact</a>
+    <a href="{{route('client.contact')}}">{{__('menu.contact')}}</a>
 </li>
