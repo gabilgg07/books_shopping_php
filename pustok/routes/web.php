@@ -101,7 +101,7 @@ Route::middleware(['web', 'auth.admin', 'check.route'])
             Route::delete("/destroy/{order}", [OrdersController::class, "destroy"])->name("destroy");
             Route::get("/deleteds", [OrdersController::class, 'deleteds'])->name("deleteds");
             Route::delete("/restore/{order}", [OrdersController::class, "restore"])->name("restore");
-            Route::delete("/permanently_delete/{order}", [OrdersController::class, 'permanently_delete'])->name("orders.permanently_delete");
+            Route::delete("/permanently_delete/{order}", [OrdersController::class, 'permanently_delete'])->name("permanently_delete");
         });
 
         Route::prefix('/account')->group(function () {

@@ -78,7 +78,7 @@
                                                     <td>{{$order->order_number}}</td>
                                                     <td>{{$order->created_at->format('F d, Y')}}</td>
                                                     @if ($order->is_accepted !== null)
-                                                    @if ($order->is_accepted === true)
+                                                    @if ($order->is_accepted === 1)
                                                     <td><span class="text-success">Approved</span></td>
                                                     @else
                                                     <td><span class="text-danger">Rejected</span></td>

@@ -48,7 +48,7 @@ Deleted Orders
                         {{number_format($order->total_price, 2, '.', '')}}
                     </td>
                     @if ($order->is_accepted !== null)
-                    @if ($order->is_accepted === true)
+                    @if ($order->is_accepted === 1)
                     <td><span class="text-success">Approved</span></td>
                     @else
                     <td><span class="text-danger">Rejected</span></td>
@@ -58,7 +58,7 @@ Deleted Orders
                     @endif
                     <td width='200'>
                         @if ($order->user->image)
-                        <img src="{{$order->user->image}}" alt="" class="img-fluid w-100" style="object-fit: cover; object-position: center; height:100px;">
+                        <img src="{{$order->user->image}}" alt="" class="img-fluid" style="object-fit: cover; object-position: center; width:100px; height:100px; border-radius:50%;">
                         @endif
                     </td>
                     <td class="text-right">
@@ -69,7 +69,7 @@ Deleted Orders
                         <form onsubmit="return confirm('Are you sure you want permanently delete this data?')" method="post" action="{{route('manager.orders.permanently_delete', $order->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="min-width:170px;" class="btn btn-danger"><i class="mi-delete-forever mr-2"></i>Permanently Delete</button>
+                            <button type="submit" style="min-width:170px;" class="btn btn-danger mb-1"><i class="mi-delete-forever mr-2"></i>Permanently Delete</button>
                         </form>
                     </td>
                 </tr>

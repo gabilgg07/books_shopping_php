@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -36,6 +37,15 @@ class OrdersController extends Controller
     {
         if (!$order) {
             return abort(404);
+        }
+
+        $orderItems = OrderItem::where('order_id', $order->id)->get();
+        if ($orderItems) {
+            foreach ($orderItems as $orderItem) {
+                $book = $orderItem->book;
+                $book->count += $orderItem->qty;
+                $book->save();
+            }
         }
 
         $order->is_accepted = 0;
