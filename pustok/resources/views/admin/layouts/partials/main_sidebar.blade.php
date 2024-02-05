@@ -26,9 +26,7 @@ $user = auth()->user();
             <div class="card-body">
                 <div class="media">
                     <div class="mr-3">
-                        <a href="{{route('manager.account.index')}}"><img
-                                src="{{asset($user->image?$user->image:'admin/global_assets\images\user_default_photo.png')}}"
-                                style="width: 38px; height: 38px; object-fit:cover" class="rounded-circle" alt=""></a>
+                        <a href="{{route('manager.account.index')}}"><img src="{{asset($user->image?$user->image:'admin/global_assets\images\user_default_photo.png')}}" style="width: 38px; height: 38px; object-fit:cover" class="rounded-circle" alt=""></a>
                     </div>
 
                     <div class="media-body">
@@ -54,85 +52,60 @@ $user = auth()->user();
 
                 <!-- Main -->
                 <li class="nav-item-header">
-                    <div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu"
-                        title="Main"></i>
+                    <div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('manager.dashboard')}}"
-                        class="nav-link {{ request()->routeIs('manager.dashboard') ? 'active' : '' }}">
+                    <a href="{{route('manager.dashboard')}}" class="nav-link {{ request()->routeIs('manager.dashboard') ? 'active' : '' }}">
                         <i class="icon-home4"></i>
                         <span>
                             Dashboard
                         </span>
                     </a>
                 </li>
-                <li
-                    class="nav-item nav-item-submenu {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'nav-item-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'active' : '' }}"><i
-                            class="icon-table2"></i> <span>Language Tables</span></a>
+                <li class="nav-item nav-item-submenu {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'nav-item-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'active' : '' }}"><i class="icon-table2"></i> <span>Language Tables</span></a>
 
-                    <ul class="nav nav-group-sub" data-submenu-title="Layouts"
-                        {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'style=display:block;' : 'style=display:none;' }}">
-                        <li class="nav-item"><a href="{{route('manager.langs.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.langs.*') ? 'active' : '' }}">Langs</a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Layouts" {{ request()->routeIs(['*.language_line.*','*.langs.*']) ? 'style=display:block;' : 'style=display:none;' }}">
+                        <li class="nav-item"><a href="{{route('manager.langs.index')}}" class="nav-link {{ request()->routeIs('manager.langs.*') ? 'active' : '' }}">Langs</a>
                         </li>
-                        <li class="nav-item"><a href="{{route('manager.language_line.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.language_line.*') ? 'active' : '' }}">Language
+                        <li class="nav-item"><a href="{{route('manager.language_line.index')}}" class="nav-link {{ request()->routeIs('manager.language_line.*') ? 'active' : '' }}">Language
                                 Line</a>
                         </li>
                     </ul>
                 </li>
 
-                <li
-                    class="nav-item nav-item-submenu {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'nav-item-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'active' : '' }}"><i
-                            class="icon-table2"></i> <span>Models Tables</span></a>
+                <li class="nav-item nav-item-submenu {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'nav-item-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'active' : '' }}"><i class="icon-table2"></i> <span>Models Tables</span></a>
 
-                    <ul class="nav nav-group-sub" data-submenu-title="Layouts"
-                        {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'style=display:block;' : 'style=display:none;' }}">
-                        <li class="nav-item"><a href="{{route('manager.categories.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.categories.*') ? 'active' : '' }}">Categories</a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Layouts" {{ request()->routeIs(['*.categories.*','*.users.*','*.campaigns.*','*.books.*']) ? 'style=display:block;' : 'style=display:none;' }}">
+                        <li class="nav-item"><a href="{{route('manager.categories.index')}}" class="nav-link {{ request()->routeIs('manager.categories.*') ? 'active' : '' }}">Categories</a>
                         </li>
-                        <li class="nav-item"><a href="{{route('manager.users.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.users.*') ? 'active' : '' }}">Users</a>
+                        <li class="nav-item"><a href="{{route('manager.users.index')}}" class="nav-link {{ request()->routeIs('manager.users.*') ? 'active' : '' }}">Users</a>
                         </li>
-                        <li class="nav-item"><a href="{{route('manager.campaigns.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.campaigns.*') ? 'active' : '' }}">Campaings</a>
+                        <li class="nav-item"><a href="{{route('manager.campaigns.index')}}" class="nav-link {{ request()->routeIs('manager.campaigns.*') ? 'active' : '' }}">Campaings</a>
                         </li>
-                        <li class="nav-item"><a href="{{route('manager.books.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.books.*') ? 'active' : '' }}">Books</a>
+                        <li class="nav-item"><a href="{{route('manager.books.index')}}" class="nav-link {{ request()->routeIs('manager.books.*') ? 'active' : '' }}">Books</a>
                         </li>
                     </ul>
                 </li>
 
 
-                <li
-                    class="nav-item nav-item-submenu {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'nav-item-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'active' : '' }}"><i
-                            class="icon-table2"></i> <span>Additional Tables</span>
+                <li class="nav-item nav-item-submenu {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'nav-item-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'active' : '' }}"><i class="icon-table2"></i> <span>Additional Tables</span>
                         @if (count($pendingOrders))
-                        <span
-                            class="badge bg-orange-400 align-self-center ml-auto text-dark">{{count($pendingOrders)}}</span>
+                        <span class="badge bg-orange-400 align-self-center ml-auto text-dark">{{count($pendingOrders)}}</span>
                         @endif
                     </a>
 
-                    <ul class="nav nav-group-sub" data-submenu-title="Layouts"
-                        {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'style=display:block;' : 'style=display:none;' }}">
-                        <li class="nav-item"><a href="{{route('manager.sliders.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.sliders.*') ? 'active' : '' }}">Hero
+                    <ul class="nav nav-group-sub" data-submenu-title="Layouts" {{ request()->routeIs(['*.sliders.*','*.brands.*']) ? 'style=display:block;' : 'style=display:none;' }}">
+                        <li class="nav-item"><a href="{{route('manager.sliders.index')}}" class="nav-link {{ request()->routeIs('manager.sliders.*') ? 'active' : '' }}">Hero
                                 Sliders</a>
                         </li>
-                        <li class="nav-item"><a href="{{route('manager.brands.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.brands.*') ? 'active' : '' }}">Brands</a>
+                        <li class="nav-item"><a href="{{route('manager.brands.index')}}" class="nav-link {{ request()->routeIs('manager.brands.*') ? 'active' : '' }}">Brands</a>
                         </li>
-                        <li class="nav-item"><a href="{{route('manager.orders.index')}}"
-                                class="nav-link {{ request()->routeIs('manager.orders.*') ? 'active' : '' }}">Orders
+                        <li class="nav-item"><a href="{{route('manager.orders.index')}}" class="nav-link {{ request()->routeIs('manager.orders.*') ? 'active' : '' }}">Orders
                                 @if (count($pendingOrders))
-                                <span
-                                    class="badge bg-orange-400 align-self-center ml-auto text-dark">{{count($pendingOrders)}}</span>
+                                <span class="badge bg-orange-400 align-self-center ml-auto text-dark">{{count($pendingOrders)}}</span>
                                 @endif
                             </a>
                         </li>
@@ -140,6 +113,15 @@ $user = auth()->user();
                                 class="nav-link {{ request()->routeIs('manager.books.*') ? 'active' : '' }}">Books</a>
                         </li> -->
                     </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('manager.settings.index')}}" class="nav-link {{ request()->routeIs('manager.settings.index') ? 'active' : '' }}">
+                        <i class="icon-gear"></i>
+                        <span>
+                            Settings
+                        </span>
+                    </a>
                 </li>
                 <!-- /main -->
 

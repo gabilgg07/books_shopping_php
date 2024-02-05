@@ -45,8 +45,7 @@ Deleted {{Str::headline($table_name)}}
                         <td>{{$model->id}}</td>
                         <td width='200'>
                             @if ($model->image)
-                            <img src="{{$model->image}}" alt="{{$model->slug}}" class="img-fluid w-100"
-                                style="object-fit: cover; object-position: center;">
+                            <img src="{{$model->image}}" alt="{{$model->slug}}" class="img-fluid w-100" style="object-fit: cover; object-position: center;">
                             @endif
                         </td>
                         <td>{{$model->created_at}}</td>
@@ -55,21 +54,15 @@ Deleted {{Str::headline($table_name)}}
                         </td>
                         <td>{{$model->deleted_at}}</td>
                         <td class="text-right">
-                            <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info mb-1"><i
-                                    class="mi-info mr-2"></i>
+                            <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info mb-1"><i class="mi-info mr-2"></i>
                                 Info</a>
-                            <a href="{{route('manager.'.$table_name.'.restore', $model->id)}}"
-                                class="btn btn-success mb-1">
+                            <a href="{{route('manager.'.$table_name.'.restore', $model->id)}}" class="btn btn-success mb-1">
                                 <i class="mi-restore-page mr-2"></i>
                                 Restore</a>
-                            <form onsubmit="return confirm('Are you sure you want permanently delete this data?')"
-                                method="post"
-                                action="{{route('manager.'.$table_name.'.permanently_delete', $model->id)}}"
-                                class="d-inline-block">
+                            <form onsubmit="return confirm('Are you sure you want permanently delete this data?')" method="post" action="{{route('manager.'.$table_name.'.permanently_delete', $model->id)}}" class="d-inline-block">
                                 @method('delete')
                                 @csrf
-                                <button type="submit" style="min-width:170px;" class="btn btn-danger"><i
-                                        class="mi-delete-forever mr-2"></i>Permanently Delete</button>
+                                <button type="submit" style="min-width:170px;" class="btn btn-danger mb-1"><i class="mi-delete-forever mr-2"></i>Permanently Delete</button>
                             </form>
                         </td>
                     </tr>

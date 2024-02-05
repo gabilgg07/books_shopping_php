@@ -47,7 +47,9 @@ Order Details
 
                         <div class="col-4">
                             <p><i class="icon-cash3 icon-2x d-inline-block text-success"></i></p>
-                            <h5 class="font-weight-semibold mb-0">{{__('symbol.currency')}}{{$order->total_price}}</h5>
+                            <h5 class="font-weight-semibold mb-0">
+                                {{__('symbol.currency')}}{{number_format($currPrice*$order->total_price,2,'.','')}}
+                            </h5>
                             <span class="text-muted font-size-sm">Total Price</span>
                         </div>
                     </div>
@@ -68,10 +70,8 @@ Order Details
             @include('admin.layouts.includes.mini_text', ['field_name'=>'Address',
             'field_value'=>$order->address,
             'color'=>'pink', 'col'=>6])
-            <div
-                class="alert alert-{{$order->is_accepted === 1 ? 'success' : ($order->is_accepted === 0 ? 'danger':'warning')}} alert-styled-right alert-arrow-right alert-dismissible d-flex align-items-center m-auto">
-                <span
-                    class="font-weight-semibold">{{$order->is_accepted === 1 ? 'Approved' : ($order->is_accepted === 0 ? 'Rejected':'Pending')}}</span>
+            <div class="alert alert-{{$order->is_accepted === 1 ? 'success' : ($order->is_accepted === 0 ? 'danger':'warning')}} alert-styled-right alert-arrow-right alert-dismissible d-flex align-items-center m-auto">
+                <span class="font-weight-semibold">{{$order->is_accepted === 1 ? 'Approved' : ($order->is_accepted === 0 ? 'Rejected':'Pending')}}</span>
             </div>
             <div class="col-lg-12 mb-3">
                 <div class="table-responsive">

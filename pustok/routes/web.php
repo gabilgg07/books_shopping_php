@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\CategoriesController;
 use App\Http\Controllers\admin\LangsController;
 use App\Http\Controllers\admin\LanguageLineController;
 use App\Http\Controllers\admin\OrdersController;
+use App\Http\Controllers\admin\SettingsController;
 use App\Http\Controllers\admin\SlidersController;
 use App\Http\Controllers\admin\UsersController;
 
@@ -22,7 +23,7 @@ use App\Http\Controllers\client\ContactController;
 use App\Http\Controllers\client\CurrencyController;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\ShopController;
-use App\Http\Controllers\client\ShoppingCart;
+// use App\Http\Controllers\client\ShoppingCart;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 // others
@@ -93,6 +94,13 @@ Route::middleware(['web', 'auth.admin', 'check.route'])
         Route::get("", [AdminController::class, "index"])->name("dashboard");
         Route::get("/logout", [AdminController::class, "logout"])->name("logout");
 
+
+        Route::prefix('/settings')->as('settings.')->group(function () {
+            Route::get("/index", [SettingsController::class, "index"])->name("index");
+            Route::get("/edit", [SettingsController::class, "edit"])->name("edit");
+            Route::patch("/update", [SettingsController::class, "update"])->name("update");
+        });
+
         Route::prefix('/orders')->as('orders.')->group(function () {
             Route::get("/index", [OrdersController::class, "index"])->name("index");
             Route::get("/accept/{order}", [OrdersController::class, "accept"])->name("accept");
@@ -100,7 +108,7 @@ Route::middleware(['web', 'auth.admin', 'check.route'])
             Route::get("/details/{order}", [OrdersController::class, "details"])->name("details");
             Route::delete("/destroy/{order}", [OrdersController::class, "destroy"])->name("destroy");
             Route::get("/deleteds", [OrdersController::class, 'deleteds'])->name("deleteds");
-            Route::delete("/restore/{order}", [OrdersController::class, "restore"])->name("restore");
+            Route::get("/restore/{order}", [OrdersController::class, "restore"])->name("restore");
             Route::delete("/permanently_delete/{order}", [OrdersController::class, 'permanently_delete'])->name("permanently_delete");
         });
 

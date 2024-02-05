@@ -72,12 +72,14 @@
                         <!-- <li>Ex Tax: <span class="list-value"> {{__('symbol.currency')}}60.24</span></li> -->
                         <li>
                             Category:
-                            <a href="{{route('client.shop.index', $book->category->slug)}}" class="list-value font-weight-bold"> {{$book->category->title}}</a>
+                            <a href="{{route('client.shop.index', $book->category->slug)}}"
+                                class="list-value font-weight-bold"> {{$book->category->title}}</a>
                         </li>
                         @if ($book->campaign)
                         <li>
                             Campaign:
-                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}" class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
+                            <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}"
+                                class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
                         </li>
                         @endif
                         <!-- <li>Product Code: <span class="list-value"> model1</span></li> -->
@@ -92,10 +94,13 @@
                     </ul>
                     <div class="price-block">
                         @if ($book->campaign)
-                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                        <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</del>
+                        <span
+                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                        <del
+                            class="price-old">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</del>
                         @else
-                        <span class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</span>
+                        <span
+                            class="price-new">{{__('symbol.currency')}}{{number_format($currPrice*$book->price, 2, '.', '')}}</span>
                         @endif
                     </div>
                     <div class="rating-widget">
@@ -140,12 +145,14 @@
         <div class="sb-custom-tab review-tab section-padding">
             <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
+                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
+                        aria-controls="tab-1" aria-selected="true">
                         DESCRIPTION
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">
+                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
+                        aria-selected="true">
                         REVIEWS ({{$book->reviews->count()}})
                     </a>
                 </li>
@@ -166,7 +173,8 @@
                         @foreach ($book->reviews as $review)
                         <div class="review-comment mb--20">
                             <div class="avatar">
-                                <img src="{{asset($review->user->image?$review->user->image:'client/assets/image/user_default_photo.png')}}" alt="" />
+                                <img src="{{asset($review->user->image?$review->user->image:'client/assets/image/user_default_photo.png')}}"
+                                    alt="" />
                             </div>
                             <div class="text">
                                 <div class="rating-block mb--15">
@@ -181,36 +189,14 @@
                                     {{$review->user->first_name}} {{$review->user->last_name}}–
                                     <span class="font-weight-400">{{$review->created_at->format('F d, Y')}}</span>
                                 </h6>
-                                @if ($review->message)
+                                @if ($review->comment)
                                 <p>
-                                    {{$review->message}}
+                                    {{$review->comment}}
                                 </p>
                                 @endif
                             </div>
                         </div>
                         @endforeach
-                        <div class="review-comment mb--20">
-                            <div class="avatar">
-                                <img src="{{asset('client/assets/image/icon/author-logo.png')}}" alt="" />
-                            </div>
-                            <div class="text">
-                                <div class="rating-block mb--15">
-                                    <span class="ion-android-star-outline star_on"></span>
-                                    <span class="ion-android-star-outline star_on"></span>
-                                    <span class="ion-android-star-outline star_on"></span>
-                                    <span class="ion-android-star-outline"></span>
-                                    <span class="ion-android-star-outline"></span>
-                                </div>
-                                <h6 class="author">
-                                    ADMIN –
-                                    <span class="font-weight-400">March 23, 2015</span>
-                                </h6>
-                                <p>
-                                    Lorem et placerat vestibulum, metus nisi posuere nisl,
-                                    in accumsan elit odio quis mi.
-                                </p>
-                            </div>
-                        </div>
                         <h2 class="title-lg mb--20 pt--15">ADD A REVIEW</h2>
                         <form action="{{route('client.shop.addReview')}}" method="post">
                             @csrf
@@ -243,7 +229,8 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="message">Comment</label>
-                                                <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+                                                <textarea name="message" id="message" cols="30" rows="10"
+                                                    class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
@@ -286,7 +273,7 @@
             <div class="section-title section-title--bordered">
                 <h2>RELATED PRODUCTS</h2>
             </div>
-            <div class="product-slider sb-slick-slider slider-border-single-row" data-slick-setting='{
+            <div class="product-slider sb-slick-slider slider-border-single-row related_books" data-slick-setting='{
                 "autoplay": true,
                 "autoplaySpeed": 8000,
                 "slidesToShow": 4,
@@ -303,7 +290,8 @@
                         <div class="product-header">
                             <a href="" class="author"> {{$item->author}} </a>
                             <h3>
-                                <a href="{{ route('client.shop.details', $item->id) }}">{{Str::limit($item->title,22)}}</a>
+                                <a
+                                    href="{{ route('client.shop.details', $item->id) }}">{{Str::limit($item->title,22)}}</a>
                             </h3>
                         </div>
                         <div class="product-card--body">
@@ -325,7 +313,9 @@
                                         <a href="" class="single-btn">
                                             <i class="fas fa-heart"></i>
                                         </a>
-                                        <a href="#" data-toggle="modal" data-target="#quickModal" data-url="{{route('client.shop.getDetails', $item->id)}}" class="single-btn detail_modal">
+                                        <a href="#" data-toggle="modal" data-target="#quickModal"
+                                            data-url="{{route('client.shop.getDetails', $item->id)}}"
+                                            class="single-btn detail_modal">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </div>
@@ -334,11 +324,14 @@
                             <div class="price-block">
                                 @if ($item->campaign)
 
-                                <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($item->price-($item->price*$item->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                                <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</del>
+                                <span
+                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($item->price-($item->price*$item->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                                <del
+                                    class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</del>
                                 <span class="price-discount">{{$item->campaign->discount_percent}}%</span>
                                 @else
-                                <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</span>
+                                <span
+                                    class="price">{{__('symbol.currency')}}{{number_format($currPrice * $item->price, 2, '.', '')}}</span>
                                 @endif
                             </div>
                         </div>
@@ -349,7 +342,8 @@
         </div>
     </section>
     <!-- Modal -->
-    <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog" aria-labelledby="quickModal" aria-hidden="true">
+    <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog" aria-labelledby="quickModal"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
 
         </div>
@@ -359,48 +353,48 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('.detail_modal').on('click', function(e) {
-            e.preventDefault();
-            const modalUrl = $(this).data('url');
-            $('.product-details-slider').slick('unslick');
-            $('.product-slider-nav').slick('unslick');
+$(document).ready(function() {
+    $('.detail_modal').on('click', function(e) {
+        e.preventDefault();
+        const modalUrl = $(this).data('url');
+        $('.product-details-slider').slick('unslick');
+        $('.product-slider-nav').slick('unslick');
 
-            $.get(modalUrl, function(data, status) {
+        $.get(modalUrl, function(data, status) {
 
-                if (status !== 'success') {
-                    console.error('Error fetching book details:', data.message);
-                    return;
-                }
+            if (status !== 'success') {
+                console.error('Error fetching book details:', data.message);
+                return;
+            }
 
-                $('#quickModal .modal-dialog').html(data);
-                $('.product-details-slider').slick({
-                    slidesToShow: 1,
-                    arrows: false,
-                    fade: true,
-                    swipe: true,
-                    asNavFor: ".product-slider-nav"
-                });
-
-                $('.product-slider-nav').slick({
-                    infinite: true,
-                    autoplay: true,
-                    autoplaySpeed: 8000,
-                    slidesToShow: 4,
-                    arrows: true,
-                    prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
-                    nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
-                    asNavFor: ".product-details-slider",
-                    focusOnSelect: true
-                });
-
-                $('#quickModal').show();
+            $('#quickModal .modal-dialog').html(data);
+            $('.product-details-slider').slick({
+                slidesToShow: 1,
+                arrows: false,
+                fade: true,
+                swipe: true,
+                asNavFor: ".product-slider-nav"
             });
-        });
 
-        $('.rating-widget-block input').on('click', function(e) {
-            $('.rate_input').val($(this).data('rate'));
+            $('.product-slider-nav').slick({
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 8000,
+                slidesToShow: 4,
+                arrows: true,
+                prevArrow: '<button class="slick-prev"><i class="fa fa-chevron-left"></i></button>',
+                nextArrow: '<button class="slick-next"><i class="fa fa-chevron-right"></i></button>',
+                asNavFor: ".product-details-slider",
+                focusOnSelect: true
+            });
+
+            $('#quickModal').show();
         });
     });
+
+    $('.rating-widget-block input').on('click', function(e) {
+        $('.rate_input').val($(this).data('rate'));
+    });
+});
 </script>
 @endpush

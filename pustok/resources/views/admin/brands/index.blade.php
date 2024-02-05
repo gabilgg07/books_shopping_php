@@ -31,8 +31,7 @@ $models = $index_view_model['models'];
             <h5 class="card-title">{{Str::headline($table_name)}} Index Table</h5>
             <div style="display: flex; gap: 10px;">
                 <div class="box-btn">
-                    <a href="{{route('manager.'.$table_name.'.create')}}" type="button"
-                        class="btn btn-block btn-success">
+                    <a href="{{route('manager.'.$table_name.'.create')}}" type="button" class="btn btn-block btn-success">
                         <i class="icon-plus-circle2 mr-2"></i> Add {{Str::headline($model_name)}}</a>
                 </div>
                 <div class="box-btn">
@@ -59,29 +58,24 @@ $models = $index_view_model['models'];
                     <td>{{$model->id}}</td>
                     <td width='200'>
                         @if ($model->image)
-                        <img src="{{$model->image}}" alt="{{$model->slug}}" class="img-fluid w-100"
-                            style="object-fit: cover; object-position: center;">
+                        <img src="{{$model->image}}" alt="{{$model->slug}}" class="img-fluid w-100" style="object-fit: cover; object-position: center;">
                         @endif
                     </td>
                     <td>{{$model->created_at}}</td>
                     <td>{{$model->updated_at}}</td>
                     <td class="text-center">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}"
-                                data-fouc="" {{$model->is_active?'checked':''}}>
+                            <input type="checkbox" class="form-check-input-switchery isActive" id="{{$model->id}}" data-fouc="" {{$model->is_active?'checked':''}}>
                         </label>
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info mb-1"><i
-                                class="mi-info mr-2"></i> Info</a>
-                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning mb-1"><i
-                                class="icon-pencil3 mr-2"></i>
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info mb-1"><i class="mi-info mr-2"></i> Info</a>
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning mb-1"><i class="icon-pencil3 mr-2"></i>
                             Edit</a>
-                        <form onsubmit="return confirm('Are you sure?')" method="post"
-                            action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" class="btn btn-outline-danger"><i class="mi-delete mr-2"></i>
+                            <button type="submit" class="btn btn-outline-danger mb-1"><i class="mi-delete mr-2"></i>
                                 Delete</button>
                         </form>
                     </td>
@@ -95,34 +89,34 @@ $models = $index_view_model['models'];
 
 @push('custom_js')
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    let ids = [];
-    const url = "{{ route('manager.'.$table_name.'.change_active') }}";
-    if ($(".isActive").length) {
-        $(".datatable-basic").DataTable({
-            drawCallback: function() {
-                if (ids.length) {
-                    ids.forEach((value, index, array) => {
-                        deactiveAll(value.ids);
-                    })
-                }
-                const alertElement = $("#alert_message");
-                let msg = "";
+        let ids = [];
+        const url = "{{ route('manager.'.$table_name.'.change_active') }}";
+        if ($(".isActive").length) {
+            $(".datatable-basic").DataTable({
+                drawCallback: function() {
+                    if (ids.length) {
+                        ids.forEach((value, index, array) => {
+                            deactiveAll(value.ids);
+                        })
+                    }
+                    const alertElement = $("#alert_message");
+                    let msg = "";
 
-                $(".close-alert").click(function() {
-                    alertElement.addClass("d-none");
-                });
+                    $(".close-alert").click(function() {
+                        alertElement.addClass("d-none");
+                    });
 
-                $(".datatable-basic tbody").off("click", ".isActive");
-                $(".datatable-basic tbody").on("click", ".isActive", (e) => {
-                    changeIsActive(e, msg, alertElement, url, ids);
-                });
-            },
-        });
-    } else {
-        $(".datatable-basic").DataTable();
-    }
-});
+                    $(".datatable-basic tbody").off("click", ".isActive");
+                    $(".datatable-basic tbody").on("click", ".isActive", (e) => {
+                        changeIsActive(e, msg, alertElement, url, ids);
+                    });
+                },
+            });
+        } else {
+            $(".datatable-basic").DataTable();
+        }
+    });
 </script>
 @endpush

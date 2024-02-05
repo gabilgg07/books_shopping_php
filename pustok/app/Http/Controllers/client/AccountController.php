@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
-    // static $counter = 0;
     public function index()
     {
         $user = User::find(auth()->user()->id);

@@ -37,8 +37,7 @@
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Address:</span> Bakı ş. Nəsimi r-nu., Azadlıq pr. <br />
-                                    192E 2-ci blok, 2-ci mərt. mən.60</p>
+                                <p><span>Address:</span> {!!$settings->address!!}</p>
                             </div>
                         </div>
                         <div class="address">
@@ -46,7 +45,7 @@
                                 <i class="far fa-envelope"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Email: </span> hello@adas.az </p>
+                                <p><span>Email: </span>{{$settings->email}}</p>
                             </div>
                         </div>
                         <div class="address">
@@ -54,7 +53,7 @@
                                 <i class="fas fa-mobile-alt"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Phone:</span> (+994) 55 306 54 34 </p>
+                                <p><span>Phone:</span> {{$settings->phone}}</p>
                             </div>
                         </div>
                     </div>

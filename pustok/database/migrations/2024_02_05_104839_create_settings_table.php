@@ -11,24 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('setting', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('logo_image');
+            $table->string('logo_footer_image');
             $table->string('phone');
-            $table->string('arrdess');
+            $table->string('address');
             $table->string('email');
             $table->string('facebook');
             $table->string('twitter');
             $table->string('google_plus');
             $table->string('youtube');
-            $table->string('footer_title');
-            $table->string('copy');
-            $table->string('latitude');
-            $table->string('longitude');
-            $table->string('location_title');
-            $table->string('location_desc');
-            $table->string('send_us');
-            $table->double('shipping_percent')->default(0);
+            $table->string('instagram');
+            $table->string('copy_heading', 1000);
+            $table->string('copy_text', 1000);
+            $table->string('location_title', 1000);
+            $table->text('location_desc');
+            $table->unsignedInteger('shipping_percent')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('setting');
+        Schema::dropIfExists('settings');
     }
 };

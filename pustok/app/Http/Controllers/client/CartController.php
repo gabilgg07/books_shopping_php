@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class CartController extends Controller
 {

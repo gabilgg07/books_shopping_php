@@ -77,21 +77,6 @@ jQuery(document).ready(function ($) {
                     }
                 },
             });
-            $(".js-expand-hidden-menu").on("click", function (e) {
-                e.preventDefault();
-                $(".hidden-menu-item").toggle(500);
-                var window_width = $(window).width();
-                if (window_width <= 1200) {
-                    $(".hidden-lg-menu-item").toggle(500);
-                }
-                var htmlAfter = "Close Categories";
-                var htmlBefore = "More Categories";
-
-                $(this).html(
-                    $(this).text() == htmlAfter ? htmlBefore : htmlAfter
-                );
-                $(this).toggleClass("menu-close");
-            });
         }
         /**********************
          *Expand Category Mobile Menu
@@ -576,16 +561,16 @@ jQuery(document).ready(function ($) {
         initMap();
     }
 
-    if ($(".cart-widget .langs-block .lang").length) {
+    if ($(".langs-block .lang").length) {
         $(window).click(function () {
-            $(".cart-widget .langs-block ul.langs").removeClass("show");
+            $(".langs-block ul.langs").removeClass("show");
         });
 
-        $(".cart-widget .langs-block .lang").click(function (event) {
+        $(".langs-block .lang").click(function (event) {
             event.stopPropagation();
         });
-        $(".cart-widget .langs-block .lang").on("click", function (e) {
-            $(".cart-widget .langs-block ul.langs").toggleClass("show");
+        $(".langs-block .lang").on("click", function (e) {
+            $(".langs-block ul.langs").toggleClass("show");
         });
     }
 });

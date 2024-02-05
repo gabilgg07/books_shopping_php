@@ -45,7 +45,7 @@ Deleted Orders
                     </td>
                     <td>{{$order->total_count}}</td>
                     <td>
-                        {{number_format($order->total_price, 2, '.', '')}}
+                        {{__('symbol.currency')}}{{number_format($currPrice*$order->total_price, 2, '.', '')}}
                     </td>
                     @if ($order->is_accepted !== null)
                     @if ($order->is_accepted === 1)
@@ -56,7 +56,7 @@ Deleted Orders
                     @else
                     <td><span class="text-warning">Pending</span></td>
                     @endif
-                    <td width='200'>
+                    <td width='200' style="min-width: 200px;">
                         @if ($order->user->image)
                         <img src="{{$order->user->image}}" alt="" class="img-fluid" style="object-fit: cover; object-position: center; width:100px; height:100px; border-radius:50%;">
                         @endif

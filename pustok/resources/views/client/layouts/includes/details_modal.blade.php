@@ -57,22 +57,22 @@
                     </h3>
                     <ul class="list-unstyled">
                         <li>
-                            Category:
+                            {{__('word.category')}}:
                             <a href="{{route('client.shop.index', $book->category->slug)}}"
                                 class="list-value font-weight-bold"> {{$book->category->title}}</a>
                         </li>
                         @if ($book->campaign)
                         <li>
-                            Campaign:
+                            {{__('word.campaign')}}:
                             <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}"
                                 class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
                         </li>
                         @endif
                         <li>
-                            Availability: @if ($book->count)
-                            <span class="list-value"> In Stock</span>
+                            {{__('word.availability')}}: @if ($book->count)
+                            <span class="list-value">{{__('word.in_stock')}}</span>
                             @else
-                            <span class="list-value"> Out Stock</span>
+                            <span class="list-value">{{__('word.out_stock')}}</span>
                             @endif
                         </li>
                     </ul>
@@ -98,7 +98,7 @@
                         </div>
                         <div class="review-widget">
                             <a href="">({{(int)round($book->reviews->avg('rate'))}} Reviews)</a> <span>|</span>
-                            <a href="">Write a review</a>
+                            <a href="">{{__('review.write')}}</a>
                         </div>
                     </div>
                     <article class="product-details-article">
@@ -110,18 +110,18 @@
                         <form action="{{route('client.cart.update.modal')}}" class="row" method="post">
                             @csrf
                             <div class="count-input-block">
-                                <span class="widget-label">Qty</span>
+                                <span class="widget-label">{{__('word.qty')}}</span>
                                 <input type="number" name="qty" class="form-control text-center" value="1">
                                 <input type="hidden" name="book_id" value="{{$book->id}}">
                             </div>
                             <div class="add-cart-btn">
-                                <button class="btn btn-outlined--primary"><span class="plus-icon">+</span>Add
-                                    to Cart</button>
+                                <button class="btn btn-outlined--primary"><span
+                                        class="plus-icon">+</span>{{__('cart.add')}}</button>
                             </div>
                         </form>
                     </div>
                     <div class="compare-wishlist-row">
-                        <a href="" class="add-link"><i class="fas fa-heart"></i>Add to Wish List</a>
+                        <a href="" class="add-link"><i class="fas fa-heart"></i>{{__('wish.add')}}</a>
                     </div>
                 </div>
             </div>

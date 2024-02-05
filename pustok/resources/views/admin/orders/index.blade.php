@@ -52,7 +52,7 @@ Orders Index
                     </td>
                     <td>{{$order->total_count}}</td>
                     <td>
-                        {{number_format($order->total_price, 2, '.', '')}}
+                        {{__('symbol.currency')}}{{number_format($currPrice*$order->total_price, 2, '.', '')}}
                     </td>
                     @if ($order->is_accepted !== null)
                     @if ($order->is_accepted === 1)
@@ -63,36 +63,29 @@ Orders Index
                     @else
                     <td><span class="badge badge-warning">Pending</span></td>
                     @endif
-                    <td width='200' class="text-center">
+                    <td width='200' class="text-center" style="min-width: 200px;">
                         @if ($order->user->image)
-                        <img src="{{$order->user->image}}" alt="" class="img-fluid"
-                            style="object-fit: cover; object-position: center; width:100px; height:100px; border-radius:50%;">
+                        <img src="{{$order->user->image}}" alt="" class="img-fluid" style="object-fit: cover; object-position: center; width:100px; height:100px; border-radius:50%;">
                         @endif
                     </td>
                     <td class="text-right">
 
                         @if ($order->is_accepted !== null)
                         @if ($order->is_accepted === 1)
-                        <a href="{{route('manager.orders.reject',$order->id)}}" class="btn btn-danger mb-1"><i
-                                class="icon-blocked mr-2"></i>
+                        <a href="{{route('manager.orders.reject',$order->id)}}" class="btn btn-danger mb-1"><i class="icon-blocked mr-2"></i>
                             To Reject</a>
                         @else
-                        <a href="{{route('manager.orders.accept', $order->id)}}" class="btn btn-success mb-1"><i
-                                class="icon-checkmark4 mr-2"></i>To Accept</a>
+                        <a href="{{route('manager.orders.accept', $order->id)}}" class="btn btn-success mb-1"><i class="icon-checkmark4 mr-2"></i>To Accept</a>
                         @endif
                         @else
-                        <a href="{{route('manager.orders.accept', $order->id)}}" class="btn btn-success mb-1"><i
-                                class="icon-checkmark4 mr-2"></i>To Accept</a>
-                        <a href="{{route('manager.orders.reject',$order->id)}}" class="btn btn-danger mb-1"><i
-                                class="icon-blocked mr-2"></i>
+                        <a href="{{route('manager.orders.accept', $order->id)}}" class="btn btn-success mb-1"><i class="icon-checkmark4 mr-2"></i>To Accept</a>
+                        <a href="{{route('manager.orders.reject',$order->id)}}" class="btn btn-danger mb-1"><i class="icon-blocked mr-2"></i>
                             To Reject</a>
                         @endif
 
-                        <a href="{{route('manager.orders.details', $order->id)}}" class="btn btn-info mb-1"><i
-                                class="mi-info mr-2"></i>
+                        <a href="{{route('manager.orders.details', $order->id)}}" class="btn btn-info mb-1"><i class="mi-info mr-2"></i>
                             Info</a>
-                        <form onsubmit="return confirm('Are you sure?')" method="post"
-                            action="{{route('manager.orders.destroy', $order->id)}}" class="d-inline-block">
+                        <form onsubmit="return confirm('Are you sure?')" method="post" action="{{route('manager.orders.destroy', $order->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
                             <button type="submit" class="btn btn-outline-danger mb-1"><i class="mi-delete mr-2"></i>

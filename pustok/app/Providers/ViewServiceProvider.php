@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\View\Composers\CurrencyComposer;
+use App\View\Composers\CurrentLangComposer;
 use App\View\Composers\LangComposer;
 use App\View\Composers\OrdersComposer;
+use App\View\Composers\SettingsComposer;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +27,9 @@ class ViewServiceProvider extends ServiceProvider
         Facades\View::composer('*', CurrencyComposer::class);
 
         Facades\View::composer('admin.layouts.partials.main_sidebar', OrdersComposer::class);
+
+        Facades\View::composer('*', SettingsComposer::class);
+
+        Facades\View::composer(['client.layouts.partials.menu'], CurrentLangComposer::class);
     }
 }

@@ -1,10 +1,9 @@
 <div class="home-left-side text-center text-lg-left">
     <div class="single-block">
         <h3 class="home-sidebar-title">
-            BEST SELLERS
+            {{__('best.sellers')}}
         </h3>
-        <div class="product-slider product-list-slider multiple-row sb-slick-slider home-4-left-sidebar"
-            data-slick-setting='{
+        <div class="product-slider product-list-slider multiple-row sb-slick-slider home-4-left-sidebar" data-slick-setting='{
                                             "autoplay": true,
                                             "autoplaySpeed": 8000,
                                             "slidesToShow":1,
@@ -29,20 +28,16 @@
                             <a href="#" class="author">
                                 {{$book->author}}
                             </a>
-                            <h3><a
-                                    href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
+                            <h3><a href="{{ route('client.shop.details', $book->id) }}">{{Str::limit($book->title,22)}}</a>
                             </h3>
                         </div>
                         <div class="price-block">
                             @if ($book->campaign)
-                            <span
-                                class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
-                            <del
-                                class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
+                            <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * ($book->price-($book->price*$book->campaign->discount_percent/100)), 2, '.', '')}}</span>
+                            <del class="price-old">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</del>
                             <span class="price-discount">{{$book->campaign->discount_percent}}%</span>
                             @else
-                            <span
-                                class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
+                            <span class="price">{{__('symbol.currency')}}{{number_format($currPrice * $book->price, 2, '.', '')}}</span>
                             @endif
                         </div>
                     </div>

@@ -84,15 +84,15 @@ $models = $index_view_model['models'];
                         </label>
                     </td>
                     <td class="text-right">
-                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info"><i
+                        <a href="{{route('manager.'.$table_name.'.show', $model->id)}}" class="btn btn-info mb-1"><i
                                 class="mi-info mr-2"></i> Info</a>
-                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning"><i
+                        <a href="{{route('manager.'.$table_name.'.edit',$model->id)}}" class="btn btn-warning mb-1"><i
                                 class="icon-pencil3 mr-2"></i> Edit</a>
                         <form onsubmit="return confirm('Are you sure?')" method="post"
                             action="{{route('manager.'.$table_name.'.destroy', $model->id)}}" class="d-inline-block">
                             @method('delete')
                             @csrf
-                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger
+                            <button type="submit" style="width: fit-content;" class="btn btn-outline-danger mb-1
                             "><i class="mi-delete mr-2"></i> Delete</button>
                         </form>
                     </td>

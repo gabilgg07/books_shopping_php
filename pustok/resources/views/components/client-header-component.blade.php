@@ -9,13 +9,13 @@ $count = 0;
             <div class="row align-items-center">
                 <div class="col-lg-3">
                     <a href="{{route('client.home.index')}}" class="site-brand">
-                        <img src="{{asset('client/assets/image/logo.png')}}" alt="">
+                        <img src="{{asset($settings->logo_image)}}" alt="">
                     </a>
                 </div>
                 <div class="col-lg-4">
                     <div class="header-search-block">
-                        <input type="text" placeholder="Search entire store here">
-                        <button>Search</button>
+                        <input type="text" placeholder="{{__('search.placeholder')}}">
+                        <button>{{__('search.btn')}}</button>
                     </div>
                 </div>
                 <d iv class="col-lg-5">
@@ -23,18 +23,22 @@ $count = 0;
                         <div class="cart-widget">
                             <div class="login-block">
                                 @if ($user && !$user->is_admin)
-                                <a href="{{route('client.account.index')}}" class="font-weight-bold">{{$user->first_name." ".$user->last_name}}</a>
+                                <a href="{{route('client.account.index')}}"
+                                    class="font-weight-bold">{{$user->first_name." ".$user->last_name}}</a>
                                 <br>
-                                <span>or</span><a onclick="return confirm('Are you sure?')" href="{{route('client.account.logout')}}">Logout</a>
+                                <span>or</span><a href="{{route('client.account.logout')}}">{{__('word.logout')}}</a>
                                 @else
-                                <a href="{{route('auth.signin')}}" class="font-weight-bold">Login</a> <br>
-                                <span>or</span><a href="{{route('auth.signup')}}">Register</a>
+                                <a href="{{route('auth.signin')}}" class="font-weight-bold">{{__('word.login')}}</a>
+                                <br>
+                                <span>{{__('word.or')}}</span><a
+                                    href="{{route('auth.signup')}}">{{__('word.register')}}</a>
                                 @endif
                             </div>
                             <div class="langs-block">
                                 <p class="lang">
                                     @if ($currentLang->image)
-                                    <img src="{{$currentLang->image}}" class="img-flag mr-2" alt="{{$currentLang->code.'-'.$currentLang->country}}">
+                                    <img src="{{$currentLang->image}}" class="img-flag mr-2"
+                                        alt="{{$currentLang->code.'-'.$currentLang->country}}">
                                     @endif
                                     {{ Str::upper($currentLang->code) }} <i class="ml-1 fas fa-angle-down "></i>
                                 </p>
@@ -42,9 +46,11 @@ $count = 0;
                                     @foreach($langs as $lang)
                                     @if ($currentLang->code !== $lang->code)
                                     <li class="lang-item">
-                                        <a rel="alternate" hreflang="{{ $lang->code }}" href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}">
+                                        <a rel="alternate" hreflang="{{ $lang->code }}"
+                                            href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}">
                                             @if ($lang->image)
-                                            <img src="{{$lang->image}}" class="img-flag mr-2" alt="{{$lang->code.'-'.$lang->country}}">
+                                            <img src="{{$lang->image}}" class="img-flag mr-2"
+                                                alt="{{$lang->code.'-'.$lang->country}}">
                                             @endif
                                             {{ Str::upper($lang->code) }}
                                         </a>
@@ -59,7 +65,7 @@ $count = 0;
                                         {{Cart::count()}}
                                     </span>
                                     <span class="text-item">
-                                        Shopping Cart
+                                        {{__('card.title')}}
                                     </span>
                                     <span class="price">
                                         {{__('symbol.currency')}}{{number_format($currPrice*Cart::subtotal(), 2, '.','')}}
@@ -91,14 +97,16 @@ $count = 0;
                                                 <p class="price"><span class="qty">{{$cart->qty}} ×</span>
                                                     {{__('symbol.currency')}}{{number_format($currPrice*$cart->price, 2, '.', '')}}
                                                 </p>
-                                                <a href="{{route('client.cart.remove',$cart->rowId)}}" class="cross-btn"><i class="fas fa-times"></i></a>
+                                                <a href="{{route('client.cart.remove',$cart->rowId)}}"
+                                                    class="cross-btn"><i class="fas fa-times"></i></a>
                                             </div>
                                         </div>
                                         @endforeach
                                     </div>
                                     <div class=" single-cart-block ">
                                         <div class="btn-block">
-                                            <a href="{{route('client.cart')}}" class="btn">View Cart <i class="fas fa-chevron-right"></i></a>
+                                            <a href="{{route('client.cart')}}" class="btn">{{__('card.view')}}<i
+                                                    class="fas fa-chevron-right"></i></a>
 
                                         </div>
                                     </div>
@@ -116,8 +124,8 @@ $count = 0;
                 <div class="col-lg-3">
                     <nav class="category-nav primary-nav {{ request()->routeIs('client.home.index') ? 'show' : '' }}">
                         <div>
-                            <a href="javascript:void(0)" class="category-trigger"><i class="fa fa-bars"></i>Browse
-                                categories</a>
+                            <a href="javascript:void(0)" class="category-trigger"><i
+                                    class="fa fa-bars"></i>{{__('categories.title')}}</a>
                             <x-client-categories-component />
                         </div>
                     </nav>
@@ -128,8 +136,8 @@ $count = 0;
                             <i class="fas fa-headphones-alt"></i>
                         </div>
                         <div class="text">
-                            <p>Free Support 24/7</p>
-                            <p class="font-weight-bold number">+01-202-555-0181</p>
+                            <p>{{__('free.support')}}</p>
+                            <p class="font-weight-bold number">{{$settings->phone}}</p>
                         </div>
                     </div>
                 </div>
