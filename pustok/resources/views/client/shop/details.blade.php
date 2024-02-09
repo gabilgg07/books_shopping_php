@@ -6,8 +6,8 @@
         <div class="breadcrumb-contents">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('client.home.index')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Product Details</li>
+                    <li class="breadcrumb-item"><a href="{{route('client.home.index')}}">{{__('menu.home')}}</a></li>
+                    <li class="breadcrumb-item active">{{__('word.product_details')}}</li>
                 </ol>
             </nav>
         </div>
@@ -71,13 +71,13 @@
                     <ul class="list-unstyled">
                         <!-- <li>Ex Tax: <span class="list-value"> {{__('symbol.currency')}}60.24</span></li> -->
                         <li>
-                            Category:
+                            {{__('word.category')}}:
                             <a href="{{route('client.shop.index', $book->category->slug)}}"
                                 class="list-value font-weight-bold"> {{$book->category->title}}</a>
                         </li>
                         @if ($book->campaign)
                         <li>
-                            Campaign:
+                            {{__('word.campaign')}}:
                             <a href="{{route('client.shop.index', ['campaign_id'=>$book->campaign->id])}}"
                                 class="list-value font-weight-bold"> {{$book->campaign->title}}</a>
                         </li>
@@ -85,10 +85,10 @@
                         <!-- <li>Product Code: <span class="list-value"> model1</span></li> -->
                         <!-- <li>Reward Points: <span class="list-value"> 200</span></li> -->
                         <li>
-                            Availability: @if ($book->count)
-                            <span class="list-value"> In Stock</span>
+                            {{__('word.availability')}}: @if ($book->count)
+                            <span class="list-value"> {{__('word.in_stock')}}</span>
                             @else
-                            <span class="list-value"> Out Stock</span>
+                            <span class="list-value"> {{__('word.out_stock')}}</span>
                             @endif
                         </li>
                     </ul>
@@ -105,7 +105,7 @@
                     </div>
                     <div class="rating-widget">
                         <div class="rating-block">
-                            @for ($i = 0; $i< 5; $i++) @if ($i < (int)round($book->reviews->avg('rate')))
+                            @for ($i = 0; $i< 5; $i++) @if ($i < (int)round($book->rate))
                                 <span class="fas fa-star star_on"></span>
                                 @else
                                 <span class="fas fa-star"></span>
@@ -113,8 +113,8 @@
                                 @endfor
                         </div>
                         <div class="review-widget">
-                            <a href="">({{(int)round($book->reviews->avg('rate'))}} Reviews)</a> <span>|</span>
-                            <a href="">Write a review</a>
+                            <a href="">({{$book->rate}} {{__('word.reviews')}})</a> <span>|</span>
+                            <a href="">{{__('review.write')}}</a>
                         </div>
                     </div>
                     <article class="product-details-article">
@@ -126,18 +126,18 @@
                         <form action="{{route('client.cart.update.modal')}}" class="row" method="post">
                             @csrf
                             <div class="count-input-block">
-                                <span class="widget-label">Qty</span>
+                                <span class="widget-label">{{__('word.qty')}}</span>
                                 <input type="number" name="qty" class="form-control text-center" value="1">
                                 <input type="hidden" name="book_id" value="{{$book->id}}">
                             </div>
                             <div class="add-cart-btn">
-                                <button class="btn btn-outlined--primary"><span class="plus-icon">+</span>Add
-                                    to Cart</button>
+                                <button class="btn btn-outlined--primary"><span
+                                        class="plus-icon">+</span>{{__('cart.add')}}</button>
                             </div>
                         </form>
                     </div>
                     <div class="compare-wishlist-row">
-                        <a href="" class="add-link"><i class="fas fa-heart"></i>Add to Wish List</a>
+                        <a href="" class="add-link"><i class="fas fa-heart"></i>{{__('wish.add')}}</a>
                     </div>
                 </div>
             </div>
@@ -147,13 +147,13 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
                         aria-controls="tab-1" aria-selected="true">
-                        DESCRIPTION
+                        {{__('word.description')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
                         aria-selected="true">
-                        REVIEWS ({{$book->reviews->count()}})
+                        {{__('word.reviews')}} ({{$book->reviews->count()}})
                     </a>
                 </li>
             </ul>
@@ -167,9 +167,6 @@
                 </div>
                 <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab2">
                     <div class="review-wrapper">
-                        <h2 class="title-lg mb--20">
-                            1 REVIEW FOR AUCTOR GRAVIDA ENIM
-                        </h2>
                         @foreach ($book->reviews as $review)
                         <div class="review-comment mb--20">
                             <div class="avatar">

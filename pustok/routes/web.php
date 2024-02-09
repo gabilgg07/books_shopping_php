@@ -24,8 +24,7 @@ use App\Http\Controllers\client\CurrencyController;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\ShopController;
 // use App\Http\Controllers\client\ShoppingCart;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+
 // others
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -190,14 +189,3 @@ Route::get("/currency", [CurrencyController::class, "index"])->name("currency");
 
 //     return "Order placed successfully!";
 // });
-
-$jsonData = Cache::get('currency_data');
-
-// If not in the cache, fetch data from the API and store it in the cache
-if (!$jsonData) {
-    $response = Http::get('https://api.fastforex.io/fetch-multi?from=USD&to=EUR,GBP,AZN,RUB,TRY&api_key=68ce4283fe-ed772e671a-s7yiza');
-    $jsonData = $response->json();
-
-    // Cache the data for a day
-    Cache::put('currency_data', $jsonData, now()->addDay());
-}

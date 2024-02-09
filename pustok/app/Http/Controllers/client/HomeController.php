@@ -64,20 +64,24 @@ class HomeController extends Controller
         //         ->orderBy('created_at', 'desc') // You can adjust this based on your default sorting criteria
         //         ->get();
         // }
-        if (Review::count()) {
-            $featureds = Book::leftJoin('reviews', 'books.id', '=', 'reviews.book_id')
-                ->select('books.id', 'books.title', 'books.created_at', 'books.price', 'campaign_id', DB::raw('avg(reviews.rate) as avg_rate'))
-                ->groupBy('books.id', 'books.title', 'books.created_at', 'books.price', 'campaign_id')
-                ->orderByDesc('avg_rate')
-                ->orderBy('books.created_at', 'desc')->where('is_deleted', 0)
-                ->where('is_active', 1);
-        } else {
-            $featureds = Book::where('is_deleted', 0)
-                ->where('is_active', 1)
-                ->orderBy('created_at', 'desc');
-        }
+        // if (Review::count()) {
+        //     $featureds = Book::leftJoin('reviews', 'books.id', '=', 'reviews.book_id')
+        //         ->select('books.id', 'books.title', 'books.created_at', 'books.price', 'campaign_id', DB::raw('avg(reviews.rate) as avg_rate'))
+        //         ->groupBy('books.id', 'books.title', 'books.created_at', 'books.price', 'campaign_id')
+        //         ->orderByDesc('avg_rate')
+        //         ->orderBy('books.created_at', 'desc')->where('is_deleted', 0)
+        //         ->where('is_active', 1);
+        // } else {
+        //     $featureds = Book::where('is_deleted', 0)
+        //         ->where('is_active', 1)
+        //         ->orderBy('created_at', 'desc');
+        // }
 
-        $featureds = $featureds?->take(12)->get();
+        // BOOK modelimizin rate fieldi olmayanda:
+        // $featureds = $featureds?->take(12)->get();
+
+
+        $featureds = Book::where('is_deleted', 0)->where('is_active', 1)->orderBy('rate', 'desc')->take(12)->get();
 
         $new_arrivals = Book::where('is_deleted', 0)->where('is_active', 1)->orderByDesc('created_at')->take(12)->get();
 

@@ -11,13 +11,12 @@ $queries = $queries.$query.'='.$value;
 
 @section('content')
 <section class="breadcrumb-section">
-    <h2 class="sr-only">Site Breadcrumb</h2>
     <div class="container">
         <div class="breadcrumb-contents">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('client.home.index') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Shop</li>
+                    <li class="breadcrumb-item"><a href="{{ route('client.home.index') }}">{{__('menu.home')}}</a></li>
+                    <li class="breadcrumb-item active">{{__('menu.shop')}}</li>
                 </ol>
             </nav>
         </div>
@@ -47,15 +46,13 @@ $queries = $queries.$query.'='.$value;
                     }
                     @endphp
                     <span class="toolbar-status">
-                        Showing {{($books->currentPage()-1)*$books->perPage()+1}} to
-                        {{$to}} of
-                        {{$books->total()}} ({{$books->lastPage()}}
-                        Pages)
+                        {{__('word.showing',['from'=>($books->currentPage()-1)*$books->perPage()+1, 'to'=>$to,
+                        'sum'=>$books->total(), 'pages'=>$books->lastPage()])}}
                     </span>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mt--10 mt-md--0 ">
+                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-6 mt--10 mt-md--0 ">
                     <div class="sorting-selection">
-                        <span>Sort By:</span>
+                        <span>{{__('word.sort')}}:</span>
                         <form action="{{ url()->current() }}" method="GET" id="sortForm">
                             @if (count(request()->query()))
                             @foreach (request()->query() as $query=>$value)
@@ -66,13 +63,15 @@ $queries = $queries.$query.'='.$value;
                             @endif
                             <select class="form-control nice-select sort-select mr-0" name="sort_by"
                                 onchange="submitForm()">
-                                <option value="" selected="selected">Default Sorting</option>
-                                <option value="az">Sort By: Name (A - Z)</option>
-                                <option value="za">Sort By: Name (Z - A)</option>
-                                <option value="p_lh">Sort By: Price (Low &gt; High)</option>
-                                <option value="p_hl">Sort By:Price (High &gt; Low)</option>
-                                <option value="r_hl">Sort By:Rating (Highest)</option>
-                                <option value="r_lh">Sort By:Rating (Lowest)</option>
+                                <option value="" selected="selected">{{__('word.default_sort')}}</option>
+                                <option value="az">{{__('word.sort')}}: {{__('word.name')}} ({{__('word.a_z')}})
+                                </option>
+                                <option value="za">{{__('word.sort')}}: {{__('word.name')}} ({{__('word.z_a')}})
+                                </option>
+                                <option value="p_lh">{{__('word.sort')}}: {{__('word.price_lh')}}</option>
+                                <option value="p_hl">{{__('word.sort')}}:{{__('word.price_hl')}}</option>
+                                <option value="r_hl">{{__('word.sort')}}:{{__('word.rating_h')}}</option>
+                                <option value="r_lh">{{__('word.sort')}}:{{__('word.rating_l')}}</option>
                             </select>
                         </form>
                     </div>

@@ -97,7 +97,8 @@
                                 @endfor
                         </div>
                         <div class="review-widget">
-                            <a href="">({{(int)round($book->reviews->avg('rate'))}} Reviews)</a> <span>|</span>
+                            <a href="">({{(int)round($book->reviews->avg('rate'))}} {{__('word.reviews')}})</a>
+                            <span>|</span>
                             <a href="">{{__('review.write')}}</a>
                         </div>
                     </div>

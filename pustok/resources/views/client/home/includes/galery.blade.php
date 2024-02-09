@@ -1,15 +1,12 @@
 <section class="mt-4 section-margin">
-    <h2 class="sr-only">Category Gallery Section</h2>
     <div class="container">
         <div class="category-gallery-block">
-            <a href="{{route('client.shop.index', ['slug'=>$categories['single']->slug])}}"
-                class="single-block hr-large">
+            <a href="{{route('client.shop.index', ['slug'=>$categories['single']->slug])}}" class="single-block hr-large">
                 <img src="{{asset($categories['single']->image)}}" alt="{{$categories['single']->slug}}">
             </a>
             <div class=" single-block inner-block-wrapper">
                 @foreach ($categories['galery'] as $key=>$category)
-                <a href="{{route('client.shop.index', ['slug'=>$category->slug])}}"
-                    class="single-image {{$key===0||$key===3?'mid':'small' }}-image">
+                <a href="{{route('client.shop.index', ['slug'=>$category->slug])}}" class="single-image {{$key===0||$key===3?'mid':'small' }}-image">
                     <img src="{{asset($category->image)}}" alt="{{$category->slug}}">
                 </a>
                 @endforeach

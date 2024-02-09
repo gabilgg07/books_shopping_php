@@ -1,6 +1,6 @@
 <div class="home-right-side">
     <div class="single-block">
-        <div class="sb-custom-tab text-lg-left text-center">
+        <div class="sb-custom-tab text-center">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="shop-tab" data-toggle="tab" href="#shop" role="tab" aria-controls="shop" aria-selected="true">

@@ -189,3 +189,9 @@
 .category-menu .cat-item:last-child a {
     border-color: transparent;
 }
+.review-wrapper .avatar img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}

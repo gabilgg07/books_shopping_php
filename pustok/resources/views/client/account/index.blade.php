@@ -110,8 +110,8 @@
                                     <h3>Billing Address</h3>
                                     <address>
                                         <p><strong>{{$user->first_name}} {{$user->last_name}}</strong></p>
-                                        <p>{{$user->orders->first()->address}}<br>
-                                            {{$user->orders->first()->state}}, {{$user->orders->first()->zip_code}}
+                                        <p>{{$user->orders?->first()?->address}}<br>
+                                            {{$user->orders?->first()?->state}}, {{$user->orders?->first()?->zip_code}}
                                         </p>
                                         <p>Mobile: {{$user->phone}}</p>
                                     </address>

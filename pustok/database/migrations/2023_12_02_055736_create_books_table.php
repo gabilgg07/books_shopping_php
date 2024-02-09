@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title', 1000);
             $table->string('slug', 500);
             $table->double('price');
+            $table->double('rate')->default(0);
             $table->unsignedInteger('count');
             $table->string('author')->nullable();
             $table->text('short_desc');

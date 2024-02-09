@@ -2,13 +2,12 @@
 
 @section("content")
 <section class="breadcrumb-section">
-    <h2 class="sr-only">Site Breadcrumb</h2>
     <div class="container">
         <div class="breadcrumb-contents">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('client.home.index')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Contact</li>
+                    <li class="breadcrumb-item"><a href="{{route('client.home.index')}}">{{__('menu.home')}}</a></li>
+                    <li class="breadcrumb-item active">{{__('menu.contact')}}</li>
                 </ol>
             </nav>
         </div>
@@ -26,10 +25,8 @@
             <div class="col-lg-5 col-md-5 col-12">
                 <div class="contact_adress">
                     <div class="ct_address">
-                        <h3 class="ct_title">Location & Details</h3>
-                        <p>It is a long established fact that readewill be distracted by the readable content of
-                            a page when looking
-                            at ilayout.</p>
+                        <h3 class="ct_title">{{$settings->location_title}}</h3>
+                        <p>{{$settings->location_desc}}</p>
                     </div>
                     <div class="address_wrapper">
                         <div class="address">
@@ -37,7 +34,7 @@
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Address:</span> {!!$settings->address!!}</p>
+                                <p><span>{{__('word.address')}}:</span> {!!$settings->address!!}</p>
                             </div>
                         </div>
                         <div class="address">
@@ -45,7 +42,7 @@
                                 <i class="far fa-envelope"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Email: </span>{{$settings->email}}</p>
+                                <p><span>{{__('word.email')}}: </span>{{$settings->email}}</p>
                             </div>
                         </div>
                         <div class="address">
@@ -53,7 +50,7 @@
                                 <i class="fas fa-mobile-alt"></i>
                             </div>
                             <div class="contact-info-text">
-                                <p><span>Phone:</span> {{$settings->phone}}</p>
+                                <p><span>{{__('word.phone')}}:</span> {{$settings->phone}}</p>
                             </div>
                         </div>
                     </div>
@@ -61,36 +58,37 @@
             </div>
             <div class="col-lg-7 col-md-7 col-12 mt--30 mt-md--0">
                 <div class="contact_form">
-                    <h3 class="ct_title">Send Us a Message</h3>
+                    <h3 class="ct_title">{{__('word.send_us')}}</h3>
                     <form id="contact-form" action="php/mail.php" method="post" class="contact-form">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Your Name <span class="required">*</span></label>
+                                    <label>{{__('word.name')}} <span class="required">*</span></label>
                                     <input type="text" id="con_name" name="con_name" class="form-control" required>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Your Email <span class="required">*</span></label>
+                                    <label>{{__('word.email')}} <span class="required">*</span></label>
                                     <input type="email" id="con_email" name="con_email" class="form-control" required>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Your Phone*</label>
+                                    <label>{{__('word.phone')}}*</label>
                                     <input type="text" id="con_phone" name="con_phone" class="form-control">
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Your Message</label>
+                                    <label>{{__('word.message')}}</label>
                                     <textarea id="con_message" name="con_message" class="form-control"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-btn">
-                                    <button type="submit" value="submit" id="submit" class="btn btn-black" name="submit">send</button>
+                                    <button type="submit" value="submit" id="submit" class="btn btn-black"
+                                        name="submit">{{__('word.send')}}</button>
                                 </div>
                                 <div class="form__output"></div>
                             </div>

@@ -51,10 +51,10 @@ class ShopController extends Controller
                 $books = $books->orderBy('price', 'desc');
                 break;
             case 'r_hl':
-                $books = $books->orderBy('reviews', 'desc');
+                $books = $books->orderBy('rate', 'desc');
                 break;
             case 'r_lh':
-                $books = $books->orderBy('reviews', 'asc');
+                $books = $books->orderBy('rate', 'asc');
                 break;
             default:
                 $books = $books->orderBy('created_at', 'asc');
@@ -73,9 +73,16 @@ class ShopController extends Controller
             if ($book->campaign_id) {
                 $relatedBooks = $relatedBooks->orWhere('campaign_id', $book->campaign_id);
             }
-            $relatedBooks = $relatedBooks->get();
+            $relatedBooks = $relatedBooks->where('id', '!=', $book->id)
+                ->where('is_deleted', 0)
+                ->where('is_active', 1)
+                ->take(8)->get();
             if ($relatedBooks->count() < 5) {
-                $relatedBooks = Book::orderBy('created_at', 'desc')->take(8)->get();
+                $relatedBooks = Book::where('is_deleted', 0)
+                    ->where('is_active', 1)
+                    ->orderBy('created_at', 'desc')
+                    ->where('id', '!=', $book->id)
+                    ->take(8)->get();
             }
 
             return view("client.shop.details", compact('book', 'relatedBooks'));
@@ -118,6 +125,7 @@ class ShopController extends Controller
         }
 
         $user = User::find(auth()->user()->id);
+        $book = Book::find($request->book_id);
         if ($user) {
             $entity = $user->reviews->where('book_id', $request->book_id)->first();
             if ($entity) {
@@ -135,6 +143,11 @@ class ShopController extends Controller
             $review = Review::create($data);
             if (!$review) {
                 return redirect()->back()->with('msgType', 'error')->with('message', 'Failed to add review!');
+            }
+
+            if ($book) {
+                $book->rate = round($book->reviews->avg('rate'), 2);
+                $book->save();
             }
 
             return redirect()->back()->with('msgType', 'success')->with('message', 'Review succesfully added!');
