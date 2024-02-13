@@ -195,3 +195,7 @@
     height: 60px;
     object-fit: cover;
 }
+
+.cart-page-main-block .product-card--body {
+    padding: 20px;
+}

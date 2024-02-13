@@ -23,22 +23,19 @@ $count = 0;
                         <div class="cart-widget">
                             <div class="login-block">
                                 @if ($user && !$user->is_admin)
-                                <a href="{{route('client.account.index')}}"
-                                    class="font-weight-bold">{{$user->first_name." ".$user->last_name}}</a>
+                                <a href="{{route('client.account.index')}}" class="font-weight-bold">{{$user->first_name." ".$user->last_name}}</a>
                                 <br>
-                                <span>or</span><a href="{{route('client.account.logout')}}">{{__('word.logout')}}</a>
+                                <span>{{__('word.or')}}</span><a href="{{route('client.account.logout')}}">{{__('word.logout')}}</a>
                                 @else
                                 <a href="{{route('auth.signin')}}" class="font-weight-bold">{{__('word.login')}}</a>
                                 <br>
-                                <span>{{__('word.or')}}</span><a
-                                    href="{{route('auth.signup')}}">{{__('word.register')}}</a>
+                                <span>{{__('word.or')}}</span><a href="{{route('auth.signup')}}">{{__('word.register')}}</a>
                                 @endif
                             </div>
                             <div class="langs-block">
                                 <p class="lang">
                                     @if ($currentLang->image)
-                                    <img src="{{$currentLang->image}}" class="img-flag mr-2"
-                                        alt="{{$currentLang->code.'-'.$currentLang->country}}">
+                                    <img src="{{$currentLang->image}}" class="img-flag mr-2" alt="{{$currentLang->code.'-'.$currentLang->country}}">
                                     @endif
                                     {{ Str::upper($currentLang->code) }} <i class="ml-1 fas fa-angle-down "></i>
                                 </p>
@@ -46,11 +43,9 @@ $count = 0;
                                     @foreach($langs as $lang)
                                     @if ($currentLang->code !== $lang->code)
                                     <li class="lang-item">
-                                        <a rel="alternate" hreflang="{{ $lang->code }}"
-                                            href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}">
+                                        <a rel="alternate" hreflang="{{ $lang->code }}" href="{{ LaravelLocalization::getLocalizedURL($lang->code, null, [], true) }}">
                                             @if ($lang->image)
-                                            <img src="{{$lang->image}}" class="img-flag mr-2"
-                                                alt="{{$lang->code.'-'.$lang->country}}">
+                                            <img src="{{$lang->image}}" class="img-flag mr-2" alt="{{$lang->code.'-'.$lang->country}}">
                                             @endif
                                             {{ Str::upper($lang->code) }}
                                         </a>
@@ -97,16 +92,14 @@ $count = 0;
                                                 <p class="price"><span class="qty">{{$cart->qty}} ×</span>
                                                     {{__('symbol.currency')}}{{number_format($currPrice*$cart->price, 2, '.', '')}}
                                                 </p>
-                                                <a href="{{route('client.cart.remove',$cart->rowId)}}"
-                                                    class="cross-btn"><i class="fas fa-times"></i></a>
+                                                <a href="{{route('client.cart.remove',$cart->rowId)}}" class="cross-btn"><i class="fas fa-times"></i></a>
                                             </div>
                                         </div>
                                         @endforeach
                                     </div>
                                     <div class=" single-cart-block ">
                                         <div class="btn-block">
-                                            <a href="{{route('client.cart')}}" class="btn">{{__('card.view')}}<i
-                                                    class="fas fa-chevron-right"></i></a>
+                                            <a href="{{route('client.cart')}}" class="btn">{{__('card.view')}}<i class="fas fa-chevron-right"></i></a>
 
                                         </div>
                                     </div>
@@ -124,8 +117,7 @@ $count = 0;
                 <div class="col-lg-3">
                     <nav class="category-nav primary-nav {{ request()->routeIs('client.home.index') ? 'show' : '' }}">
                         <div>
-                            <a href="javascript:void(0)" class="category-trigger"><i
-                                    class="fa fa-bars"></i>{{__('categories.title')}}</a>
+                            <a href="javascript:void(0)" class="category-trigger"><i class="fa fa-bars"></i>{{__('categories.title')}}</a>
                             <x-client-categories-component />
                         </div>
                     </nav>

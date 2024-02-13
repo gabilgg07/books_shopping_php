@@ -11,6 +11,10 @@ class CartController extends Controller
 {
     public function index()
     {
+        if (!Cart::content()->count()) {
+            return redirect()->route('client.shop.index')->with('message', 'Cart is empty!');
+        }
+
         $bookIds = Cart::content()->pluck('id')->toArray();
 
         $books = Book::where('is_active', 1)->where('is_deleted', 0);
