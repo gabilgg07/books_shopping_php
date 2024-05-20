@@ -1,0 +1,16 @@
+
+    1. Put code under the HasTranslations.php file in trait HasTranslations on path:
+    vendor/spatie/laravel-translatable/src/HasTranslations.php
+
+    protected function asJson($value)
+    {
+        return json_encode($value, JSON_UNESCAPED_UNICODE);
+    }
+
+    2. Put code under the HasTranslations.php file in class LanguageLine on path:
+    vendor/spatie/laravel-translation-loader/src/LanguageLine.php
+
+    protected function asJson($value)
+    {
+        return json_encode($value, JSON_UNESCAPED_UNICODE);
+    }
